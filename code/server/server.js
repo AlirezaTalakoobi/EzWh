@@ -3,6 +3,11 @@ const { Router } = require("express");
 const express = require("express");
 const userrouter = require("./modules/Routes/UserRoute");
 const skuitemsrouter = require("./modules/Routes/SKUItemsRouter");
+const positionrouter = require("./modules/Routes/PositionRouter");
+const TestResultRouter = require("./modules/Routes/TestResultRouter");
+// const ItemRouter = require("./modules/Routes/ItemRouter");
+
+
 // init express
 const DAO = require("./modules/DB/UsersDAO");
 const SKUItemsDAO = require("./modules/DB/SkuItemDAO");
@@ -10,6 +15,11 @@ const app = new express();
 const port = 3001;
 
 app.use(express.json());
+app.use("/api", positionrouter);
+app.use("/api", TestResultRouter);
+// app.use("/api", ItemRouter);
+
+
 app.use("/api", userrouter);
 app.use("/api", skuitemsrouter);
 
