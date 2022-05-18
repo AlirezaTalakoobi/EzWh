@@ -5,7 +5,7 @@ class SKUItemsController {
     this.dao = dao;
   }
 
-  getSKUItems = async (req, res) => {
+  getSKUItems = async (res) => {
     try {
       const sql = "SELECT * FROM SKUItems";
       let result = await this.dao.all(sql);
@@ -30,29 +30,42 @@ class SKUItemsController {
     if (Object.keys(req.body).length === 0) {
       return res.status(422).json({ error: "Empty Body request" });
     }
-    let result = await this.dao.all("Select * from SKUItems where rfid=?", [
-      req.body.rfid,
-    ]);
-    //return res.json(result.length);
-    if (result.length !== 0) {
-      res.status(422).json("Item with this RFID already existing");
-    } else {
-      try {
+    // let result = await this.dao.all("Select * from SKU where SKUId=?", [
+    //   req.body.SKUId,
+    // ]);
+    // //return res.json(result.length);
+    // if (result.length !== 0) {
+    //   res.status(422).json("No SKU associated to SKUId");
+    // } else {
+    try {
+      if (
+        (await this.dao.get(
+          "Select * from SKUItems where RFID=?",
+          req.body.RFID
+        )) === undefined
+      ) {
         let data = req.body;
-        this.dao.run(sql, [data.rfid, data.SKUId, 1, data.DateOfStock]);
+        this.dao.run(sql, [data.RFID, data.SKUId, 1, data.DateOfStock]);
         return res.status(201).json(data);
-      } catch {
-        return res.status(503).json("service unavailable");
+      } else {
+        return res
+          .status(404)
+          .json({ message: "Item with RFID already existing" });
       }
+    } catch {
+      return res.status(503).json({ message: "Service Unavailable" });
     }
+    //}
   };
 
   getSKUItemsBySKUId = async (req, res) => {
     try {
       const sql =
-        "SELECT rfid,SKUId,dateofstock FROM SKUItems WHERE available=1 and SKUId=?";
-      console.log(req.params.id);
-      const result = await this.dao.all(sql, [req.params.id]);
+        "SELECT rfid,SKUId,dateofstock FROM SKUItems WHERE available=? and SKUId=?";
+      const result = await this.dao.all(sql, [1, req.params.id]);
+      if (result.length === 0) {
+        return res.status(404).json("no SKU associated to id");
+      }
       return res.status(200).json(
         result.map((sku) => ({
           RFID: sku.rfid,
@@ -67,7 +80,6 @@ class SKUItemsController {
   getSKUItemsByRFID = async (req, res) => {
     try {
       const sql = "SELECT * FROM SKUItems WHERE rfid=?";
-      console.log(req.params.rfid);
       const result = await this.dao.all(sql, [req.params.rfid]);
       if (result.length === 0) {
         return res.status(404).json(result);
@@ -98,27 +110,33 @@ class SKUItemsController {
         res.status(404).json("Item not found");
       } else {
         let data = req.body;
-        console.log(data);
-        console.log(req.params.rfid);
-        const sql =
-          "UPDATE SKUItems SET rfid =? , available=? , dateofstock=? where rfid=?";
-        let result = await this.dao.run(sql, [
-          data.newRFID,
-          data.newAvailable,
-          data.newDateOfStock,
-          req.params.rfid,
-        ]);
-        return res.status(200).json(result);
+        // if (
+        //   (await this.dao.get("Select * from SKUItems where rfid=?", [
+        //     req.body.newRFID,
+        //   ])) === undefined
+        // ) {
+        try {
+          const sql =
+            "UPDATE SKUItems SET rfid =? , available=available+? , dateofstock=? where rfid=?";
+          let result = await this.dao.run(sql, [
+            data.newRFID.length < 32 ? req.params.rfid : data.newRFID,
+            data.newAvailable,
+            data.newDateOfStock,
+            req.params.rfid,
+          ]);
+          return res.status(200).json(result);
+        } catch {
+          return res.status(404).json("Item with new RFID already existing");
+        }
       }
+      //   else{return res.status(404).json("Item with RFID already")}
+      // }
     } catch {
       res.status(503).json("Service Unavailable");
     }
   };
   deleteItem = async (req, res) => {
     try {
-      if (Object.keys(req.body).length === 0) {
-        return res.status(422).json({ error: "Empty Body request" });
-      }
       const check = await this.dao.all("Select * from SKUItems where rfid=? ", [
         req.params.rfid,
       ]);
@@ -126,7 +144,7 @@ class SKUItemsController {
         res.status(404).json("Item not found");
       } else {
         const sql = "DELETE FROM SKUItems where rfid=?";
-        let result = await this.dao.run(sql, [req.params.rfid]);
+        await this.dao.run(sql, [req.params.rfid]);
         return res.status(204).json("Successful");
       }
     } catch {

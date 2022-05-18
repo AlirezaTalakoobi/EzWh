@@ -12,10 +12,10 @@ router.post(
   "/newUser",
   oneOf([
     [
-      check("username").isEmail(),
-      check("name").isString(),
+      check("username").isEmail().not().isEmpty(),
+      check("name").isString().not().isEmpty(),
       check("surname").isString(),
-      check("password").isLength({ min: 8 }).isString(),
+      check("password").isLength({ min: 8 }).isString().not().isEmpty(),
       check("type").isIn([
         "customer",
         "qualityEmployee",
@@ -44,8 +44,8 @@ router.post(
   "/managerSessions",
   oneOf([
     [
-      check("username").isEmail(),
-      check("password").isLength({ min: 8 }).isString(),
+      check("username").isEmail().not().isEmpty(),
+      check("password").isLength({ min: 8 }).isString().not().isEmpty(),
       check("type").isIn([
         "customer",
         "qualityEmployee",
@@ -70,8 +70,8 @@ router.post(
   "/customerSessions",
   oneOf([
     [
-      check("username").isEmail(),
-      check("password").isLength({ min: 8 }).isString(),
+      check("username").isEmail().not().isEmpty(),
+      check("password").isLength({ min: 8 }).isString().not().isEmpty(),
       check("type").isIn([
         "customer",
         "qualityEmployee",
@@ -96,8 +96,8 @@ router.post(
   "/supplierSessions",
   oneOf([
     [
-      check("username").isEmail(),
-      check("password").isLength({ min: 8 }).isString(),
+      check("username").isEmail().not().isEmpty(),
+      check("password").isLength({ min: 8 }).isString().not().isEmpty(),
       check("type").isIn([
         "customer",
         "qualityEmployee",
@@ -122,8 +122,8 @@ router.post(
   "/clerkSessions",
   oneOf([
     [
-      check("username").isEmail(),
-      check("password").isLength({ min: 8 }).isString(),
+      check("username").isEmail().not().isEmpty(),
+      check("password").isLength({ min: 8 }).isString().not().isEmpty(),
       check("type").isIn([
         "customer",
         "qualityEmployee",
@@ -148,8 +148,8 @@ router.post(
   "/qualityEmployeeSessions",
   oneOf([
     [
-      check("username").isEmail(),
-      check("password").isLength({ min: 8 }).isString(),
+      check("username").isEmail().not().isEmpty(),
+      check("password").isLength({ min: 8 }).isString().not().isEmpty(),
       check("type").isIn([
         "customer",
         "qualityEmployee",
@@ -174,8 +174,8 @@ router.post(
   "/deliveryEmployeeSessions",
   oneOf([
     [
-      check("username").isEmail(),
-      check("password").isLength({ min: 8 }).isString(),
+      check("username").isEmail().not().isEmpty(),
+      check("password").isLength({ min: 8 }).isString().not().isEmpty(),
       check("type").isIn([
         "customer",
         "qualityEmployee",
@@ -199,7 +199,7 @@ router.put(
   "/users/:username",
   oneOf([
     [
-      param("username").isEmail(),
+      param("username").isEmail().not().isEmpty(),
       check("oldType").not().isIn(["manager"]),
       check("newType").isIn([
         "customer",

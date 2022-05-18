@@ -8,7 +8,7 @@ class UserController {
   }
 
   loggedin = (req, res) => {};
-  newUser = (req, res) => {
+  newUser = async (req, res) => {
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(req.body.password, salt);
     const sql =
@@ -18,10 +18,25 @@ class UserController {
       return res.status(422).json({ error: "Empty Body request" });
     }
     let data = req.body;
-    this.dao
-      .run(sql, [data.username, data.name, data.surname, hash, data.type])
-      .then(res.status(201).json("Successful"))
-      .catch(console.log(res));
+    try {
+      let check = await this.dao.get("select * from users where username=?", [
+        data.username,
+      ]);
+      if (check === undefined) {
+        await this.dao.run(sql, [
+          data.username,
+          data.name,
+          data.surname,
+          hash,
+          data.type,
+        ]);
+        return res.status(201).end();
+      } else {
+        return res.status(409).json({ message: "Conflict" });
+      }
+    } catch {
+      return res.status(503).json({ message: "Service Unavailable" });
+    }
   };
 
   getStoredUsers = async (req, res) => {
@@ -52,7 +67,6 @@ class UserController {
       return res.status(404).json("User not found");
     }
     const check = await bcrypt.compare(req.body.password, result.password);
-    console.log(check);
     if (check === true) {
       return res.status(200).json({
         id: result.id,
