@@ -3,6 +3,9 @@ const { Router } = require("express");
 const express = require("express");
 const userrouter = require("./modules/Routes/UserRoute");
 const skuitemsrouter = require("./modules/Routes/SKUItemsRouter");
+const restockorderrouter = require("./modules/Routes/RestockOrderRoute");
+const internalorderrouter = require("./modules/Routes/InternalOrderRoute");
+const returnorderrouter = require("./modules/Routes/ReturnOrderRoute");
 // init express
 const DAO = require("./modules/DB/DAO");
 const SKUItemsDAO = require("./modules/DB/DAO");
@@ -12,6 +15,9 @@ const port = 3001;
 app.use(express.json());
 app.use("/api", userrouter);
 app.use("/api", skuitemsrouter);
+app.use("/api", restockorderrouter);
+app.use("/api", internalorderrouter);
+app.use("/api", returnorderrouter);
 
 //GET /api/test
 // app.get("/api/hello", (req, res) => {
