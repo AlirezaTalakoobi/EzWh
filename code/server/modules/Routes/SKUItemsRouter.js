@@ -9,4 +9,7 @@ const sic = new SKUItemsController(sidao);
 router.post("/skuitem", sic.newSKUItem);
 router.get("/skuitems", sic.getSKUItems);
 router.get("/skuitems/sku/:id", sic.getSKUItemsBySKUId);
+router.get("/skuitems/:rfid", sic.getSKUItemsByRFID);
+router.put("/skuitems/:rfid", sic.editRFID);
+router.delete("/skuitems/:rfid", sic.deleteItem);
 module.exports = router;

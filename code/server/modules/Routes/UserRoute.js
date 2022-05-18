@@ -1,33 +1,246 @@
 "use strict";
+const { getRounds } = require("bcrypt");
 const express = require("express");
 const router = express.Router();
 const UserController = require("../Controller/UserController");
 const DAO = require("../DB/UsersDAO");
 const dao = new DAO();
 const uc = new UserController(dao);
-router.post("/newUser", uc.newUser);
+const { check, oneOf, param, validationResult } = require("express-validator");
+
+router.post(
+  "/newUser",
+  oneOf([
+    [
+      check("username").isEmail(),
+      check("name").isString(),
+      check("surname").isString(),
+      check("password").isLength({ min: 8 }).isString(),
+      check("type").isIn([
+        "customer",
+        "qualityEmployee",
+        "clerk",
+        "deliveryEmployee",
+        "supplier",
+      ]),
+    ],
+  ]),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+  uc.newUser
+);
 router.get("/users", uc.getStoredUsers);
 
 /* MANAGER  */
 router.get("/managerSessions", uc.getStoredUsers);
-router.post("/managerSessions", uc.getUser);
+router.get("/suppliers", uc.getSuppliers);
+router.get("/userinfo", uc.loggedin);
+router.post(
+  "/managerSessions",
+  oneOf([
+    [
+      check("username").isEmail(),
+      check("password").isLength({ min: 8 }).isString(),
+      check("type").isIn([
+        "customer",
+        "qualityEmployee",
+        "clerk",
+        "deliveryEmployee",
+        "supplier",
+      ]),
+    ],
+  ]),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+  uc.getUser
+);
 
 /* CUSTOMER */
-router.post("/customerSessions", uc.getUser);
+router.post(
+  "/customerSessions",
+  oneOf([
+    [
+      check("username").isEmail(),
+      check("password").isLength({ min: 8 }).isString(),
+      check("type").isIn([
+        "customer",
+        "qualityEmployee",
+        "clerk",
+        "deliveryEmployee",
+        "supplier",
+      ]),
+    ],
+  ]),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+  uc.getUser
+);
 
 /* SUPPLIER */
-router.post("/supplierSessions", uc.getUser);
+router.post(
+  "/supplierSessions",
+  oneOf([
+    [
+      check("username").isEmail(),
+      check("password").isLength({ min: 8 }).isString(),
+      check("type").isIn([
+        "customer",
+        "qualityEmployee",
+        "clerk",
+        "deliveryEmployee",
+        "supplier",
+      ]),
+    ],
+  ]),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+  uc.getUser
+);
 
 /* CLERK */
-router.post("/clerkSessions", uc.getUser);
+router.post(
+  "/clerkSessions",
+  oneOf([
+    [
+      check("username").isEmail(),
+      check("password").isLength({ min: 8 }).isString(),
+      check("type").isIn([
+        "customer",
+        "qualityEmployee",
+        "clerk",
+        "deliveryEmployee",
+        "supplier",
+      ]),
+    ],
+  ]),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+  uc.getUser
+);
 
 /* QUALITY EMPLOYEE */
-router.post("/qualityEmployeeSessions", uc.getUser);
+router.post(
+  "/qualityEmployeeSessions",
+  oneOf([
+    [
+      check("username").isEmail(),
+      check("password").isLength({ min: 8 }).isString(),
+      check("type").isIn([
+        "customer",
+        "qualityEmployee",
+        "clerk",
+        "deliveryEmployee",
+        "supplier",
+      ]),
+    ],
+  ]),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+  uc.getUser
+);
 
 /* DELIVERY EMPLOYEE */
-router.post("/deliveryEmployeeSessions", uc.getUser);
+router.post(
+  "/deliveryEmployeeSessions",
+  oneOf([
+    [
+      check("username").isEmail(),
+      check("password").isLength({ min: 8 }).isString(),
+      check("type").isIn([
+        "customer",
+        "qualityEmployee",
+        "clerk",
+        "deliveryEmployee",
+        "supplier",
+      ]),
+    ],
+  ]),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+  uc.getUser
+);
 
-router.get("/suppliers", uc.getSuppliers);
-router.put("/users/:username", uc.editUser);
-router.delete("/users/:username/:type", uc.deleteUser);
+router.put(
+  "/users/:username",
+  oneOf([
+    [
+      param("username").isEmail(),
+      check("oldType").not().isIn(["manager"]),
+      check("newType").isIn([
+        "customer",
+        "qualityEmployee",
+        "clerk",
+        "deliveryEmployee",
+        "supplier",
+      ]),
+    ],
+  ]),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+  uc.editUser
+);
+router.delete(
+  "/users/:username/:type",
+  oneOf([
+    [
+      param("username").isEmail(),
+      param("type").not().isIn(["manager"]),
+      param("type").isIn([
+        "customer",
+        "qualityEmployee",
+        "clerk",
+        "deliveryEmployee",
+        "supplier",
+      ]),
+    ],
+  ]),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+  uc.deleteUser
+);
 module.exports = router;
