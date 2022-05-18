@@ -5,16 +5,29 @@ const ItemController = require("../Controller/ItemController");
 const DAO = require("../DB/ItemDao");
 const dao = new DAO();
 const uc = new ItemController(dao);
+const { body, param, validationResult } = require('express-validator');
+
 
 /* Manager  */
 // router.get("/items", uc.getItems);
-router.get("/items/:id", uc.getItemByID);
+router.get("/items/:id",
+param('id').isInt(),
+uc.getItemByID);
 
 /* supplier  */
 router.get("/items", uc.getItems);
-router.post("/item", uc.createItem);
-router.put("/item/:id", uc.modifyItem);
-router.delete("/items/:id", uc.deleteItem);
+
+router.post("/item",
+body('id').isInt(),body('SKUId').isInt(),body('supplierId').isInt(),
+uc.createItem);
+
+router.put("/item/:id",
+param('id').isInt(),
+ uc.modifyItem);
+
+router.delete("/items/:id",
+param('id').isInt(),
+uc.deleteItem);
 
 
 module.exports = router;
