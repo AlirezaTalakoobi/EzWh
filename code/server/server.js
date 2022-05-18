@@ -4,8 +4,8 @@ const express = require("express");
 const userrouter = require("./modules/Routes/UserRoute");
 const skuitemsrouter = require("./modules/Routes/SKUItemsRouter");
 // init express
-const DAO = require("./modules/DB/UsersDAO");
-const SKUItemsDAO = require("./modules/DB/SkuItemDAO");
+const DAO = require("./modules/DB/DAO");
+const SKUItemsDAO = require("./modules/DB/DAO");
 const app = new express();
 const port = 3001;
 

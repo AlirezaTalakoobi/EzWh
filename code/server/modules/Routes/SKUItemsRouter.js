@@ -2,9 +2,9 @@
 const express = require("express");
 const router = express.Router();
 const SKUItemsController = require("../Controller/SKUItemsController");
-const SIDAO = require("../DB/SkuItemDAO");
-const sidao = new SIDAO();
-const sic = new SKUItemsController(sidao);
+const DAO = require("../DB/DAO");
+const dao = new DAO();
+const sic = new SKUItemsController(dao);
 const { check, param, validationResult } = require("express-validator");
 
 router.post(

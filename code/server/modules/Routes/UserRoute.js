@@ -3,7 +3,7 @@ const { getRounds } = require("bcrypt");
 const express = require("express");
 const router = express.Router();
 const UserController = require("../Controller/UserController");
-const DAO = require("../DB/UsersDAO");
+const DAO = require("../DB/DAO");
 const dao = new DAO();
 const uc = new UserController(dao);
 const { check, oneOf, param, validationResult } = require("express-validator");
@@ -22,6 +22,7 @@ router.post(
         "clerk",
         "deliveryEmployee",
         "supplier",
+        "manager",
       ]),
     ],
   ]),
@@ -46,13 +47,7 @@ router.post(
     [
       check("username").isEmail().not().isEmpty(),
       check("password").isLength({ min: 8 }).isString().not().isEmpty(),
-      check("type").isIn([
-        "customer",
-        "qualityEmployee",
-        "clerk",
-        "deliveryEmployee",
-        "supplier",
-      ]),
+      check("type").isIn(["manager"]),
     ],
   ]),
   (req, res, next) => {
@@ -72,13 +67,7 @@ router.post(
     [
       check("username").isEmail().not().isEmpty(),
       check("password").isLength({ min: 8 }).isString().not().isEmpty(),
-      check("type").isIn([
-        "customer",
-        "qualityEmployee",
-        "clerk",
-        "deliveryEmployee",
-        "supplier",
-      ]),
+      check("type").isIn(["customer"]),
     ],
   ]),
   (req, res, next) => {
@@ -98,13 +87,7 @@ router.post(
     [
       check("username").isEmail().not().isEmpty(),
       check("password").isLength({ min: 8 }).isString().not().isEmpty(),
-      check("type").isIn([
-        "customer",
-        "qualityEmployee",
-        "clerk",
-        "deliveryEmployee",
-        "supplier",
-      ]),
+      check("type").isIn(["supplier"]),
     ],
   ]),
   (req, res, next) => {
@@ -124,13 +107,7 @@ router.post(
     [
       check("username").isEmail().not().isEmpty(),
       check("password").isLength({ min: 8 }).isString().not().isEmpty(),
-      check("type").isIn([
-        "customer",
-        "qualityEmployee",
-        "clerk",
-        "deliveryEmployee",
-        "supplier",
-      ]),
+      check("type").isIn(["clerk"]),
     ],
   ]),
   (req, res, next) => {
@@ -150,13 +127,7 @@ router.post(
     [
       check("username").isEmail().not().isEmpty(),
       check("password").isLength({ min: 8 }).isString().not().isEmpty(),
-      check("type").isIn([
-        "customer",
-        "qualityEmployee",
-        "clerk",
-        "deliveryEmployee",
-        "supplier",
-      ]),
+      check("type").isIn(["qualityEmployee"]),
     ],
   ]),
   (req, res, next) => {
@@ -176,13 +147,7 @@ router.post(
     [
       check("username").isEmail().not().isEmpty(),
       check("password").isLength({ min: 8 }).isString().not().isEmpty(),
-      check("type").isIn([
-        "customer",
-        "qualityEmployee",
-        "clerk",
-        "deliveryEmployee",
-        "supplier",
-      ]),
+      check("type").isIn(["deliveryEmployee"]),
     ],
   ]),
   (req, res, next) => {
