@@ -6,9 +6,9 @@ const skuitemsrouter = require("./modules/Routes/SKUItemsRouter");
 const restockorderrouter = require("./modules/Routes/RestockOrderRoute");
 const internalorderrouter = require("./modules/Routes/InternalOrderRoute");
 const returnorderrouter = require("./modules/Routes/ReturnOrderRoute");
+const skurouter = require("./modules/Routes/SkuRouter");
+const testdescriptorrouter = require("./modules/Routes/TDRouter");
 // init express
-const DAO = require("./modules/DB/DAO");
-const SKUItemsDAO = require("./modules/DB/DAO");
 const app = new express();
 const port = 3001;
 
@@ -18,6 +18,8 @@ app.use("/api", skuitemsrouter);
 app.use("/api", restockorderrouter);
 app.use("/api", internalorderrouter);
 app.use("/api", returnorderrouter);
+app.use("/api", skurouter);
+app.use("/api", testdescriptorrouter);
 
 //GET /api/test
 // app.get("/api/hello", (req, res) => {

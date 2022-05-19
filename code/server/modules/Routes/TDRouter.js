@@ -2,17 +2,15 @@
 
 const express = require("express");
 const router = express.Router();
-const SKUController = require("../Controller/SKUController");
+const TDController = require("../Controller/TDController");
 const DAO = require("../DB/DAO");
 const dao = new DAO();
-console.log("test");
-const su = new SKUController(dao);
+const td = new TDController(dao);
 
-router.get("/skus", su.getsku);
-router.get("/skus/:id", su.getSKUbyId);
-router.post("/sku/", su.newSKU);
-router.put("/sku/:id", su.editsku);
-router.put("/sku/:id/position", su.editskuPosition);
-router.delete("/skus/:id", su.deleteSKU);
+router.get("/testdescriptors", td.TestDescriptor);
+router.get("/testdescriptors/:id", td.getTestDescriptionById);
+router.post("/testdescriptor", td.newTestDescriptor);
+router.put("/testdescriptor/:id", td.editTDbyid);
+router.delete("/testdescriptor/:id", td.deleteTD);
 
 module.exports = router;

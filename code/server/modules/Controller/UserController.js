@@ -64,15 +64,16 @@ class UserController {
       "SELECT id, name, surname,email, password FROM USER WHERE email=?";
     let data = req.body;
     let result = await this.dao.get(sql, [data.username]);
+    console.log(result);
     if (result === undefined) {
       return res.status(404).json("User not found");
     }
     const check = await bcrypt.compare(req.body.password, result.password);
     if (check === true) {
       return res.status(200).json({
-        id: result.id,
+        id: result.ID,
         username: result.email,
-        name: result.name,
+        // name: result.name,
         surname: result.surname,
       });
     }
