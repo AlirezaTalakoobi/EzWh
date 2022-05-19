@@ -273,10 +273,11 @@ class RestockOrderController {
         return res.status(404).json({message: "Not Found"});
       }
 
-      const sql = "UPDATE SKU_ITEM SET restockOrderID = ? WHERE RFID = ?";
+      //const sql = "UPDATE SKU_ITEM SET restockOrderID = ? WHERE RFID = ?";
+      const sql = "INSERT INTO SKU_ITEM (RFID, available, dateOfStock, skuID, restockOrderID) VALUES (?,?,?,?,?)";
 
       for(let skuItem of req.body.skuItems){
-        await this.dao.run(sql, [req.params.id, skuItem.rfid]);
+        await this.dao.run(sql, [skuItem.rfid, 1, dayjs(), skuItem.SKUId, req.params.id]);
       }
 
       return res.status(200).json({message: "OK"});
