@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const TestResultController = require("../Controller/TestResultController");
-const DAO = require("../DB/TestResultDAO");
+const DAO = require("../DB/DAO");
 const dao = new DAO();
 const uc = new TestResultController(dao);
 // const param = require('express-validator');

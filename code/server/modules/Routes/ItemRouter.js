@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const ItemController = require("../Controller/ItemController");
-const DAO = require("../DB/ItemDao");
+const DAO = require("../DB/DAO");
 const dao = new DAO();
 const uc = new ItemController(dao);
 const { body, param, validationResult } = require('express-validator');

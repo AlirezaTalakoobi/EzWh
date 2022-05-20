@@ -2,8 +2,8 @@
 const express = require("express");
 const router = express.Router();
 const PositionController = require("../Controller/PositionController");
-const DAO = require("../DB/PositionDAO");
-const dao =new  DAO();
+const DAO = require("../DB/DAO");
+const dao = new DAO();
 const uc = new PositionController(dao);
 const { body, param, validationResult } = require('express-validator');
 
