@@ -30,7 +30,7 @@ class TestResultController {
         )
     }
     catch(err){
-        res.status(500).json("500 INTERNAL SERVER ERROR");
+        res.status(500).send("500 INTERNAL SERVER ERROR");
     }
   
    
@@ -60,7 +60,7 @@ getTestResultsForRFIDByID = async (req, res) => {
         )
     }
     catch(err){
-        res.status(500).json("500 INTERNAL SERVER ERROR");
+        res.status(500).send("500 INTERNAL SERVER ERROR");
     }
 };
 
@@ -106,7 +106,7 @@ createTestResult = async (req, res) => {
     }
     catch(err){
         console.log(err);
-        return res.status(503).json("503 SERVICE UNAVAILABLE");
+        return res.status(503).send("503 SERVICE UNAVAILABLE");
     }
 };
 
@@ -168,7 +168,7 @@ deleteTestResult = async (req, res) => {
     const args = [req.params.rfid, req.params.id];
     try{
         let result = await this.dao.run(sql, args);
-        return res.status(204).end();
+        return res.status(204).send("204 No Content");
     }
     catch(err){
         return res.status(503).send("Service Unavailable");
