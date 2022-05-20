@@ -24,7 +24,7 @@ getItems = async (req, res) => {
         )
     }
     catch(err){
-        res.status(500).json("500 Internal Server Error");
+        res.status(500).send("500 Internal Server Error");
     }
 
 };
@@ -52,7 +52,7 @@ getItemByID = async (req, res) => {
         );
     }
     catch(err){
-        return res.status(500).json("500 Internal Server Error");
+        return res.status(500).send("500 Internal Server Error");
     }
 };
 
@@ -78,27 +78,29 @@ createItem = async (req, res) => {
       }
 
     try{
-        const sql_c_1 = 'SELECT * FROM ITEM WHERE skuID= ? and supplierID = ? ';
-        const args_c_1 = [req.body.SKUId,req.body.supplierId];
+        const sql_c_1 = 'SELECT * FROM USER WHERE ID = ? ';
+        const args_c_1 = [req.body.supplierId];
         let check1 = await this.dao.all(sql_c_1,args_c_1);
         if (check1.length === 0) {
+            console.log(1)
             return res.status(404).send("404 NOT FOUND");
         }
-        const sql_c_2 = 'SELECT * FROM ITEM WHERE ID= ? and supplierID = ? ';
-        const args_c_2 = [req.body.id,req.body.supplierId];
+        const sql_c_2 = 'SELECT * FROM SKU WHERE ID= ? ';
+        const args_c_2 = [req.body.SKUId];
         let check2 = await this.dao.all(sql_c_2,args_c_2);
         if (check2.length === 0) {
+            console.log(2)
             return res.status(404).send("404 NOT FOUND");
         }
 
-        const sql = `INSERT INTO ITEM (ID,description, price, SKUId, supplierId) VALUES(?,?,?,?,?) `;
+        const sql = `INSERT INTO ITEM (ID,description, price, skuId, supplierId) VALUES(?,?,?,?,?) `;
         const args = [ApiInfo.id, ApiInfo.description, ApiInfo.price, ApiInfo.SKUId, ApiInfo.supplierId];
         let result = await this.dao.run(sql, args);
         return res.status(201).send("201 Created");
 
     }
     catch(err){
-        return res.status(503).json("503 Service Unavailable")
+        return res.status(503).send("503 Service Unavailable")
     }
 };
 
@@ -122,7 +124,7 @@ modifyItem = async (req, res) => {
 
     try{
         const sql_c_1 = 'SELECT * FROM ITEM WHERE ID= ?';
-        const args_c_1 = [req.body.id];
+        const args_c_1 = [req.params.id];
         let check1 = await this.dao.all(sql_c_1,args_c_1);
         if (check1.length === 0) {
             return res.status(404).send("404 NOT FOUND");
@@ -135,7 +137,7 @@ modifyItem = async (req, res) => {
 
     }
     catch(err){
-        return res.status(503).json("503 Service Unavailable")
+        return res.status(503).send("503 Service Unavailable")
     }
 };
 
@@ -152,7 +154,7 @@ deleteItem = async (req, res) => {
 
     }
     catch(err){
-        return res.status(503).json("503 Service Unavailables")
+        return res.status(503).send("503 Service Unavailables")
     }
 };
 
