@@ -1,14 +1,14 @@
 "use strict";
 const sqlite = require("sqlite3");
 
-class SKUItemDAO {
+class DAO {
   static db;
   constructor() {
-    this.db = new sqlite.Database("EZWH", (err) => {
+    this.db = new sqlite.Database("EZWH.db", (err) => {
       if (err) throw err;
     });
 
-    this.newTableName();
+    // this.newTableName();
   }
 
   run(sql, params = []) {
@@ -53,19 +53,19 @@ class SKUItemDAO {
     });
   }
 
-  newTableName() {
-    return new Promise((resolve, reject) => {
-      const sql = //FOREIGN KEY REFERENCES SKU(SKUId)
-        "CREATE TABLE IF NOT EXISTS SKUItems(rfid VARCHAR PRIMARY KEY,SKUId INTEGER , available INTEGER, dateofstock DATE)";
-      this.db.run(sql, (err) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(this.lastID);
-      });
-    });
-  }
+  // newTableName() {
+  //   return new Promise((resolve, reject) => {
+  //     const sql =
+  //       "CREATE TABLE IF NOT EXISTS USERS(id INTEGER PRIMARY KEY AUTOINCREMENT, username VARCHAR UNIQUE, name VARCHAR, surname VARCHAR, password VARCHAR, type VARCHAR)";
+  //     this.db.run(sql, (err) => {
+  //       if (err) {
+  //         reject(err);
+  //         return;
+  //       }
+  //       resolve(this.lastID);
+  //     });
+  //   });
+  // }
 }
 
-module.exports = SKUItemDAO;
+module.exports = DAO;
