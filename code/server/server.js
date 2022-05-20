@@ -8,11 +8,21 @@ const internalorderrouter = require("./modules/Routes/InternalOrderRoute");
 const returnorderrouter = require("./modules/Routes/ReturnOrderRoute");
 const skurouter = require("./modules/Routes/SkuRouter");
 const testdescriptorrouter = require("./modules/Routes/TDRouter");
+const positionrouter = require("./modules/Routes/PositionRouter");
+const TestResultRouter = require("./modules/Routes/TestResultRouter");
+const ItemRouter = require("./modules/Routes/ItemRouter");
+
+
 // init express
 const app = new express();
 const port = 3001;
 
 app.use(express.json());
+app.use("/api", positionrouter);
+app.use("/api", TestResultRouter);
+app.use("/api", ItemRouter);
+
+
 app.use("/api", userrouter);
 app.use("/api", skuitemsrouter);
 app.use("/api", restockorderrouter);
