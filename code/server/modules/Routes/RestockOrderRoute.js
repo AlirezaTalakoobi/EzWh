@@ -6,6 +6,7 @@ const DAO = require("../DB/DAO");
 const dao = new DAO();
 const sic = new RestockOrderController(dao);
 const { check, param, validationResult } = require("express-validator");
+const dayjs = require("dayjs");
 
 router.get("/restockOrders", sic.getRestockOrders);
 
@@ -28,7 +29,7 @@ router.post(
   "/restockOrder",
   [
     check("supplierId").isNumeric(),
-    check("issueDate").isDate(),
+    check("issueDate").notEmpty().custom(d => dayjs(d)),
     check("products").isArray(),
     check("products.*.SKUId").isNumeric(),
     check("products.*.description").isString(),
