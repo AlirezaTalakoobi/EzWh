@@ -134,6 +134,17 @@ class UserController {
       return false;
     }
   };
+  deleteAll = async () => {
+    try {
+      const res = await this.dao.run("Delete from USER", []);
+      if (res) {
+        return true;
+      }
+      return false;
+    } catch {
+      return -1;
+    }
+  };
 }
 
 module.exports = UserController;

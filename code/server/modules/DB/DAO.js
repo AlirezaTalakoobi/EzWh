@@ -52,20 +52,6 @@ class DAO {
       });
     });
   }
-
-  // newTableName() {
-  //   return new Promise((resolve, reject) => {
-  //     const sql =
-  //       "CREATE TABLE IF NOT EXISTS USERS(id INTEGER PRIMARY KEY AUTOINCREMENT, username VARCHAR UNIQUE, name VARCHAR, surname VARCHAR, password VARCHAR, type VARCHAR)";
-  //     this.db.run(sql, (err) => {
-  //       if (err) {
-  //         reject(err);
-  //         return;
-  //       }
-  //       resolve(this.lastID);
-  //     });
-  //   });
-  // }
 }
 
 module.exports = DAO;
