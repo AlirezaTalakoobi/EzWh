@@ -29,7 +29,7 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(422).json({ errors: errors.array() });
     }
     next();
   },
@@ -53,7 +53,7 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(422).json({ errors: errors.array() });
     }
     next();
   },
@@ -73,7 +73,7 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(422).json({ errors: errors.array() });
     }
     next();
   },
@@ -93,7 +93,7 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(422).json({ errors: errors.array() });
     }
     next();
   },
@@ -113,7 +113,7 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(422).json({ errors: errors.array() });
     }
     next();
   },
@@ -133,7 +133,7 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(422).json({ errors: errors.array() });
     }
     next();
   },
@@ -153,7 +153,7 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(422).json({ errors: errors.array() });
     }
     next();
   },
@@ -178,7 +178,7 @@ router.put(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(422).json({ errors: errors.array() });
     }
     next();
   },
@@ -202,7 +202,7 @@ router.delete(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(422).json({ errors: errors.array() });
     }
     next();
   },
