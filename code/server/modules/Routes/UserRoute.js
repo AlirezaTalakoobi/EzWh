@@ -53,11 +53,21 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      return res.status(422).json({ error: "Validation problems" });
     }
     next();
   },
-  uc.getUser
+  async (req, res) => {
+    const user = await uc.getUser(req.body.username, req.body.password);
+    console.log(user);
+    if (user === undefined) {
+      return res.status(404).json({ message: "User not existing" });
+    } else if (user.message) {
+      return res.status(401).json(user.message);
+    } else {
+      return res.status(200).json(user);
+    }
+  }
 );
 
 /* CUSTOMER */

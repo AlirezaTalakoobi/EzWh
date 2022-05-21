@@ -11,6 +11,7 @@ class UserController {
   newUser = async (req, res) => {
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(req.body.password, salt);
+    console.log(req);
     const sql =
       "INSERT INTO USER(name, surname,email, type, password) VALUES (?,?,?,?,?)";
     //returns this.dao.run(sql)
@@ -40,11 +41,8 @@ class UserController {
   };
 
   getStoredUsers = async (req, res) => {
-    if (Object.keys(req.body)) {
-    }
     const sql = "SELECT * FROM USER WHERE TYPE <>?";
     let result = await this.dao.all(sql, ["manager"]);
-    console.log(result);
     result = result.map((user) => ({
       id: user.ID,
       name: user.name,
@@ -53,31 +51,29 @@ class UserController {
       type: user.type,
     }));
     if (result != undefined) {
-      return res.status(200).json(result);
+      return res.status(200).json("result");
     }
     return res.status(500).end();
   };
 
-  getUser = async (req, res) => {
-    console.log(req.body);
+  getUser = async (username, password) => {
     const sql =
       "SELECT id, name, surname,email, password FROM USER WHERE email=?";
-    let data = req.body;
-    let result = await this.dao.get(sql, [data.username]);
-    console.log(result);
-    if (result === undefined) {
-      return res.status(404).json("User not found");
+    let result = await this.dao.get(sql, [username]);
+    if (result != undefined) {
+      const check = await bcrypt.compare(password, result.password);
+      if (check === true) {
+        return {
+          id: result.ID,
+          username: result.email,
+          name: result.name,
+          surname: result.surname,
+        };
+      } else if (!check) {
+        return { message: "Wrong Username/Password" };
+      }
     }
-    const check = await bcrypt.compare(req.body.password, result.password);
-    if (check === true) {
-      return res.status(200).json({
-        id: result.ID,
-        username: result.email,
-        // name: result.name,
-        surname: result.surname,
-      });
-    }
-    return res.status(401).json("Wrong Password");
+    return result;
   };
 
   logout = (req, res) => {
