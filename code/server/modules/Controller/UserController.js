@@ -7,40 +7,34 @@ class UserController {
     this.dao = dao;
   }
 
-  loggedin = (req, res) => {};
-  newUser = async (req, res) => {
+  loggedin = () => {};
+  newUser = async (name, surname, username, type, password) => {
     const salt = bcrypt.genSaltSync(saltRounds);
-    const hash = bcrypt.hashSync(req.body.password, salt);
-    console.log(req);
+    const hash = bcrypt.hashSync(password, salt);
     const sql =
       "INSERT INTO USER(name, surname,email, type, password) VALUES (?,?,?,?,?)";
-    //returns this.dao.run(sql)
-    if (Object.keys(req.body).length === 0) {
-      return res.status(422).json({ error: "Empty Body request" });
-    }
-    let data = req.body;
     try {
       let check = await this.dao.get("select * from USER where email=?", [
-        data.username,
+        username,
       ]);
       if (check === undefined) {
-        await this.dao.run(sql, [
-          data.name,
-          data.surname,
-          data.username,
-          data.type,
+        const result = await this.dao.run(sql, [
+          name,
+          surname,
+          username,
+          type,
           hash,
         ]);
-        return res.status(201).end();
+        return result;
       } else {
-        return res.status(409).json({ message: "Conflict" });
+        return { message: "Conflict" };
       }
     } catch {
-      return res.status(503).json({ message: "Service Unavailable" });
+      return false;
     }
   };
 
-  getStoredUsers = async (req, res) => {
+  getStoredUsers = async () => {
     const sql = "SELECT * FROM USER WHERE TYPE <>?";
     let result = await this.dao.all(sql, ["manager"]);
     result = result.map((user) => ({
@@ -51,9 +45,9 @@ class UserController {
       type: user.type,
     }));
     if (result != undefined) {
-      return res.status(200).json("result");
+      return result;
     }
-    return res.status(500).end();
+    return false;
   };
 
   getUser = async (username, password) => {
@@ -76,72 +70,68 @@ class UserController {
     return result;
   };
 
-  logout = (req, res) => {
+  logout = () => {
     try {
-      return res.status(200);
+      return true;
     } catch {
-      res.status(500).json("Internal Server Error");
+      return false;
     }
   };
 
-  getSuppliers = async (req, res) => {
+  getSuppliers = async () => {
     try {
       const sql = "SELECT ID,name,surname,email,type FROM USER WHERE type=?";
       let result = await this.dao.all(sql, ["supplier"]);
       if (result.length !== 0) {
-        return res.status(200).json(
-          result.map((user) => ({
-            id: user.ID,
-            name: user.name,
-            surname: user.name,
-            email: user.email.replace("ezwh", `${user.type}.ezwh`),
-          }))
-        );
+        return result.map((user) => ({
+          id: user.ID,
+          name: user.name,
+          surname: user.name,
+          email: user.email.replace("ezwh", `${user.type}.ezwh`),
+        }));
       } else {
-        return res.status(404).json({ error: "Users Not found" });
+        return { error: "Users Not found" };
       }
     } catch {
-      return res.status(500).json(error);
+      return false;
     }
   };
-  editUser = async (req, res) => {
-    try {
-      let data = req.body;
-      if (
-        (await this.dao.get("Select * from USER where email=?", [
-          req.params.username,
-        ])) === undefined
-      ) {
-        return res.status(404).json("Not found, wrong fields");
-      }
-      const sql = "UPDATE USER SET type=? where email=?";
-      let result = await this.dao.run(sql, [data.newType, req.params.username]);
-      return res.status(200).json(result);
-    } catch {
-      res.status(503).json("Service Unavailable");
-    }
-  };
-  deleteUser = async (req, res) => {
+  editUser = async (username, oldType, newType) => {
     try {
       if (
         (await this.dao.get("Select * from USER where email=? and type=?", [
-          req.params.username,
-          req.params.type,
+          username,
+          oldType,
         ])) === undefined
       ) {
-        return res.status(404).json("Not found, wrong fields");
+        return {
+          message: "wrong username or oldType fields or user doesn't exists",
+        };
+      }
+      const sql = "UPDATE USER SET type=? where email=? and type=?";
+      let result = await this.dao.run(sql, [newType, username, oldType]);
+      return result;
+    } catch {
+      return false;
+    }
+  };
+  deleteUser = async (username, type) => {
+    try {
+      if (
+        (await this.dao.get("Select * from USER where email=? and type=?", [
+          username,
+          type,
+        ])) === undefined
+      ) {
+        return {
+          message: "wrong username or oldType fields or user doesn't exists",
+        };
       }
       const sql = "DELETE FROM USER where email=? and type=?";
-      let result = await this.dao.run(sql, [
-        req.params.username,
-        req.params.type,
-      ]);
-      if (result === undefined) {
-        return res.status(404).json("User not found");
-      }
-      return res.status(204).json("Successful");
+      let result = await this.dao.run(sql, [username, type]);
+      return result;
     } catch {
-      res.status(503).json("Service Unavailable");
+      return false;
     }
   };
 }

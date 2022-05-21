@@ -27,19 +27,63 @@ router.post(
     ],
   ]),
   (req, res, next) => {
+    if (Object.keys(req.body).length === 0) {
+      return res.status(422).json({ error: "Empty Body request" });
+    }
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      return res.status(422).json({ error: "Validation Failed" });
     }
     next();
   },
-  uc.newUser
+  async (req, res) => {
+    const user = await uc.newUser(
+      req.body.name,
+      req.body.surname,
+      req.body.username,
+      req.body.type,
+      req.body.password
+    );
+    console.log(user);
+    if (user === false) {
+      return res.status(500).json({ message: "Internal Server Error" });
+    } else if (user.message) {
+      return res.status(409).json(user.message);
+    } else {
+      return res.status(200).json(user);
+    }
+  }
 );
-router.get("/users", uc.getStoredUsers);
+router.post("/login", async (req, res) => {
+  logout = await uc.logout;
+  if (log) {
+    return res.status(200).json({ message: "Success" });
+  } else {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+router.get("/users", async (req, res) => {
+  const users = await uc.getStoredUsers();
+  if (users) {
+    return res.status(200).json(users);
+  } else {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 /* MANAGER  */
-router.get("/managerSessions", uc.getStoredUsers);
-router.get("/suppliers", uc.getSuppliers);
+//router.get("/managerSessions", uc.getStoredUsers);
+router.get("/suppliers", async (req, res) => {
+  const suppliers = await uc.getSuppliers();
+  if (suppliers) {
+    return res.status(200).json(suppliers);
+  }
+  if (suppliers.message) {
+    return res.status(404).json(suppliers.message);
+  } else {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 router.get("/userinfo", uc.loggedin);
 router.post(
   "/managerSessions",
@@ -87,7 +131,17 @@ router.post(
     }
     next();
   },
-  uc.getUser
+  async (req, res) => {
+    const user = await uc.getUser(req.body.username, req.body.password);
+    console.log(user);
+    if (user === undefined) {
+      return res.status(404).json({ message: "User not existing" });
+    } else if (user.message) {
+      return res.status(401).json(user.message);
+    } else {
+      return res.status(200).json(user);
+    }
+  }
 );
 
 /* SUPPLIER */
@@ -107,7 +161,17 @@ router.post(
     }
     next();
   },
-  uc.getUser
+  async (req, res) => {
+    const user = await uc.getUser(req.body.username, req.body.password);
+    console.log(user);
+    if (user === undefined) {
+      return res.status(404).json({ message: "User not existing" });
+    } else if (user.message) {
+      return res.status(401).json(user.message);
+    } else {
+      return res.status(200).json(user);
+    }
+  }
 );
 
 /* CLERK */
@@ -127,7 +191,17 @@ router.post(
     }
     next();
   },
-  uc.getUser
+  async (req, res) => {
+    const user = await uc.getUser(req.body.username, req.body.password);
+    console.log(user);
+    if (user === undefined) {
+      return res.status(404).json({ message: "User not existing" });
+    } else if (user.message) {
+      return res.status(401).json(user.message);
+    } else {
+      return res.status(200).json(user);
+    }
+  }
 );
 
 /* QUALITY EMPLOYEE */
@@ -147,7 +221,17 @@ router.post(
     }
     next();
   },
-  uc.getUser
+  async (req, res) => {
+    const user = await uc.getUser(req.body.username, req.body.password);
+    console.log(user);
+    if (user === undefined) {
+      return res.status(404).json({ message: "User not existing" });
+    } else if (user.message) {
+      return res.status(401).json(user.message);
+    } else {
+      return res.status(200).json(user);
+    }
+  }
 );
 
 /* DELIVERY EMPLOYEE */
@@ -167,7 +251,17 @@ router.post(
     }
     next();
   },
-  uc.getUser
+  async (req, res) => {
+    const user = await uc.getUser(req.body.username, req.body.password);
+    console.log(user);
+    if (user === undefined) {
+      return res.status(404).json({ message: "User not existing" });
+    } else if (user.message) {
+      return res.status(401).json(user.message);
+    } else {
+      return res.status(200).json(user);
+    }
+  }
 );
 
 router.put(
@@ -186,13 +280,32 @@ router.put(
     ],
   ]),
   (req, res, next) => {
+    if (Object.keys(req.body).length === 0) {
+      return res.status(422).json({ error: "Empty Body request" });
+    }
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      return res
+        .status(422)
+        .json({ error: "Validation of body or username failed" });
     }
     next();
   },
-  uc.editUser
+  async (req, res) => {
+    const user = await uc.editUser(
+      req.params.username,
+      req.body.oldType,
+      req.body.newType
+    );
+    console.log(user);
+    if (user === false) {
+      return res.status(500).json({ message: "generic error" });
+    } else if (user.message) {
+      return res.status(404).json(user.message);
+    } else {
+      return res.status(200).end();
+    }
+  }
 );
 router.delete(
   "/users/:username/:type",
@@ -216,6 +329,15 @@ router.delete(
     }
     next();
   },
-  uc.deleteUser
+  async (req, res) => {
+    const result = await uc.deleteUser(req.params.username, req.params.type);
+    if (result === false) {
+      return res.status(500).json({ message: "generic error" });
+    } else if (result.message) {
+      return res.status(404).json(result.message);
+    } else {
+      return res.status(204).end();
+    }
+  }
 );
 module.exports = router;

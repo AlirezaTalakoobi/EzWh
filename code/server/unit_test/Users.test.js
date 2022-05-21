@@ -5,9 +5,9 @@ const uc = new userC(dao);
 
 describe("get user", () => {
   testUser("Davide", "Davide", "user4@ezwh.com", "testpassword");
-  testUser("Dav", "dav", "user4@ezwh.com", "testpassword");
-  testUser("Davide", "Davide", "user@ezwh.com", "testpassword");
-  testUser("davide", "davide", "user2@ezwh.com", " ");
+  testUser("Dav", "dav", "user4@ezwh.com", "testpassword"); //fails
+  testUser("Davide", "Davide", "user@ezwh.com", "testpassword"); //fails
+  testUser("davide", "davide", "user2@ezwh.com", " "); //fails
 });
 
 async function testUser(name, surname, username, password) {
