@@ -25,7 +25,7 @@ router.get(
 router.post(
   "/returnOrder",
   [
-    check("returnDate").isDate(),
+    check("returnDate").notEmpty().custom(d => dayjs(d)),
     check("restockOrderId").isNumeric(),
     check("products").isArray(),
     check("products.*.SKUId").isNumeric(),

@@ -29,7 +29,7 @@ router.get("/internalOrdersAccepted", sic.getInternalOrdersAccepted);
 router.post(
   "/internalOrder",
   [
-    check("issueDate").isDate(),
+    check("issueDate").notEmpty().custom(d => dayjs(d)),
     check("customerId").isNumeric(),
     check("products").isArray(),
     check("products.*.SKUId").isNumeric(),
