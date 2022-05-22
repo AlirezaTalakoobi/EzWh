@@ -14,10 +14,10 @@ router.get("/positions",
 async (req,res) => {
     const result = await uc.getPosition();
     if(result["ans"] == 200){
-        res.status(200).json(result["result"]);
+        return res.status(200).json(result["result"]);
     }
     else{
-        res.status(500).send("500 Internal Server Error");
+        return res.status(500).send("500 Internal Server Error");
     }
 });
 
