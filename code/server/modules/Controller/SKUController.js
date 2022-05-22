@@ -7,7 +7,7 @@ class SKUController {
     this.dao = dao;
   }
 
-  getsku = async (req, res) => {
+  getsku = async () => {
     try {
       const sql = "SELECT * FROM SKU";
       const result = await this.dao.all(sql);
@@ -30,23 +30,27 @@ class SKUController {
 
         sku.testDescriptors = testDescriptors.map((t) => t.ID);
       }
-      return res.status(200).json(skus);
+      return skus;
     } catch {
-      res.status(500).json("Internal Server Error");
+      return false;
     }
   };
 
-  getSKUbyId = async (req, res) => {
+  getSKUbyId = async (ID) => {
+
+    
     try {
+     
       const sql =
         "SELECT description,weight,volume,notes,availableQuantity,price,PositionID FROM SKU WHERE ID=?";
-      const result = await this.dao.all(sql, [req.params.id]);
+      const result = await this.dao.all(sql, [ID]);
       if (result.length === 0) {
-        return res.status(404).json("SKU not existing");
+        
+        return false
       }
       const testDescriptors = await this.dao.all(
         "select ID from TEST_DESCRIPTOR WHERE skuID=? ",
-        [req.params.id]
+        [ID]
       );
 
       let skus = result.map((item) => ({
@@ -64,18 +68,19 @@ class SKUController {
       for (let sku of skus) {
         sku.testDescriptors = testDescriptors.map((t) => t.ID);
       }
-      return res.status(200).json(skus);
+      return skus
     } catch {
-      res.status(500).json("Internal Server Error");
+      //res.status(500).json("Internal Server Error");
+      false
     }
   };
 
-  newSKU = (req, res) => {
+  newSKU = (Body) => {
     const sql =
       "INSERT INTO SKU(description,weight,volume,notes,price,availableQuantity,price) VALUES (?,?,?,?,?,?,?)";
-    if (Object.keys(req.body).length === 0) {
-      return res.status(422).json({ error: "Empty Body request" });
-    }
+    // if (Object.keys(Body).length === 0) {
+    //   return 1 ;
+    // }
     // if (
     //   this.dao.get("Select * from SKU where positionID=?", [
     //     req.body.positionID,
@@ -83,7 +88,7 @@ class SKUController {
     // ) {
     //   return res.status(404);
     // }
-    let data = req.body;
+    let data = Body;
     try {
       this.dao.run(sql, [
         data.description,
@@ -93,9 +98,9 @@ class SKUController {
         data.availableQuantity,
         data.price,
       ]);
-      return res.status(201).json("CREATED");
+      return true
     } catch {
-      return res.status(503).json("Service Unavailable");
+      return  //res.status(503).json("Service Unavailable");
     }
     //}
   };
