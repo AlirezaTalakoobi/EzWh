@@ -64,12 +64,12 @@ router.post("/sku/", [
    
     const sku = await su.newSKU(req.body);
     
-    if (!sku ) {
+    if ( sku == false ) {
       return res.status(503).json({ message: "Service Unavailable" });
       
     } else {
       
-      return res.status(200).json(sku);
+      return res.status(200).json({message: "Created"});
     }
   },su.newSKU);
 router.put("/sku/:id", [
@@ -86,7 +86,22 @@ router.put("/sku/:id", [
       return res.status(422).json({ errors: errors.array() });
     }
     next();
-  }, su.editsku);
+  }, async(req, res) => {
+    
+    const sku = await su.editsku(req.body,req.params.id);
+    
+    if ( sku == false ) {
+      return res.status(404).json({ message: "SKU with this id not exists" });
+      
+    } else if(sku == 1) {
+      
+      return res.status(200).json({message: "Success"});
+    }else if(sku == 2){
+      return res.status(422).json({message: "Not enough space"});
+    }else if(sku == 3){
+      return res.status(500).json({message: "Internal Server Error"});
+    }
+  },su.editsku);
   
 router.put("/sku/:id/position", [param("id").isNumeric().not().optional(),
 check("position").isString().not().optional()],
@@ -104,6 +119,22 @@ router.delete("/skus/:id", [param("id").isNumeric().not().optional()],
     return res.status(422).json({ errors: errors.array() });
   }
   next();
-}, su.deleteSKU);
+}, 
+async (req, res) => {
+  const params =req.params.id
+ 
+  const sku = await su.deleteSKU(params);
+  if (sku == 1) {
+    return res.status(404).json({ message: "No SKU associated to id" });
+    
+  } else if(sku == false){
+    res.status(500).json("Internal Server Error");
+
+  }else {
+    
+    return res.status(200).json({message:"Seccess"});
+  }
+},su.deleteSKU);
+
 
 module.exports = router;
