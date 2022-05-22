@@ -7,153 +7,111 @@ class PositionController {
     this.dao = dao;
   }
 
-  getPosition = async (req, res) => {
+  getPosition = async () => {
+    try{
     const sql =
       "SELECT * FROM POSITION";
     let result = await this.dao.all(sql, []);
-     try{
-      res.status(200).json(
-        result.map((row) => ({
-        
+      result = result.map((row) => ({
           positionID: row.ID,
-          aislelID : row.aislelID,
-          row: row.ROW,
-          col: row.COL,
-          maxWeight: row.MAXWEIGHT,
-          maxVolume: row.MAXVOLUME,
-          occupiedWeight: row.OCCUPIEDWEIGHT,
-          occipiedVolume: row.OCCUPIEDWEIGHT
-      }))
-      );
+          aisleID : row.aisleID,
+          row: row.row,
+          col: row.col,
+          maxWeight: row.maxWeight,
+          maxVolume: row.maxVolume,
+          occupiedWeight: row.occupiedWeight,
+          occipiedVolume: row.occupiedVolume
+      }));
+      let ret = {
+        ans : 200,
+        result : result
+      }
+      return ret;
      }
-     catch{
-      res.status(500).send("500 Internal Server Error");
+     catch(error){
+       let ret = {
+         ans : 500,
+         result : {}
+       }
+      return ret;
      }
     }
   
 
-  createPosition = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send("422 Unprocessable Entity (validation of request body or of positionID failed)")
-    }
-    if (Object.keys(req.body).length === 0) {
-    return res.status(422).send("422 Unprocessable Entity (validation of request body or of positionID failed)");
-    }
-    const ApiInfo = req.body;
-    if (
-      ApiInfo === undefined ||
-      ApiInfo.positionID === undefined ||
-      ApiInfo.aisleID === undefined ||
-      ApiInfo.row === undefined ||
-      ApiInfo.col === undefined ||
-      ApiInfo.maxWeight === undefined ||
-      ApiInfo.maxVolume === undefined
-    ) {
-      return res.status(422).send("422 Unprocessable Entity (validation of request body or of positionID failed)");
-  }
+  createPosition = async (positionID,aisleID,row,col,maxWeight,maxVolume) => {
   try{  
     const sql = `INSERT INTO POSITION (ID,aisleID, ROW, COL, MAXWEIGHT,MAXVOLUME, OCCUPIEDWEIGHT, OCCUPIEDVOLUME) VALUES(?,?,?,?,?,?,?,?) `;
-    const args = [ApiInfo.positionID, ApiInfo.aisleID, ApiInfo.row, ApiInfo.col, ApiInfo.maxWeight, ApiInfo.maxVolume, 0, 0];
+    const args = [positionID,aisleID,row,col,maxWeight,maxVolume, 0, 0];
     let result = await this.dao.run(sql, args);
-    res.status(201).send("201 Created");
+    return 201;
   }
   catch(err){
-    res.status(503).send("503 Service Unavailable")
-  }
+    return 503;
+  }};
 
-  };
-
-  modifyPosition =async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send("422 Unprocessable Entity (validation of request body or of positionID failed)")
-    }
-    if (Object.keys(req.body).length === 0) {
-    return res.status(422).send("422 Unprocessable Entity (validation of request body or of positionID failed)");
-    }
-    const ApiInfo = req.body;
-    if (
-      ApiInfo === undefined ||
-      ApiInfo.newAisleID === undefined ||
-      ApiInfo.newRow === undefined ||
-      ApiInfo.newCol === undefined ||
-      ApiInfo.newMaxWeight === undefined ||
-      ApiInfo.newMaxVolume === undefined ||
-      ApiInfo.newOccupiedWeight === undefined ||
-      ApiInfo.newOccupiedVolume === undefined
-    ) {
-      return res.status(422).send("422 Unprocessable Entity (validation of request body or of positionID failed)");
-  }
-    
+  modifyPosition =async (positionID, newAisleID, newRow, newCol,newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume) => {
     try{
         const sql_c_1 = 'SELECT ID FROM POSITION WHERE ID=? ';
-        const args_c_1 = [req.params.positionID];
+        const args_c_1 = [positionID];
         let check1 = await this.dao.all(sql_c_1,args_c_1);
         if (check1.length === 0) {
-            return res.status(404).send("404 NOT FOUND");
+            return 404;
         }
 
         const sql = "UPDATE POSITION SET aisleID = ?, ROW = ?, COL = ?, MAXWEIGHT = ?, MAXVOLUME = ?, OCCUPIEDWEIGHT = ?, OCCUPIEDVOLUME = ?  WHERE ID = ? ";
-        const args = [ApiInfo.newAisleID, ApiInfo.newRow, ApiInfo.newCol,ApiInfo.newMaxWeight, ApiInfo.newMaxVolume, ApiInfo.newOccupiedWeight, ApiInfo.newOccupiedVolume, req.params.positionID];
+        const args = [newAisleID, newRow, newCol,newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume, positionID];
         let result = await this.dao.run(sql, args);
-        res.send(200).send("200 OK");
+        return 200;
 
     }
     catch(err){
-        res.status(503).send("503 Service Unavailable")
+        return 500;
     }
   };
 
-  changePositionID = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send("422 Unprocessable Entity (validation of request body or of positionID failed)")
-    }
-    if (Object.keys(req.body).length === 0) {
-    return res.status(422).send("422 Unprocessable Entity (validation of request body or of positionID failed)");
-    }
-    const ApiInfo = req.body;
-    if (
-      ApiInfo === undefined ||
-      ApiInfo.newPositionID === undefined
-    ) {
-      return res.status(422).send("422 Unprocessable Entity (validation of request body or of positionID failed)");
-  }
+  changePositionID = async (positionID,newPositionID) => {
     try{
         const sql_c_1 = 'SELECT * FROM POSITION WHERE ID=? ';
-        const args_c_1 = [req.params.positionID];
+        const args_c_1 = [positionID];
         let check1 = await this.dao.all(sql_c_1,args_c_1);
         if (check1.length === 0) {
-            return res.status(404).send("404 NOT FOUND");
+            return 404;
         }
         const sql = "UPDATE POSITION SET ID = ? WHERE ID = ? ";
-        const args = [ApiInfo.newPositionID, req.params.positionID];
+        const args = [newPositionID,positionID];
         let result = await this.dao.run(sql, args);
-        res.send(200).send("200 OK");
+        return 200;
 
     }
     catch(err){
-        res.status(503).send("503 Service Unavailable")
+        return 503;
     }
   };
 
 
-  deletePosition = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send("422 Unprocessable Entity(validation of positionID failed)")
-    }
+  deletePosition = async (positionID) => {
+    
     const sql = "DELETE FROM POSITION WHERE ID = ? ";
-    const args = [req.params.positionID];
+    const args = [positionID];
     try{
         let result = await this.dao.run(sql, args);
-        res.status(204).send("204 No Content");
-
+        return 204;
     }
     catch(err){
-        res.status(503).send("503 Service Unavailable")
+      return 503;
     }
+};
+
+deleteAll = async () => {
+    
+  const sql = "DELETE FROM POSITION";
+  try{
+      let result = await this.dao.run(sql, []);
+      return true;
+  }
+  catch(err){
+    return false;
+  }
 };
   
   
