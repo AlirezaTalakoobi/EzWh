@@ -52,7 +52,7 @@ class UserController {
 
   getUser = async (username, password) => {
     const sql =
-      "SELECT id, name, surname,email, password FROM USER WHERE email=?";
+      "SELECT id, name, surname,email, password, type FROM USER WHERE email=?";
     let result = await this.dao.get(sql, [username]);
     if (result != undefined) {
       const check = await bcrypt.compare(password, result.password);
@@ -62,6 +62,7 @@ class UserController {
           username: result.email,
           name: result.name,
           surname: result.surname,
+          type: result.type,
         };
       } else if (!check) {
         return { message: "Wrong Username/Password" };

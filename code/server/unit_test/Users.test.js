@@ -4,13 +4,23 @@ const dao = new DAO();
 const uc = new userC(dao);
 
 describe("getUser", () => {
-  testUser("Davide", "Davide", "user4@ezwh.com", "testpassword");
+  beforeEach(async () => {
+    await uc.deleteAll();
+    await uc.newUser(
+      "davide",
+      "davide",
+      "user1@ezwh.com",
+      "clerk",
+      "testpassword"
+    );
+  });
+  testUser("davide", "davide", "user1@ezwh.com", "clerk", "testpassword");
   // testUser("Dav", "dav", "user4@ezwh.com", "testpassword"); //fails
   // testUser("Davide", "Davide", "user@ezwh.com", "testpassword"); //fails
   // testUser("davide", "davide", "user2@ezwh.com", " "); //fails
 });
 
-async function testUser(name, surname, username, password) {
+async function testUser(name, surname, username, type, password) {
   test("getUser", async () => {
     let res = await uc.getUser(username, password);
     console.log(res);
@@ -20,6 +30,7 @@ async function testUser(name, surname, username, password) {
         username: username,
         name: name,
         surname: surname,
+        type: type,
       });
     }
   });
@@ -62,7 +73,6 @@ describe("getAllUsers", () => {
 async function testGetUsers(users) {
   test("getallusers", async () => {
     let res = await uc.getStoredUsers();
-    console.log(users);
     expect(res).toEqual([
       {
         id: res[0].id,
@@ -79,5 +89,157 @@ async function testGetUsers(users) {
         type: users[1].type,
       },
     ]);
+  });
+}
+
+describe("insertNewUser", () => {
+  beforeEach(async () => {
+    // await uc.deleteAll();
+  });
+  testInsertUser({
+    name: "davide",
+    surname: "davide",
+    username: "user1@clerk.com",
+    type: "supplier",
+    password: "testpassword",
+  });
+  // testInsertUser({
+  //   name: "davide",
+  //   surname: "davide",
+  //   username: "user1@clerk.com",
+  //   type: "supplier",
+  //   password: "testpa",
+  // }); fails-> lenght not enough
+});
+
+async function testInsertUser(user) {
+  test("insert newUser", async () => {
+    let res = await uc.newUser(
+      user.name,
+      user.surname,
+      user.username,
+      user.type,
+      user.password
+    );
+    res = await uc.getUser(user.username, user.password);
+    expect(res).toEqual({
+      id: res.id,
+      username: user.username.replace("ezwh", `${user.type}`),
+      name: user.name,
+      surname: user.surname,
+      type: user.type,
+    });
+  });
+}
+
+describe("getSuppliers", () => {
+  beforeEach(async () => {
+    await uc.deleteAll();
+  });
+  testGetSuppliers([
+    {
+      name: "davide",
+      surname: "davide",
+      username: "user1@ezwh.com",
+      type: "supplier",
+      password: "testpassword",
+    },
+    {
+      name: "davide",
+      surname: "davide",
+      username: "user2@ezwh.com",
+      type: "clerk",
+      password: "testpassword",
+    },
+  ]);
+  // testGetSuppliers([
+  //   {},
+  //   {
+  //     name: "davide",
+  //     surname: "davide",
+  //     username: "user2@ezwh.com",
+  //     type: "clerk",
+  //     password: "testpassword",
+  //   },
+  // ]); fails
+});
+
+async function testGetSuppliers(users) {
+  test("getsuppliers", async () => {
+    for (user of users) {
+      await uc.newUser(
+        user.name,
+        user.surname,
+        user.username,
+        user.type,
+        user.password
+      );
+    }
+    let res = await uc.getSuppliers();
+    expect(res).toEqual([
+      {
+        id: res[0].id,
+        name: users[0].name,
+        surname: users[0].surname,
+        email: users[0].username.replace("ezwh", `${users[0].type}.ezwh`),
+      },
+    ]);
+  });
+}
+
+describe("editUser", () => {
+  beforeEach(async () => {
+    await uc.deleteAll();
+    await uc.newUser(
+      "davide",
+      "davide",
+      "user1@ezwh.com",
+      "supplier",
+      "testpassword"
+    );
+  });
+  testEditUser({
+    username: "user1@ezwh.com",
+    newType: "clerk",
+    oldType: "supplier",
+  });
+});
+
+async function testEditUser(user) {
+  test("edituser", async () => {
+    await uc.editUser(user.username, user.oldType, user.newType);
+    let res = await uc.getUser(user.username, "testpassword");
+    expect(res).toEqual({
+      id: res.id,
+      username: user.username,
+      name: res.name,
+      surname: res.surname,
+      type: user.newType,
+    });
+  });
+}
+
+describe("deleteUser", () => {
+  beforeEach(async () => {
+    await uc.deleteAll();
+    await uc.newUser(
+      "davide",
+      "davide",
+      "user1@ezwh.com",
+      "supplier",
+      "testpassword"
+    );
+  });
+  testDeleteUser({
+    username: "user1@ezwh.com",
+    type: "supplier",
+  });
+});
+
+async function testDeleteUser(user) {
+  test("deleteuser", async () => {
+    res = await uc.deleteUser(user.username, user.type);
+    res = await uc.getUser(user.username, "testpassword");
+    expect(res).toEqual(undefined);
   });
 }
