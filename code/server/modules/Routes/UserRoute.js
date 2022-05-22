@@ -32,7 +32,9 @@ router.post(
     }
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ error: "Validation Failed" });
+      return res
+        .status(422)
+        .json({ error: "Validation Failed " + errors.array() });
     }
     next();
   },
@@ -97,7 +99,9 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ error: "Validation problems" });
+      return res
+        .status(422)
+        .json({ error: "Validation problems " + errors.array() });
     }
     next();
   },
@@ -127,7 +131,9 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      return res
+        .status(422)
+        .json({ error: "Validation problems " + errors.array() });
     }
     next();
   },
@@ -157,7 +163,9 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      return res
+        .status(422)
+        .json({ error: "Validation problems " + errors.array() });
     }
     next();
   },
@@ -187,7 +195,9 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      return res
+        .status(422)
+        .json({ error: "Validation problems " + errors.array() });
     }
     next();
   },
@@ -217,7 +227,9 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      return res
+        .status(422)
+        .json({ error: "Validation problems " + errors.array() });
     }
     next();
   },
@@ -247,7 +259,9 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      return res
+        .status(422)
+        .json({ error: "Validation problems " + errors.array() });
     }
     next();
   },
@@ -285,9 +299,9 @@ router.put(
     }
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res
-        .status(422)
-        .json({ error: "Validation of body or username failed" });
+      return res.status(422).json({
+        error: "Validation of body or username failed" + errors.array(),
+      });
     }
     next();
   },
@@ -325,7 +339,9 @@ router.delete(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      return res
+        .status(422)
+        .json({ error: "Validation problems " + errors.array() });
     }
     next();
   },
