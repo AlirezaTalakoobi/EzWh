@@ -5,109 +5,90 @@ class SKUItemsController {
     this.dao = dao;
   }
 
-  getSKUItems = async (req, res) => {
+  getSKUItems = async () => {
     try {
       const sql = "SELECT * FROM SKU_ITEM";
       let result = await this.dao.all(sql);
-      return res.status(200).json(
-        result.map((sku) => ({
-          RFID: sku.RFID,
-          SKUId: sku.skuID,
-          Available: sku.available,
-          DateOfStock: sku.dateOfStock,
-        }))
-      );
+      return result.map((sku) => ({
+        RFID: sku.RFID,
+        SKUId: sku.skuID,
+        Available: sku.available,
+        DateOfStock: sku.dateOfStock,
+      }));
     } catch {
-      res.status(500).json("Internal Server Error");
+      false;
     }
   };
 
-  newSKUItem = async (req, res) => {
+  newSKUItem = async (RFID, SKUId, DateOfStock) => {
+    console.log(SKUId);
     const sql =
       "INSERT INTO SKU_ITEM(RFID, available, skuID, dateOfStock) VALUES (?,?,?,?)";
 
-    if (Object.keys(req.body).length === 0) {
-      return res.status(422).json({ error: "Empty Body request" });
-    }
-    let result = await this.dao.all("Select * from SKU where ID=?", [
-      req.body.SKUId,
-    ]);
+    let result = await this.dao.all("Select * from SKU where ID=?", [SKUId]);
     if (result.length === 0) {
-      res.status(422).json("No SKU associated to SKUId");
+      return { skuid: "No SKU associated to SKUId" };
     } else {
       try {
         if (
-          (await this.dao.get(
-            "Select * from SKU_ITEM where RFID=?",
-            req.body.RFID
-          )) === undefined
+          (await this.dao.get("Select * from SKU_ITEM where RFID=?", RFID)) ===
+          undefined
         ) {
-          let data = req.body;
-          this.dao.run(sql, [data.RFID, data.SKUId, 1, data.DateOfStock]);
-          return res.status(201).json(data);
+          result = this.dao.run(sql, [RFID, 0, parseInt(SKUId), DateOfStock]);
+          return result;
         } else {
-          return res
-            .status(404)
-            .json({ message: "Item with RFID already existing" });
+          return { message: "Item with RFID already existing" };
         }
       } catch {
-        return res.status(503).json({ message: "Service Unavailable" });
+        return false;
       }
     }
   };
 
-  getSKUItemsBySKUId = async (req, res) => {
+  getSKUItemsBySKUId = async (id) => {
     try {
       const sql =
         "SELECT RFID,skuID,dateOfStock FROM SKU_ITEM WHERE available=? and skuID=?";
-      const result = await this.dao.all(sql, [1, req.params.id]);
+      const result = await this.dao.all(sql, [1, id]);
       if (result.length === 0) {
-        return res.status(404).json("no SKU associated to id");
+        return { message: "no SKU associated to id" };
       }
-      return res.status(200).json(
-        result.map((sku) => ({
-          RFID: sku.RFID,
-          SKUId: sku.skuID,
-          DateOfStock: sku.dateOfStock,
-        }))
-      );
+      return result.map((sku) => ({
+        RFID: sku.RFID,
+        SKUId: sku.skuID,
+        DateOfStock: sku.dateOfStock,
+      }));
     } catch {
-      res.status(500).json("Internal Server Error");
+      false;
     }
   };
-  getSKUItemsByRFID = async (req, res) => {
+  getSKUItemsByRFID = async (rfid) => {
     try {
-      const sql = "SELECT * FROM SKU_ITEM WHERE RFID=?";
-      const result = await this.dao.all(sql, [req.params.rfid]);
-      if (result.length === 0) {
-        return res.status(404).json(result);
-      } else {
-        return res.status(200).json(
-          result.map((sku) => ({
-            RFID: sku.RFID,
-            SKUId: sku.skuID,
-            Available: sku.available,
-            DateOfStock: sku.dateOfStock,
-          }))
-        );
+      const sql =
+        "SELECT RFID,skuID,available, dateOfStock FROM SKU_ITEM WHERE RFID=?";
+      const sku = await this.dao.get(sql, [rfid]);
+      if (sku === undefined) {
+        return { message: "no SKU found with this rfid" };
       }
+      return {
+        RFID: sku.RFID,
+        SKUId: sku.skuID,
+        Available: sku.available,
+        DateOfStock: sku.dateOfStock,
+      };
     } catch {
-      res.status(500).json("Internal Server Error");
+      return false;
     }
   };
 
-  editRFID = async (req, res) => {
+  editRFID = async (rfid, newRFID, newAvailable, newDateOfStock) => {
     try {
-      if (Object.keys(req.body).length === 0) {
-        return res.status(422).json({ error: "Empty Body request" });
-      }
       const sql = await this.dao.all("Select * from SKU_ITEM where RFID=? ", [
-        req.params.rfid,
+        rfid,
       ]);
       if (sql.length === 0) {
-        res.status(404).json("Item not found");
+        return { item: "Item not found" };
       } else {
-        let data = req.body;
         // if (
         //   (await this.dao.get("Select * from SKUItems where rfid=?", [
         //     req.body.newRFID,
@@ -115,38 +96,49 @@ class SKUItemsController {
         // ) {
         try {
           const sql =
-            "UPDATE SKU_ITEM SET RFID =? , available=available+? , dateOfStock=? where RFID=?";
+            "UPDATE SKU_ITEM SET RFID =? , available=? , dateOfStock=? where RFID=?";
           let result = await this.dao.run(sql, [
-            data.newRFID.length < 32 ? req.params.rfid : data.newRFID,
-            data.newAvailable,
-            data.newDateOfStock,
-            req.params.rfid,
+            newRFID.length < 32 ? rfid : newRFID,
+            newAvailable,
+            newDateOfStock,
+            rfid,
           ]);
-          return res.status(200).json(result);
+          return result;
         } catch {
-          return res.status(404).json("Item with new RFID already existing");
+          return { message: "Item with new RFID already existing" };
         }
       }
       //   else{return res.status(404).json("Item with RFID already")}
       // }
     } catch {
-      res.status(503).json("Service Unavailable");
+      return false;
     }
   };
-  deleteItem = async (req, res) => {
+  deleteItem = async (rfid) => {
     try {
       const check = await this.dao.all("Select * from SKU_ITEM where RFID=? ", [
-        req.params.rfid,
+        rfid,
       ]);
       if (check.length === 0) {
-        res.status(404).json("Item not found");
+        return { message: "Item not found" };
       } else {
         const sql = "DELETE FROM SKU_ITEM where RFID=?";
-        await this.dao.run(sql, [req.params.rfid]);
-        return res.status(204).json("Successful");
+        const result = await this.dao.run(sql, [rfid]);
+        return result;
       }
     } catch {
-      res.status(503).json("Service Unavailable");
+      false;
+    }
+  };
+  deleteAll = async () => {
+    try {
+      const res = await this.dao.run("Delete from SKU_ITEM", []);
+      if (res) {
+        return true;
+      }
+      return false;
+    } catch {
+      return -1;
     }
   };
 }
