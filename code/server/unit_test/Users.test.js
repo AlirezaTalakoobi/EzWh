@@ -66,13 +66,13 @@ describe("getAllUsers", () => {
     {
       name: "davide",
       surname: "davide",
-      username: "user1@clerk.com",
+      username: "user1@clerk.ezwh.com",
       type: "clerk",
     },
     {
       name: "davide",
       surname: "davide",
-      username: "user2@clerk.com",
+      username: "user2@clerk.ezwh.com",
       type: "clerk",
     },
   ]);

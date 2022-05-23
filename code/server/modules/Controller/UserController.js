@@ -7,10 +7,10 @@ class UserController {
     this.dao = dao;
   }
 
-  loggedin = () => {};
   newUser = async (name, surname, username, type, password) => {
-    const salt = bcrypt.genSaltSync(saltRounds);
-    const hash = bcrypt.hashSync(password, salt);
+    const salt = await bcrypt.genSaltSync(saltRounds);
+    const hash = await bcrypt.hashSync(password, salt);
+    console.log(hash);
     const sql =
       "INSERT INTO USER(name, surname,email, type, password) VALUES (?,?,?,?,?)";
     try {
@@ -41,7 +41,7 @@ class UserController {
       id: user.ID,
       name: user.name,
       surname: user.surname,
-      email: user.email.replace("@ezwh", `@${user.type}`),
+      email: user.email.replace("ezwh", `${user.type}.ezwh`),
       type: user.type,
     }));
     if (result != undefined) {
@@ -56,6 +56,7 @@ class UserController {
     let result = await this.dao.get(sql, [username]);
     if (result != undefined) {
       const check = await bcrypt.compare(password, result.password);
+      console.log(check);
       if (check === true) {
         return {
           id: result.ID,
@@ -90,6 +91,7 @@ class UserController {
     }
   };
   editUser = async (username, oldType, newType) => {
+    console.log(oldType);
     try {
       if (
         (await this.dao.get("Select * from USER where email=? and type=?", [
