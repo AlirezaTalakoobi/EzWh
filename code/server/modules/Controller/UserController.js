@@ -71,14 +71,6 @@ class UserController {
     return result;
   };
 
-  logout = () => {
-    try {
-      return true;
-    } catch {
-      return false;
-    }
-  };
-
   getSuppliers = async () => {
     try {
       const sql = "SELECT ID,name,surname,email,type FROM USER WHERE type=?";
@@ -108,10 +100,11 @@ class UserController {
         return {
           message: "wrong username or oldType fields or user doesn't exists",
         };
+      } else {
+        const sql = "UPDATE USER SET type=? where email=? and type=?";
+        let result = await this.dao.run(sql, [newType, username, oldType]);
+        return result;
       }
-      const sql = "UPDATE USER SET type=? where email=? and type=?";
-      let result = await this.dao.run(sql, [newType, username, oldType]);
-      return result;
     } catch {
       return false;
     }
@@ -141,7 +134,6 @@ class UserController {
       if (res) {
         return true;
       }
-      return false;
     } catch {
       return -1;
     }

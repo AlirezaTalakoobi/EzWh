@@ -24,7 +24,6 @@ class SKUController {
       }));
 
       for (let sku of skus) {
-        //console.log("ciao")
         const testSql = "select ID from TEST_DESCRIPTOR WHERE skuID=?";
         const testDescriptors = await this.dao.all(testSql, [sku.SKUId]);
 
@@ -37,16 +36,12 @@ class SKUController {
   };
 
   getSKUbyId = async (ID) => {
-
-    
     try {
-     
       const sql =
         "SELECT description,weight,volume,notes,availableQuantity,price,PositionID FROM SKU WHERE ID=?";
       const result = await this.dao.all(sql, [ID]);
       if (result.length === 0) {
-        
-        return false
+        return false;
       }
       const testDescriptors = await this.dao.all(
         "select ID from TEST_DESCRIPTOR WHERE skuID=? ",
@@ -68,16 +63,16 @@ class SKUController {
       for (let sku of skus) {
         sku.testDescriptors = testDescriptors.map((t) => t.ID);
       }
-      return skus
+      return skus;
     } catch {
       //res.status(500).json("Internal Server Error");
-      false
+      false;
     }
   };
 
-  newSKU = (Body) => {
+  newSKU = async (Body) => {
     const sql =
-      "INSERT INTO SKU(description,weight,volume,notes,price,availableQuantity,price) VALUES (?,?,?,?,?,?,?)";
+      "INSERT INTO SKU(description,weight,volume,notes,availableQuantity,price) VALUES (?,?,?,?,?,?)";
     // if (Object.keys(Body).length === 0) {
     //   return 1 ;
     // }
@@ -90,7 +85,7 @@ class SKUController {
     // }
     let data = Body;
     try {
-      this.dao.run(sql, [
+      let result = await this.dao.run(sql, [
         data.description,
         data.weight,
         data.volume,
@@ -98,17 +93,17 @@ class SKUController {
         data.availableQuantity,
         data.price,
       ]);
-      return true
+      return result;
     } catch {
-      return false //res.status(503).json("Service Unavailable");
+      return false; //res.status(503).json("Service Unavailable");
     }
     //}
   };
-  editsku = async (Body,ID) => {
+  editsku = async (Body, ID) => {
     try {
       let sku = await this.dao.get("Select * from SKU where ID=?", [ID]);
       if (sku === undefined) {
-        return false //res.status(404).json("SKU with this id not exists");
+        return false; //res.status(404).json("SKU with this id not exists");
       } else {
         let data = Body;
         const sql =
@@ -131,7 +126,7 @@ class SKUController {
         ]);
         console.log(position);
         if (position === undefined) {
-          return 1 //res.status(200).json("Position unavailable");
+          return 1; //res.status(200).json("Position unavailable");
         } else {
           let new_sku = await this.dao.get("Select * from SKU where ID=?", [
             ID,
@@ -152,7 +147,7 @@ class SKUController {
                 req.params.id,
               ]
             );
-            return 2 //res.status(422).json("Not enough space");
+            return 2; //res.status(422).json("Not enough space");
           }
           await this.dao.run(
             "UPDATE POSITION SET occupiedWeight=?, occupiedVolume=? WHERE ID=?",
@@ -165,7 +160,7 @@ class SKUController {
         }
       }
     } catch {
-      return 3//res.status(500).json("Internal Server Error");
+      return 3; //res.status(500).json("Internal Server Error");
     }
   };
 
@@ -224,18 +219,17 @@ class SKUController {
   deleteSKU = async (param) => {
     try {
       if (
-        (await this.dao.get("Select * from SKU where ID=?", [
-          param,
-        ])) === undefined
+        (await this.dao.get("Select * from SKU where ID=?", [param])) ===
+        undefined
       ) {
-        return  1//res.status(404).json("validation of id failed");
+        return 1; //res.status(404).json("validation of id failed");
       } else {
         const sql = "DELETE FROM SKU where ID=?";
         let result = await this.dao.run(sql, [param]);
-        return 2 //res.status(204).json(result);
+        return 2; //res.status(204).json(result);
       }
     } catch {
-      false //res.status(500).json("Internal Server Error");
+      false; //res.status(500).json("Internal Server Error");
     }
   };
 }
