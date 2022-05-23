@@ -17,7 +17,6 @@ describe("get skus", () => {
 
   test("get items", async () => {
     let res = await skui.getSKUItems();
-    console.log(res);
     expect(res).toEqual([
       {
         RFID: "12345678901234567890123456789014",
@@ -43,7 +42,7 @@ describe("get skus by id", () => {
 
   test("get items", async () => {
     let res = await skui.getSKUItemsBySKUId();
-    console.log(res);
+
     expect(res).toEqual([
       {
         RFID: "12345678901234567890123456789014",
@@ -85,9 +84,11 @@ describe("set sku items", () => {
     dateOfStock: "2020/10/22",
   };
   beforeEach(() => {
-    dao.run.mockReset(newitem);
-    dao.get.mockReset(newitem);
-    dao.all.mockReset([{ ID: 1 }]);
+    dao.run.mockReset();
+    dao.get.mockReset();
+    dao.all.mockReset();
+    dao.run.mockReturnValueOnce(newitem);
+    dao.all.mockReturnValueOnce("1");
   });
   test("set item", async () => {
     let res = await skui.newSKUItem(
@@ -95,86 +96,61 @@ describe("set sku items", () => {
       newitem.skuID,
       newitem.dateOfStock
     );
-    expect(res).toBe(undefined);
+    expect(res).toEqual({
+      RFID: "12345678901234567890123456789014",
+      available: 30,
+      dateOfStock: "2020/10/22",
+      skuId: 1,
+    });
   });
 });
 
-// describe("get all suppliers", () => {
-//   beforeEach(() => {
-//     dao.all.mockReset();
-//     dao.get.mockReset();
+describe("edit sku item", () => {
+  const edititem = {
+    RFID: "12345678901234567890123456789022",
+    available: 35,
+    skuId: 1,
+    dateOfStock: "2020/10/22",
+  };
+  beforeEach(() => {
+    dao.get.mockReset();
+    dao.all.mockReturnValueOnce([edititem.RFID]);
+    dao.run.mockReset();
+    dao.run.mockReturnValueOnce(edititem);
+  });
 
-//     dao.all.mockReturnValueOnce([
-//       {
-//         id: 1,
-//         name: "John",
-//         surname: "John",
-//         email: "john.snow@ezwh.com",
-//         type: "supplier",
-//       },
-//     ]);
-//   });
+  test("edit item", async () => {
+    let res = await skui.editRFID(
+      "12345678901234567890123456789014",
+      "12345678901234567890123456789022",
+      35,
+      "2020/10/22"
+    );
 
-//   test("get All Suppliers", async () => {
-//     let res = await user.getSuppliers();
-//     expect(res).toEqual([
-//       {
-//         id: undefined,
-//         name: "John",
-//         surname: "John",
-//         email: "john.snow@supplier.ezwh.com",
-//       },
-//     ]);
-//   });
-// });
+    expect(res).toEqual({
+      RFID: "12345678901234567890123456789022",
+      available: 35,
+      skuId: 1,
+      dateOfStock: "2020/10/22",
+    });
+  });
+});
+describe("delete item", () => {
+  const deleteitem = {
+    RFID: "12345678901234567890123456789022",
+    available: 35,
+    skuId: 1,
+    dateOfStock: "2020/10/22",
+  };
+  beforeEach(() => {
+    dao.get.mockReset();
+    dao.get.mockReturnValueOnce(deleteitem);
+    dao.run.mockReset();
+    dao.run.mockReturnValueOnce(deleteitem);
+  });
 
-// describe("edituser", () => {
-//   const edituser = {
-//     id: 1,
-//     email: "john.snow@ezwh.com",
-//     oldType: "supplier",
-//     newType: "clerk",
-//   };
-//   beforeEach(() => {
-//     dao.get.mockReset();
-//     dao.get.mockReturnValueOnce(edituser);
-//     dao.run.mockReset();
-//     dao.run.mockReturnValueOnce(edituser);
-//   });
-
-//   test("edit user", async () => {
-//     let res = await user.editUser(
-//       edituser.email,
-//       edituser.oldType,
-//       edituser.newType
-//     );
-//     expect(res).toEqual({
-//       email: "john.snow@ezwh.com",
-//       id: 1,
-//       oldType: "supplier",
-//       newType: "clerk",
-//     });
-//   });
-// });
-// describe("deleteuser", () => {
-//   const deleteuser = {
-//     id: 1,
-//     email: "john.snow@ezwh.com",
-//     type: "supplier",
-//   };
-//   beforeEach(() => {
-//     dao.get.mockReset();
-//     dao.get.mockReturnValueOnce(deleteuser);
-//     dao.run.mockReset();
-//     dao.run.mockReturnValueOnce(deleteuser);
-//   });
-
-//   test("edit user", async () => {
-//     let res = await user.editUser(deleteuser.email, deleteuser.type);
-//     expect(res).toEqual({
-//       id: 1,
-//       email: "john.snow@ezwh.com",
-//       type: "supplier",
-//     });
-//   });
-// });
+  test("delete item", async () => {
+    let res = await skui.deleteItem(deleteitem.RFID);
+    expect(res).toEqual(undefined);
+  });
+});

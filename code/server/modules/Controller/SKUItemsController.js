@@ -16,7 +16,6 @@ class SKUItemsController {
         Available: sku.available,
         DateOfStock: sku.dateOfStock,
       }));
-      console.log(result);
       return result;
     } catch {
       false;
@@ -28,7 +27,6 @@ class SKUItemsController {
       "INSERT INTO SKU_ITEM(RFID, available, skuID, dateOfStock) VALUES (?,?,?,?)";
 
     let result = await this.dao.all("Select * from SKU where ID=?", [SKUId]);
-    console.log(result);
     if (result.length === 0) {
       return { skuid: "No SKU associated to SKUId" };
     } else {
@@ -89,6 +87,7 @@ class SKUItemsController {
       const sql = await this.dao.all("Select * from SKU_ITEM where RFID=? ", [
         rfid,
       ]);
+
       if (sql.length === 0) {
         return { item: "Item not found" };
       } else {
@@ -106,6 +105,7 @@ class SKUItemsController {
             newDateOfStock,
             rfid,
           ]);
+          console.log(result);
           return result;
         } catch {
           return { message: "Item with new RFID already existing" };
