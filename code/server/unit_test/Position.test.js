@@ -63,14 +63,6 @@ describe("createPosition", () => {
 
 async function testCreatePosition(positions) {
     test("createPosition", async () => {
-        position = {
-            "positionID":"800234543412",
-            "aisleID": "8002",
-            "row": "3454",
-            "col": "3412",
-            "maxWeight": 1000,
-            "maxVolume": 1000
-            }
         let res = await uc.createPosition(
             positions["ID"],positions["aisleID"],positions["row"],positions["col"],positions["maxWeight"],positions["maxVolume"]);
         res = await uc.getPosition();
