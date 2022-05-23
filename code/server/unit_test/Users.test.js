@@ -145,7 +145,9 @@ describe("getSuppliers", () => {
   beforeEach(async () => {
     await uc.deleteAll();
   });
-
+  afterEach(async () => {
+    await uc.deleteAll();
+  });
   testGetSuppliers([
     {
       name: "davide",
@@ -162,16 +164,13 @@ describe("getSuppliers", () => {
       password: "testpassword",
     },
   ]);
-  afterEach(async () => {
-    await uc.deleteAll();
-  });
   testEmptySuppliers();
 });
 
 async function testEmptySuppliers() {
   test("getEmptySuppliers", async () => {
     let res = await uc.getSuppliers();
-    expect(res).toEqual({ error: "Users Not found" });
+    expect(res).toEqual({ error: "Users not found" });
   });
 }
 async function testGetSuppliers(users) {
