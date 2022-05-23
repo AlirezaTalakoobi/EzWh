@@ -4,7 +4,7 @@ const user = new UserC(dao);
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-describe("get users", () => {
+describe("get user", () => {
   beforeEach(() => {
     dao.get.mockReset();
     const salt = bcrypt.genSaltSync(saltRounds);

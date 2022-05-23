@@ -9,12 +9,15 @@ class SKUItemsController {
     try {
       const sql = "SELECT * FROM SKU_ITEM";
       let result = await this.dao.all(sql);
-      return result.map((sku) => ({
+
+      result = result.map((sku) => ({
         RFID: sku.RFID,
         SKUId: sku.skuID,
         Available: sku.available,
         DateOfStock: sku.dateOfStock,
       }));
+      console.log(result);
+      return result;
     } catch {
       false;
     }
@@ -25,6 +28,7 @@ class SKUItemsController {
       "INSERT INTO SKU_ITEM(RFID, available, skuID, dateOfStock) VALUES (?,?,?,?)";
 
     let result = await this.dao.all("Select * from SKU where ID=?", [SKUId]);
+    console.log(result);
     if (result.length === 0) {
       return { skuid: "No SKU associated to SKUId" };
     } else {
