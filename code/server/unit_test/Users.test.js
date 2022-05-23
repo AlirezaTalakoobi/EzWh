@@ -287,6 +287,8 @@ async function testDeleteUser(user) {
 async function testDeleteUserNotExisting(user) {
   test("deleteuser", async () => {
     res = await uc.deleteUser(user.username, user.type);
-    expect(res).toEqual({message: "wrong username or oldType fields or user doesn't exists"});
+    expect(res).toEqual({
+      message: "wrong username or oldType fields or user doesn't exists",
+    });
   });
 }
