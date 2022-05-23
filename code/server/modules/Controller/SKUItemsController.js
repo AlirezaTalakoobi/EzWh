@@ -21,7 +21,6 @@ class SKUItemsController {
   };
 
   newSKUItem = async (RFID, SKUId, DateOfStock) => {
-    console.log(SKUId);
     const sql =
       "INSERT INTO SKU_ITEM(RFID, available, skuID, dateOfStock) VALUES (?,?,?,?)";
 
@@ -51,7 +50,7 @@ class SKUItemsController {
         "SELECT RFID,skuID,dateOfStock FROM SKU_ITEM WHERE available=? and skuID=?";
       const result = await this.dao.all(sql, [1, id]);
       if (result.length === 0) {
-        return { message: "no SKU associated to id" };
+        return { message: "no item associated to id" };
       }
       return result.map((sku) => ({
         RFID: sku.RFID,

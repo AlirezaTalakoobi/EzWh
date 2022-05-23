@@ -15,15 +15,11 @@ describe("getUser", () => {
     );
   });
   testUser("davide", "davide", "user1@ezwh.com", "clerk", "testpassword");
-  // testUser("Dav", "dav", "user4@ezwh.com", "testpassword"); //fails
-  // testUser("Davide", "Davide", "user@ezwh.com", "testpassword"); //fails
-  // testUser("davide", "davide", "user2@ezwh.com", " "); //fails
 });
 
 async function testUser(name, surname, username, type, password) {
   test("getUser", async () => {
     let res = await uc.getUser(username, password);
-    console.log(res);
     if (res) {
       expect(res).toEqual({
         id: res.id,
@@ -33,6 +29,18 @@ async function testUser(name, surname, username, type, password) {
         type: type,
       });
     }
+  });
+}
+describe("getUserError", () => {
+  testUserWrong("user1@ezwh.com", "testpa");
+});
+
+async function testUserWrong(username, password) {
+  test("Wrong fields", async () => {
+    let res = await uc.getUser(username, password);
+    expect(res).toEqual({
+      message: "Wrong Username/Password",
+    });
   });
 }
 
@@ -103,13 +111,13 @@ describe("insertNewUser", () => {
     type: "supplier",
     password: "testpassword",
   });
-  // testInsertUser({
-  //   name: "davide",
-  //   surname: "davide",
-  //   username: "user1@clerk.com",
-  //   type: "supplier",
-  //   password: "testpa",
-  // }); fails-> lenght not enough
+  testInsertUserExisting({
+    name: "davide",
+    surname: "davide",
+    username: "user1@clerk.com",
+    type: "supplier",
+    password: "testpassword",
+  });
 });
 
 async function testInsertUser(user) {
@@ -132,8 +140,26 @@ async function testInsertUser(user) {
   });
 }
 
+async function testInsertUserExisting(user) {
+  test("insert newUser", async () => {
+    let res = await uc.newUser(
+      user.name,
+      user.surname,
+      user.username,
+      user.type,
+      user.password
+    );
+    expect(res).toEqual({
+      message: "Conflict",
+    });
+  });
+}
+
 describe("getSuppliers", () => {
   beforeEach(async () => {
+    await uc.deleteAll();
+  });
+  afterEach(async () => {
     await uc.deleteAll();
   });
   testGetSuppliers([
@@ -152,18 +178,15 @@ describe("getSuppliers", () => {
       password: "testpassword",
     },
   ]);
-  // testGetSuppliers([
-  //   {},
-  //   {
-  //     name: "davide",
-  //     surname: "davide",
-  //     username: "user2@ezwh.com",
-  //     type: "clerk",
-  //     password: "testpassword",
-  //   },
-  // ]); fails
+  testEmptySuppliers();
 });
 
+async function testEmptySuppliers() {
+  test("getEmptySuppliers", async () => {
+    let res = await uc.getSuppliers();
+    expect(res).toEqual({ error: "Users Not found" });
+  });
+}
 async function testGetSuppliers(users) {
   test("getsuppliers", async () => {
     for (user of users) {
@@ -203,6 +226,12 @@ describe("editUser", () => {
     newType: "clerk",
     oldType: "supplier",
   });
+  afterEach(async () => uc.deleteAll());
+  testEditUserNotDefined({
+    username: "user1@ezwh.com",
+    newType: "manager",
+    oldType: "manager",
+  });
 });
 
 async function testEditUser(user) {
@@ -215,6 +244,14 @@ async function testEditUser(user) {
       name: res.name,
       surname: res.surname,
       type: user.newType,
+    });
+  });
+}
+async function testEditUserNotDefined(user) {
+  test("edituser", async () => {
+    let res = await uc.editUser(user.username, user.oldType, user.newType);
+    expect(res).toEqual({
+      message: "wrong username or oldType fields or user doesn't exists",
     });
   });
 }
@@ -234,6 +271,10 @@ describe("deleteUser", () => {
     username: "user1@ezwh.com",
     type: "supplier",
   });
+  testDeleteUserNotExisting({
+    username: "user5@ezwh.com",
+    type: "supplier",
+  });
 });
 
 async function testDeleteUser(user) {
@@ -241,5 +282,13 @@ async function testDeleteUser(user) {
     res = await uc.deleteUser(user.username, user.type);
     res = await uc.getUser(user.username, "testpassword");
     expect(res).toEqual(undefined);
+  });
+}
+async function testDeleteUserNotExisting(user) {
+  test("deleteuser", async () => {
+    res = await uc.deleteUser(user.username, user.type);
+    expect(res).toEqual({
+      message: "wrong username or oldType fields or user doesn't exists",
+    });
   });
 }
