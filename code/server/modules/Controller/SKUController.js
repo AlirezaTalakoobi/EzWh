@@ -32,7 +32,7 @@ class SKUController {
       }
       return skus;
     } catch {
-      return false;
+      return { message: "Internal error" };;
     }
   };
 
@@ -90,7 +90,7 @@ class SKUController {
     // }
     let data = Body;
     try {
-      this.dao.run(sql, [
+      let result =this.dao.run(sql, [
         data.description,
         data.weight,
         data.volume,
@@ -98,9 +98,9 @@ class SKUController {
         data.availableQuantity,
         data.price,
       ]);
-      return true
+      return result
     } catch {
-      return false //res.status(503).json("Service Unavailable");
+      return { message: "Service Unavailable" }; //res.status(503).json("Service Unavailable");
     }
     //}
   };
@@ -108,12 +108,12 @@ class SKUController {
     try {
       let sku = await this.dao.get("Select * from SKU where ID=?", [ID]);
       if (sku === undefined) {
-        return false //res.status(404).json("SKU with this id not exists");
+        return { message: "SKU with this id not exists" }//res.status(404).json("SKU with this id not exists");
       } else {
         let data = Body;
         const sql =
           "update SKU set description=?, weight=? , volume=?, notes=?, availableQuantity=? ,price=? where ID=?";
-        await this.dao.run(sql, [
+        let skuupdate =await this.dao.run(sql, [
           data.newDescription.length < 1
             ? sku.description
             : data.newDescription,
@@ -129,9 +129,9 @@ class SKUController {
         let position = await this.dao.get("Select * FROM POSITION where ID=?", [
           sku.positionID,
         ]);
-        console.log(position);
+        
         if (position === undefined) {
-          return 1 //res.status(200).json("Position unavailable");
+          return skuupdate  //res.status(200).json("Position unavailable");
         } else {
           let new_sku = await this.dao.get("Select * from SKU where ID=?", [
             ID,
@@ -149,7 +149,7 @@ class SKUController {
                 sku.notes,
                 sku.availableQuantity,
                 sku.price,
-                req.params.id,
+                ID,
               ]
             );
             return 2 //res.status(422).json("Not enough space");
@@ -169,33 +169,33 @@ class SKUController {
     }
   };
 
-  editskuPosition = async (req, res) => {
+  editskuPosition = async (position, ID) => {
     try {
       let data = req.body;
 
       const sqlP = "select ID from POSITION where ID = ?";
-      let resultp = await this.dao.get(sqlP, [req.body.position]);
+      let resultp = await this.dao.get(sqlP, [position]);
       if (resultp === undefined) {
-        return res.status(404).json({ message: "Position Not Found" });
+        return { message: "Position Not Found" };
       }
       const sqlS = "select * from SKU where ID=?";
 
-      let resultS = await this.dao.get(sqlS, [req.params.id]);
-      console.log(resultS);
+      let resultS = await this.dao.get(sqlS, [ID]);
+      
       if (resultS.ID === undefined) {
         return res.status(404).json("Item not exists");
       }
       const sql = "update SKU set positionID=? where ID=?";
       const weight = await this.dao.get(
         "select weight*availableQuantity as W from SKU where ID=?",
-        [req.params.id]
+        [ID]
       );
       const volume = await this.dao.get(
         "select volume*availableQuantity as V from SKU where ID=?",
-        [req.params.id]
+        [ID]
       );
 
-      await this.dao.run(sql, [data.position, req.params.id]);
+      await this.dao.run(sql, [position, ID]);
       const old_position = await this.dao.get(
         "Select * from POSITION where ID=?",
         [resultS.positionID.toString()]
@@ -207,17 +207,18 @@ class SKUController {
       const sqlposition =
         "update POSITION set occupiedWeight=?, occupiedVolume=? where ID=?";
       if (weight.W < resultp.maxWeigth && volume.V < resultp.maxVolume) {
-        await this.dao.run(sqlposition, [weight.W, volume.V, data.positionID]);
-        return res.status(200);
+       let Pupdate = await this.dao.run(sqlposition, [weight.W, volume.V, data.positionID]);
+        return Pupdate   //res.status(200);
       } else {
-        await this.dao.run(sqlposition, [
+        let oldposition = await this.dao.run(sqlposition, [
           old_position.weight,
           old_position.volume,
           resultS.positionID,
         ]);
+        return oldposition
       }
     } catch {
-      res.status(500).json("Internal Server Error");
+      return 3//res.status(500).json("Internal Server Error");
     }
   };
 
@@ -228,14 +229,14 @@ class SKUController {
           param,
         ])) === undefined
       ) {
-        return  1//res.status(404).json("validation of id failed");
+        return { message: "No SKU associated to id" }//res.status(404).json("validation of id failed");
       } else {
         const sql = "DELETE FROM SKU where ID=?";
         let result = await this.dao.run(sql, [param]);
-        return 2 //res.status(204).json(result);
+        return result //res.status(204).json(result);
       }
     } catch {
-      false //res.status(500).json("Internal Server Error");
+      return  1   //res.status(500).json("Internal Server Error");
     }
   };
 }

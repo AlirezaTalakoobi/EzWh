@@ -15,9 +15,9 @@ async (req, res) => {
   if (Test === undefined) {
     return res.status(401).json({ message: "SKU does not exist" });
 
-  } else if (Test==false) {
+  } else if (Test.message) {
   
-    return res.status(500).json({message: "Internal Error"});
+    return res.status(500).json(Test.message);
   } else {
     res.status(200).json(Test);
   }
@@ -35,8 +35,8 @@ router.get("/testdescriptors/:id",[param("id").isNumeric().not().optional()],
  
   const Test = await td.getTestDescriptionById(params);
   
-  if (Test == false) {
-    return res.status(422).json({ error: "validation of id failed" });
+  if (Test.message) {
+    return res.status(422).json(Test.message);
   
     
   } else if (Test == 1) {
@@ -44,7 +44,7 @@ router.get("/testdescriptors/:id",[param("id").isNumeric().not().optional()],
     res.status(404).json("no Test associated to id");
   }else if(Test == 2){
     res.status(500).json("generic error");
-  }else{
+  }else if (Test){
     
     return res.status(200).json(Test);
   }
@@ -64,12 +64,12 @@ router.post("/testdescriptor",[
    
     const Test = await td.newTestDescriptor(req.body);
     
-    if ( Test == false ) {
-      return res.status(422).json({ error: "(validation of request body failed" });
+    if ( Test.message) {
+      return res.status(422).json(Test.message);
       
     } else if(Test == 2 ){
       return res.status(503).json("generic error")
-    }{
+    }if(Test){
       
       return res.status(200).json({message: "Created"});
     }
@@ -89,17 +89,17 @@ router.put("/testdescriptor/:id", [
     async(req, res) => {
     
     const Test = await td.editTDbyid(req.body,req.params.id);
-    console.log(Test);
-    if ( Test == false ) {
-      res.status(422).json({ error: "(validation of request body failed" });
+    
+    if ( Test.message ) {
+      res.status(422).json(Test.message);
       
-    } else if(Test == 1) {
-      
-      return res.status(200).json({message: "Success"});
-    }else if(Test == 2){
+    } else if(Test == 2){
       return res.status(404).json({error:"Test descriptor not existing"})
     }else if(Test == 3){
       return res.status(500).json({message: "Internal Server Error"});
+    }else {
+      
+      return res.status(200).json({message: "Success"});
     }
   },td.editTDbyid);
 router.delete("/testdescriptor/:id",  [param("id").isNumeric().not().optional()],
@@ -113,18 +113,15 @@ router.delete("/testdescriptor/:id",  [param("id").isNumeric().not().optional()]
   const params =req.params.id
  
   const Test = await td.deleteTD(params);
-  if (Test == false) {
-    return res.status(404).json({ message: "Test descriptor not existing" });
+  if (Test.message) {
     
-  } else if(Test == 2){
+    res.status(422).json(Test.message)
+  }else if(Test == 2){
     res.status(503).json("Internal Server Error");
 
-  }if (Test == 1) {
-    res.status(422).json({ error: "(validation of id failed" })
-  } else {
-    
-    return res.status(200).json({message:"Seccess"});
-  }
+  }else {
+    return res.status(200).json({message:"Seccess"})
+  } 
 },td.deleteTD);
 
 module.exports = router;

@@ -24,13 +24,13 @@ class TDController {
       ))
       
     } catch {
-      false 
+      return {message: "Internal Error"}
     }
   }
 
   getTestDescriptionById = async (param) => {
     if (Object.keys(param).length === 0) {
-      return false //res.status(422).json({ error: "validation of id failed" });
+      return { error: "validation of id failed" }//res.status(422).json({ error: "validation of id failed" });
     }
 
 
@@ -64,7 +64,7 @@ class TDController {
     //returns this.dao.run(sql)
 
     if (Object.keys(Body).length === 0) {
-      return false  //res.status(422).json({ error: "(validation of request body failed" });
+      return { error: "(validation of request body failed" }  //res.status(422).json({ error: "(validation of request body failed" });
     }
     // const result = this.dao.get("Select * from SKUItems where rfid=?");
     // if (result.length != 0) {
@@ -72,8 +72,8 @@ class TDController {
     // } else {
     let data = Body;
     try {
-      this.dao.run(sql, [data.name,data.procedureDescription,data.idSKU])
-      return 1
+      let result = this.dao.run(sql, [data.name,data.procedureDescription,data.idSKU])
+      return result
       
     } catch {
       return 2
@@ -88,7 +88,7 @@ class TDController {
   editTDbyid = async (Body,ID) => {
     
     if (Object.keys(Body).length === 0) {
-      return false//res.status(422).json({ error: "(validation of request body failed" });
+      return { error: "(validation of request body failed" }//res.status(422).json({ error: "(validation of request body failed" });
     }
     
     if(await this.dao.get('Select * from TEST_DESCRIPTOR where ID=?', [ID])===undefined){
@@ -101,13 +101,13 @@ class TDController {
         let data = Body;
         const sql = "update TEST_DESCRIPTOR set name=?, procedureDescription=?, skuID=? where ID=?";
         const r = await this.dao.get('Select * from SKU where ID=?', [[data.newIdSKU]])
-       
+        console.log(r);
         if(r!==undefined){
           
-         await this.dao.run(sql, [data.newName,data.newProcedureDescription,data.newIdSKU, ID]);
+         let result = await this.dao.run(sql, [data.newName,data.newProcedureDescription,data.newIdSKU, ID]);
          
 
-        return 1 // res.status(200).json(result);
+        return result// res.status(200).json(result);
         }
         else{
           return 2//res.status(404).json({error:"SKU not exists"})
@@ -126,14 +126,14 @@ class TDController {
     if(await this.dao.get('Select * from TEST_DESCRIPTOR where ID=?', [[ID]])!==undefined){
       try {
         const sql = "DELETE FROM TEST_DESCRIPTOR where ID=?";
-        await this.dao.run(sql, [ID]);
-        //res.status(204).end();
+        let result = await this.dao.run(sql, [ID]);
+        return result//res.status(204).end();
       } catch {
         return 2//res.status(503).json("Internal Server Error");
       }
     }
     else{
-      false// res.status(404).json("Test descriptor not existing")
+      return { message: "Test descriptor not existing" }// res.status(404).json("Test descriptor not existing")
     }
   };
 }
