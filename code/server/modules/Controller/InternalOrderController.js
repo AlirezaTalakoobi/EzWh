@@ -3,67 +3,59 @@
 const dayjs = require('dayjs');
 
 class InternalOrderController {
+  static lastInternalOrderId = 1;
   constructor(dao) {
     this.dao = dao;
     this.possibleStates = ["ISSUED", "ACCEPTED", "REFUSED", "CANCELED", "COMPLETED"];
   }
 
 
-  validateInternalOrder = (internalOrder) => {
-    if(Object.keys(internalOrder).length !== 3 ||
-      !Object.keys(internalOrder).includes("issueDate") ||
-      !Object.keys(internalOrder).includes("products") ||
-      !Object.keys(internalOrder).includes("customerId") ||
-      !dayjs(internalOrder.issueDate, "YYYY/MM/DD HH:mm").isValid() ||
-      !Number.isInteger(internalOrder.customerId) ||
-      !internalOrder.products.every(p => this.validateProductInInternalOrder(p))) {
-      return false;
-    }
-    return true;
-  }
-
-  validateProductInInternalOrder = (product) => {
-    if(Object.keys(product).length !== 4 ||
-      !Object.keys(product).includes("SKUId") ||
-      !Object.keys(product).includes("description") ||
-      !Object.keys(product).includes("price") ||
-      !Object.keys(product).includes("qty") ||
-      !Number.isInteger(product.SKUId) ||
-      !Number.isInteger(product.qty) ||
-      Number.isNaN(Number(product.price))){
+  validateProductsInInternalOrder = async (products) => {
+    const skuSql = "SELECT ID, price, availableQuantity FROM SKU WHERE ID = ?";
+    for(let product of products){
+      let sku = await this.dao.get(skuSql, [product.SKUId]);
+      if(sku === undefined || sku.price !== product.price || product.qty > sku.availableQuantity){
         return false;
+      }
     }
     return true;
   }
 
-  validateSkuItemInInternalOrder = (skuItem) => {
-    if(Object.keys(skuItem).length !== 2 ||
-      !Object.keys(skuItem).includes("RFID") ||
-      !Object.keys(skuItem).includes("SkuId") ||
-      skuItem.RFID.length !== 32 ||
-      !Number.isInteger(parseInt(skuItem.RFID)) ||
-      !Number.isInteger(skuItem.SkuId)){
-      return false;
+  validateSkuItemsInInternalOrder = async (skuItems, products) => {
+    const skus = products.map(p => ({skuID: p.SKUId, max: p.qty, current: 0}));
+    const itemSql = "SELECT RFID FROM SKU_ITEM WHERE RFID = ? AND available > ?";
+    for(let skuItem of skuItems){
+      let sku = skus.find(s => s.skuID === skuItem.SkuId);
+      let rfid = await this.dao.get(itemSql, [skuItem.RFID, 0]);
+      if(sku === undefined || rfid === undefined || sku.current >= sku.max){
+        return false;
+      }
+      sku.current += 1;
     }
     return true;
   }
 
   addProductsToInternalOrder = async (internalOrderID, products) => {
     for(let product of products){
-      let itemInInternalOrderSql = "INSERT INTO SKU_IN_INTERNAL_ORDER (internalOrderID, skuID, quantity) VALUES (?, ?, ?)";
-      await this.dao.run(itemInInternalOrderSql, [internalOrderID, product.SKUId, product.qty]);
+      let itemInInternalOrderSql = "INSERT INTO SKU_IN_INTERNAL_ORDER (internalOrderID, skuID, description, price, quantity) VALUES (?, ?, ?, ?, ?)";
+      await this.dao.run(itemInInternalOrderSql, [internalOrderID, product.SKUId, product.description, product.price, product.qty]);
     }
   }
 
   addSkuItemsToInternalOrder = async (internalOrderID, products) => {
     for(let product of products){
-      let itemInInternalOrderSql = "UPDATE SKU_ITEM SET internalOrderID = ? WHERE RFID = ? AND skuID = ?";
-      await this.dao.run(itemInInternalOrderSql, [internalOrderID, product.RFID, product.SkuId]);
+      let itemInInternalOrderSql = "UPDATE SKU_ITEM SET internalOrderID = ? WHERE RFID = ?";
+      await this.dao.run(itemInInternalOrderSql, [internalOrderID, product.RFID]);
     }
   }
 
+  deleteSkuItemsFromInternalOrder = async (internalOrderID) => {
+    const sql = "UPDATE SKU_ITEM SET internalOrderID = ? WHERE internalOrderID = ?";
+    await this.dao.run(sql, [0, internalOrderID]);
+  }
+
   getProductsForInternalOrder = async (id) => {
-    const productsSql = "SELECT skuID, description, price, quantity FROM SKU_IN_INTERNAL_ORDER SIO, SKU S WHERE SIO.skuID = S.ID AND SIO.internalOrderID = ?";
+    const productsSql = "SELECT skuID, description, price, quantity FROM SKU_IN_INTERNAL_ORDER WHERE internalOrderID = ?";
     const products = await this.dao.all(productsSql, [id]);
     return products.map(product => ({
       SKUId: product.skuID,
@@ -75,8 +67,9 @@ class InternalOrderController {
 
 
   getSkuItemsForInternalOrder = async (id) => {
-    const skuItemsSql = "SELECT RFID, skuID, description, price FROM SKU_ITEM, SKU WHERE skuID = ID AND internalOrderID = ?";
+    const skuItemsSql = "SELECT RFID, SI.skuID, SIO.description, SIO.price FROM SKU_ITEM SI, SKU_IN_INTERNAL_ORDER SIO WHERE SIO.skuID = SI.skuID AND SIO.internalOrderID = SI.internalOrderID AND SI.internalOrderID = ?";
     const skuItems = await this.dao.all(skuItemsSql, [id]);
+    console.log(skuItems)
     return skuItems.map(skuItem => ({
         SKUId: skuItem.skuID,
         description: skuItem.description,
@@ -86,10 +79,14 @@ class InternalOrderController {
   }
 
 
-  getInternalOrders = async (req, res) => {
+  getInternalOrders = async () => {
     try {
       const sql = "SELECT ID, issueDate, state, customerID FROM INTERNAL_ORDER";
       let internalOrders = await this.dao.all(sql, []);
+
+      if(internalOrders === undefined){
+        return -1;
+      }
 
       internalOrders = internalOrders.map(element => ({
           id: element.ID,
@@ -97,30 +94,30 @@ class InternalOrderController {
           state: element.state,
           products: [],
           customerId: element.customerID
-        }));
+      }));
 
       for (let internalOrder of internalOrders) {
         const products = internalOrder.state !== "COMPLETED" ? await this.getProductsForInternalOrder(internalOrder.id) : await this.getSkuItemsForInternalOrder(internalOrder.id);
-        console.log(products)
+        //console.log(products)
         internalOrder.products = [...products];
       }
 
-      return res.status(200).json(internalOrders);
+      return internalOrders;
     } catch {
-      return res.status(500).json({message: "Internal server error"});
+      return false;
     }
     
   };
 
-  getInternalOrder = async (req, res) => {
+  getInternalOrder = async (id) => {
     try{
-      if(!Number.isInteger(parseInt(req.params.id))){
-        return res.status(422).json({message: "Unprocessable Entity"});
-      }
+      // if(!Number.isInteger(parseInt(req.params.id))){
+      //   return res.status(422).json({message: "Unprocessable Entity"});
+      // }
       const sql = "SELECT ID, issueDate, state, customerID FROM INTERNAL_ORDER WHERE ID = ?";
-      const result = await this.dao.get(sql, [req.params.id]);
+      const result = await this.dao.get(sql, [id]);
       if(!result){
-        return res.status(404).json({message: "Not Found"});
+        return -1;
       }
 
       let internalOrder = {
@@ -134,18 +131,23 @@ class InternalOrderController {
       const products = internalOrder.state !== "COMPLETED" ? await this.getProductsForInternalOrder(internalOrder.id) : await this.getSkuItemsForInternalOrder(internalOrder.id);
       internalOrder.products = [...products];
 
-      return res.status(200).json(internalOrder);
+      return internalOrder;
     } catch {
-      return res.status(500).json({message: "Internal server error"});
+      return false;
     }
     
   }
 
 
-  getInternalOrdersIssued = async (req, res) => {
+  getInternalOrdersIssued = async () => {
     try{
       const sql = "SELECT ID, issueDate, state, customerID FROM INTERNAL_ORDER WHERE state = ?";
       let internalOrders = await this.dao.all(sql, ["ISSUED"]);
+      
+      if(internalOrders === undefined){
+        return -1;
+      }
+      
       internalOrders = internalOrders.map(element => ({
         id: element.ID,
         issueDate: element.issueDate,
@@ -159,16 +161,21 @@ class InternalOrderController {
         internalOrder.products = [...products];
       }
 
-      return res.status(200).json(internalOrders);
+      return internalOrders;
     } catch {
-      return res.status(500).json({message: "Internal server error"});
+      return false;
     }
   }
 
-  getInternalOrdersAccepted = async (req, res) => {
+  getInternalOrdersAccepted = async () => {
     try{
       const sql = "SELECT ID, issueDate, state, customerID FROM INTERNAL_ORDER WHERE state = ?";
       let internalOrders = await this.dao.all(sql, ["ACCEPTED"]);
+      
+      if(internalOrders === undefined){
+        return -1;
+      }
+      
       internalOrders = internalOrders.map(element => ({
         id: element.ID,
         issueDate: element.issueDate,
@@ -182,93 +189,125 @@ class InternalOrderController {
         internalOrder.products = [...products];
       }
 
-      return res.status(200).json(internalOrders);
+      return internalOrders;
     } catch {
-      return res.status(500).json({message: "Internal server error"});
+      return false;
     }
   }
 
 
-  createInternalOrder = async (req, res) => {
+  createInternalOrder = async (issueDate, customerId, products) => {
     try{
-      console.log("CREATING...")
-      if (!this.validateInternalOrder(req.body)) {
-        return res.status(422).json({ error: "Unprocessable Entity" });
+      if (!await this.validateProductsInInternalOrder(products)) {
+        return -1;
       }
-      console.log("VALID");
+
+      const customer = await this.dao.get("SELECT ID FROM USER WHERE ID = ? AND type = ?", [customerId, "customer"]);
+      if(customer === undefined){
+        return -2;
+      }
+
       const sql = "INSERT INTO INTERNAL_ORDER (issueDate, state, customerID) VALUES (?,?,?)";
 
-      const id = await this.dao.run(sql, [req.body.issueDate, "ISSUED", req.body.customerId]);
+      const id = await this.dao.run(sql, [issueDate, "ISSUED", customerId]);
+      if(id.id > 0){
+        InternalOrderController.lastInternalOrderId = id.id;
+      }
 
-      await this.addProductsToInternalOrder(id.id, req.body.products);
+      await this.addProductsToInternalOrder(id.id, products);
 
-      return res.status(201).json({message: "Created"});
+      return id.id;
     } catch {
-      return res.status(503).json({message: "Service Unavailable"});
+      return false;
     }
 
   }
 
   
-  changeStateOfInternalOrder = async (req, res) => {
+  changeStateOfInternalOrder = async (id, state, skuItems) => {
     try{
-      if (!Number.isInteger(parseInt(req.params.id)) ||
-          Object.keys(req.body).length > 2 ||
-          !Object.keys(req.body).includes("newState") ||
-          !this.possibleStates.includes(req.body.newState) ||
-          (Object.keys(req.body).length === 2 && !Object.keys(req.body).includes("products")) ||
-          (Object.keys(req.body).length === 2 && !req.body.products.every(p => this.validateSkuItemInInternalOrder(p)))) {
-        return res.status(422).json({ message: "Unprocessable Entity" });
-      }
+      // if (!Number.isInteger(parseInt(req.params.id)) ||
+      //     Object.keys(req.body).length > 2 ||
+      //     !Object.keys(req.body).includes("newState") ||
+      //     !this.possibleStates.includes(req.body.newState) ||
+      //     (Object.keys(req.body).length === 2 && !Object.keys(req.body).includes("products")) ||
+      //     (Object.keys(req.body).length === 2 && !req.body.products.every(p => this.validateSkuItemInInternalOrder(p)))) {
+      //   return res.status(422).json({ message: "Unprocessable Entity" });
+      // }
 
       const idSql = "SELECT ID FROM INTERNAL_ORDER WHERE ID = ?";
-      const id = await this.dao.get(idSql, [req.params.id]);
+      const idRes = await this.dao.get(idSql, [id]);
 
-      if(!id){
-        return res.status(404).json({message: "Not Found"});
+      if(idRes === undefined){
+        return -1;
       }
 
       const sql = "UPDATE INTERNAL_ORDER SET state = ? WHERE ID = ?";
 
-      await this.dao.run(sql, [req.body.newState, req.params.id]);
+      await this.dao.run(sql, [state, id]);
 
-      if(req.body.newState === "COMPLETED" && req.body.products){
-        await this.addSkuItemsToInternalOrder(req.params.id, req.body.products);
+      const products = await this.getProductsForInternalOrder(id);
+
+      await this.deleteSkuItemsFromInternalOrder(id);
+
+      if(state === "COMPLETED" && skuItems !== undefined && await this.validateSkuItemsInInternalOrder(skuItems, products)){
+        await this.addSkuItemsToInternalOrder(id, skuItems);
+      } else if(state === "COMPLETED" && skuItems !== undefined && !await this.validateSkuItemsInInternalOrder(skuItems, products)){
+        return -2;
       }
 
-      return res.status(200).json({message: "OK"});
+      return id;
 
     } catch {
-      return res.status(503).json({message: "Internal server error"});
+      return false;
     }
     
   }
 
 
 
-  deleteInternalOrder = async (req, res) => {
+  deleteInternalOrder = async (id) => {
     try{
-      if(!Number.isInteger(parseInt(req.params.id))){
-        return res.status(422).json({message: "Unprocessable Entity"});
-      }
+      // if(!Number.isInteger(parseInt(id))){
+      //   return res.status(422).json({message: "Unprocessable Entity"});
+      // }
       
       const sql = "DELETE FROM INTERNAL_ORDER WHERE ID = ?";
       const idSql = "SELECT ID FROM INTERNAL_ORDER WHERE ID = ?";
-      const id = await this.dao.get(idSql, [req.params.id]);
+      const idRes = await this.dao.get(idSql, [req.params.id]);
 
-      if(!id){
-        return res.status(404).json({message: "Not Found"});
+      if(idRes === undefined){
+        return -1;
       }
 
-      await this.dao.run(sql, [req.params.id]);
+      await this.dao.run(sql, [id]);
 
-      return res.status(200).json({message: "Success"});
+      return id;
     } catch {
-      return res.status(500).json({message: "Internal server error"});
+      return false;
     }
 
   }
-  
- }
+
+
+
+ deleteAllInternalOrders = async () => {
+  try{
+    // if(!Number.isInteger(parseInt(id))){
+    //   return res.status(422).json({message: "Unprocessable Entity"});
+    // }
+    
+    const sql = "DELETE FROM INTERNAL_ORDER";
+
+    await this.dao.run(sql, []);
+
+    return true;
+  } catch {
+    return false;
+  }
+
+  }
+
+}
 
 module.exports = InternalOrderController;
