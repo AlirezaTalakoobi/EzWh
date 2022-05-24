@@ -9,12 +9,14 @@ class SKUItemsController {
     try {
       const sql = "SELECT * FROM SKU_ITEM";
       let result = await this.dao.all(sql);
-      return result.map((sku) => ({
+
+      result = result.map((sku) => ({
         RFID: sku.RFID,
         SKUId: sku.skuID,
         Available: sku.available,
         DateOfStock: sku.dateOfStock,
       }));
+      return result;
     } catch {
       false;
     }
@@ -85,6 +87,7 @@ class SKUItemsController {
       const sql = await this.dao.all("Select * from SKU_ITEM where RFID=? ", [
         rfid,
       ]);
+
       if (sql.length === 0) {
         return { item: "Item not found" };
       } else {
@@ -102,6 +105,7 @@ class SKUItemsController {
             newDateOfStock,
             rfid,
           ]);
+          console.log(result);
           return result;
         } catch {
           return { message: "Item with new RFID already existing" };
