@@ -20,7 +20,7 @@ class PositionController {
           maxWeight: row.maxWeight,
           maxVolume: row.maxVolume,
           occupiedWeight: row.occupiedWeight,
-          occipiedVolume: row.occupiedVolume
+          occupiedVolume: row.occupiedVolume
       }));
       let ret = {
         ans : 200,
