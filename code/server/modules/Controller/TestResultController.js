@@ -7,175 +7,176 @@ class TestResultController {
     this.dao = dao;
   }
 
-  getTestResultsByRFID = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).send("422 Unprocessable Entity(validation of rfid failed)")
-    }
-    const sql = 'select * from TEST_RESULT where RFID=?';
+  getTestResultsByRFID = async (rfid) => {
     
-    const args = [req.params.rfid];
+    
     try{
-        const result = await this.dao.all(sql, args);
+        const sql = 'select * from TEST_RESULT where RFID=?';
+        const args = [rfid];
+        let result = await this.dao.all(sql, args);
         if (result.length === 0) {
-            return res.status(404).send("404 NOT FOUND");
+            let ret = {
+                ans : 404,
+                result : {}
+              }
+            return ret;
         }
-        return res.status(200).json(
-            result.map((rows)=>({
+            result = result.map((rows)=>({
                 id:rows.ID,
-                idTestDescriptor:rows.idTestDescriptor,
-                Date:rows.Date,
-                Result:rows.result
-            }))
-        )
+                idTestDescriptor:rows.testDescriptorID,
+                Date:rows.date,
+                Result:(rows.result === 1) ? true : false
+            }));
+            let ret = {
+                ans : 200,
+                result : result
+              }
+            return ret
+
     }
     catch(err){
-        res.status(500).send("500 INTERNAL SERVER ERROR");
+        let ret = {
+            ans : 500,
+            result : {}
+          };
+          return ret;
     }
   
    
 
 };
 
-getTestResultsForRFIDByID = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).send("422 Unprocessable Entity(validation of rfid failed)")
-    }
-    const sql = 'select * from TEST_RESULT where RFID=? and idTestDescriptor=?';
+getTestResultsForRFIDByID = async (rfid,id) => {
     
-    const args = [req.params.rfid, req.params.id];
     try{
-        const result = await this.dao.all(sql, args) ;
+        const sql = 'select * from TEST_RESULT where RFID=? and ID=?';
+        const args = [rfid,id];
+        let result = await this.dao.all(sql, args) ;
         if (result.length === 0) {
-            return res.status(404).send("404 NOT FOUND");
+            let ret = {
+                ans : 404,
+                result : {}
+              }
+            return ret;
         }
-        return res.status(200).json(
-            result.map((rows)=>({
+            result = result.map((rows)=>({
                 id:rows.ID,
-                idTestDescriptor:rows.idTestDescriptor,
-                Date:rows.Date,
-                Result:rows.result
-            }))
-        )
+                idTestDescriptor:rows.testDescriptorID,
+                Date:rows.date,
+                Result:(rows.result === 1) ? true : false
+            }));
+            let ret = {
+                ans : 200,
+                result : result
+              }
+            return ret
+
+
     }
     catch(err){
-        res.status(500).send("500 INTERNAL SERVER ERROR");
+        let ret = {
+            ans : 500,
+            result : {}
+          };
+          return ret;
     }
 };
 
-createTestResult = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send("422 Unprocessable Entity(validation of rfid or id failed)")
-    }
-    if (Object.keys(req.body).length === 0) {
-    return res.status(422).send("422 Unprocessable Entity(validation of request body or of rfid failed)");
-    }
-    const ApiInfo = req.body;
-    if (
-        ApiInfo === undefined ||
-        ApiInfo.rfid === undefined ||
-        ApiInfo.idTestDescriptor === undefined ||
-        ApiInfo.Date === undefined ||
-        ApiInfo.Result === undefined
-      ) {
-        return res.status(422).send("422 Unprocessable Entity(validation of request body or of rfid failed)");
-    }
+createTestResult = async (rfid, idTestDescriptor, date, Result) => {
+    
     try{
         const sql_c_1 = 'SELECT ID FROM TEST_DESCRIPTOR WHERE ID=? ';
-        const args_c_1 = [req.body.idTestDescriptor];
+        const args_c_1 = [idTestDescriptor];
         let check1 = await this.dao.all(sql_c_1,args_c_1);
         if (check1.length === 0) {
-            return res.status(404).send("404 NOT FOUND");
+            return 404;
         }
         const sql_c_2 = 'SELECT RFID FROM SKU_ITEM WHERE RFID=? ';
-        const args_c_2 = [req.body.rfid];
+        const args_c_2 = [rfid];
         let check2 = await this.dao.all(sql_c_2,args_c_2);
         if (check2.length === 0) {
-            return res.status(404).send("404 NOT FOUND");
+            return 404;
         }
-        const sql = `INSERT INTO TEST_RESULT (RFID,idTestDescriptor, date, result) VALUES(?,?,?,?) `;
-        const args = [ApiInfo.rfid, ApiInfo.idTestDescriptor, ApiInfo.Date, (ApiInfo.Result === true) ? 1 : 0];
+        const sql = `INSERT INTO TEST_RESULT (RFID,testDescriptorID, date, result, ID) VALUES(?,?,?,?,?) `;
+        let ids = await this.dao.all("select ID FROM TEST_RESULT", []);
+        let id = 1;
+        if(ids.length != 0){
+            let ids_arr = [];
+            for(let i=0;i<ids.length;i++){
+                ids_arr.push(ids[i]["ID"]);
+            }
+            id = ids_arr.reduce((previousValue, currentValue) => (previousValue >= currentValue) ? previousValue : currentValue)+1;
+        }
+        const args = [rfid, idTestDescriptor, date, Result, id];
         let result = await this.dao.run(sql, args);
         if (result.length === 0) {
-            return res.status(404).send("404 NOT FOUND");
+            return 404;
           }
-        return res.status(201).send("201 CREATED");
+        return 201
 
     }
     catch(err){
         console.log(err);
-        return res.status(503).send("503 SERVICE UNAVAILABLE");
+        return 503;
     }
 };
 
-modifyTestResult = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).send("422 Unprocessable Entity(validation of rfid or id failed)")
-    }
-    if (Object.keys(req.body).length === 0) {
-      return res.status(422).send("422 Unprocessable Entity(validation of request body or of rfid failed)");
-    }
-    const ApiInfo = req.body;
-    if (
-        ApiInfo === undefined ||
-        ApiInfo.newIdTestDescriptor === undefined ||
-        ApiInfo.newDate === undefined ||
-        ApiInfo.newResult === undefined
-      ) {
-        return res.status(422).send("422 Unprocessable Entity(validation of request body or of rfid failed)");
-      }
-
+modifyTestResult = async (newIdTestDescriptor, newDate, newResult,rfid, id) => {
     try{
         const sql_c_1 = 'SELECT ID FROM TEST_DESCRIPTOR WHERE ID=? ';
-        const args_c_1 = [req.body.idTestDescriptor];
+        const args_c_1 = [newIdTestDescriptor];
         let check1 = await this.dao.all(sql_c_1,args_c_1);
         if (check1.length === 0) {
-            return res.status(404).send("404 NOT FOUND");
+            return 404;
         }
         const sql_c_2 = 'SELECT RFID FROM SKU_ITEM WHERE RFID=? ';
-        const args_c_2 = [req.body.rfid];
+        const args_c_2 = [rfid];
         let check2 = await this.dao.all(sql_c_2,args_c_2);
         if (check2.length === 0) {
-            return res.status(404).send("404 NOT FOUND");
+            return 404;
         }
         const sql_c_3 = 'SELECT ID FROM TEST_RESULT WHERE ID=? ';
-        const args_c_3 = [req.param.id];
+        const args_c_3 = [id];
         let check3 = await this.dao.all(sql_c_3,args_c_3);
         if (check3.length === 0) {
-            return res.status(404).send("404 NOT FOUND");
+            return 404;
         }
-        const sql = "UPDATE TEST_RESULT SET idTestDescriptor = ?, date = ?, result = ?  WHERE RFID = ? and idTestDescriptor = ?";
-        const args = [ApiInfo.newIdTestDescriptor, ApiInfo.newDate, (ApiInfo.newResult === true) ? 1 : 0, req.params.rfid, req.params.id];
+        const sql = "UPDATE TEST_RESULT SET testDescriptorID = ?, date = ?, result = ?  WHERE RFID = ? and ID = ?";
+        const args = [newIdTestDescriptor, newDate, newResult,rfid, id];
         let result = await this.dao.run(sql, args);
-        return res.status(201).send("200 OK");
+        return 200;
 
     }
     catch(err){
-        return res.status(503).send("503 SERVICE UNAVAILABLE");
+        return 503;
     }
 
 };
 
-deleteTestResult = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).send("422 Unprocessable Entity(validation of rfid or id failed)")
-    }
-    const sql = "DELETE FROM TEST_RESULT WHERE RFID = ? and idTestDescriptor = ?";
-    const args = [req.params.rfid, req.params.id];
+deleteTestResult = async (rfid,id) => {
     try{
+        const sql = "DELETE FROM TEST_RESULT WHERE RFID = ? and ID = ?";
+        const args = [rfid, id];
         let result = await this.dao.run(sql, args);
-        return res.status(204).send("204 No Content");
+        return 204;
     }
     catch(err){
-        return res.status(503).send("Service Unavailable");
+        return 503;
     }
 };
 
-
+deleteAll = async () => {
+    
+    const sql = "DELETE FROM TEST_RESULT";
+    try{
+        let result = await this.dao.run(sql, []);
+        return true;
+    }
+    catch(err){
+      return false;
+    }
+  };
 }
+
 
 module.exports = TestResultController;

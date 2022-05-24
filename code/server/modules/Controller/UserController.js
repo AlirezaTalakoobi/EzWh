@@ -7,10 +7,9 @@ class UserController {
     this.dao = dao;
   }
 
-  loggedin = () => {};
   newUser = async (name, surname, username, type, password) => {
-    const salt = bcrypt.genSaltSync(saltRounds);
-    const hash = bcrypt.hashSync(password, salt);
+    const salt = await bcrypt.genSaltSync(saltRounds);
+    const hash = await bcrypt.hashSync(password, salt);
     const sql =
       "INSERT INTO USER(name, surname,email, type, password) VALUES (?,?,?,?,?)";
     try {
@@ -41,7 +40,7 @@ class UserController {
       id: user.ID,
       name: user.name,
       surname: user.surname,
-      email: user.email.replace("@ezwh", `@${user.type}`),
+      email: user.email.replace("ezwh", `${user.type}.ezwh`),
       type: user.type,
     }));
     if (result != undefined) {
@@ -51,31 +50,26 @@ class UserController {
   };
 
   getUser = async (username, password) => {
+    console.log(username);
     const sql =
-      "SELECT id, name, surname,email, password FROM USER WHERE email=?";
+      "SELECT id, name, surname,email, password, type FROM USER WHERE email=?";
     let result = await this.dao.get(sql, [username]);
     if (result != undefined) {
       const check = await bcrypt.compare(password, result.password);
+      console.log(check);
       if (check === true) {
         return {
           id: result.ID,
           username: result.email,
           name: result.name,
           surname: result.surname,
+          type: result.type,
         };
       } else if (!check) {
         return { message: "Wrong Username/Password" };
       }
     }
     return result;
-  };
-
-  logout = () => {
-    try {
-      return true;
-    } catch {
-      return false;
-    }
   };
 
   getSuppliers = async () => {
@@ -107,10 +101,11 @@ class UserController {
         return {
           message: "wrong username or oldType fields or user doesn't exists",
         };
+      } else {
+        const sql = "UPDATE USER SET type=? where email=? and type=?";
+        let result = await this.dao.run(sql, [newType, username, oldType]);
+        return result;
       }
-      const sql = "UPDATE USER SET type=? where email=? and type=?";
-      let result = await this.dao.run(sql, [newType, username, oldType]);
-      return result;
     } catch {
       return false;
     }
@@ -137,10 +132,10 @@ class UserController {
   deleteAll = async () => {
     try {
       const res = await this.dao.run("Delete from USER", []);
+
       if (res) {
         return true;
       }
-      return false;
     } catch {
       return -1;
     }
