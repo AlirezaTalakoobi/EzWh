@@ -58,6 +58,7 @@ class ItemController {
         };
         return ret;
     } catch (err) {
+      console.log(err)
       let ret = {
         ans : 500,
         result : {}
@@ -92,6 +93,7 @@ class ItemController {
       let result = await this.dao.run(sql, args);
       return 201;
     } catch (err) {
+
       console.log(err)
       return 503;
     }
