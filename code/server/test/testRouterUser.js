@@ -561,7 +561,7 @@ function deleteUser(expectedHTTPStatus, username, type) {
       type: type,
     };
     agent
-      .post("/api/users/" + username + "/" + type)
+      .delete("/api/users/" + username + "/" + type)
       .send(user)
       .then(function (res) {
         if (username !== undefined && type !== undefined) {
