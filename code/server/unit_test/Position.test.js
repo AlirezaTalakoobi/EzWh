@@ -121,7 +121,7 @@ async function testModifyPosition(positions) {
             maxWeight: res["result"][0].maxWeight,
             maxVolume: res["result"][0].maxVolume,
             occupiedWeight: res["result"][0].occupiedWeight,
-            occupiedVolume: res["result"][0].occipiedVolume
+            occupiedVolume: res["result"][0].occupiedVolume
     });
     });
 }
@@ -168,8 +168,34 @@ async function testChangePositionID(positions) {
             maxWeight: res["result"][0].maxWeight,
             maxVolume: res["result"][0].maxVolume,
             occupiedWeight: res["result"][0].occupiedWeight,
-            occupiedVolume: res["result"][0].occipiedVolume
+            occupiedVolume: res["result"][0].occupiedVolume
     });
     });
 }
 
+describe("deletePosition", () => {
+    beforeEach(async () => {
+      await uc.deleteAll();
+      await uc.createItem({
+        ID:"800234543832",
+            aisleID: "8002",
+            row: "3454",
+            col: "3412",
+            maxWeight: 1000,
+            maxVolume: 1000,
+            occupiedWeight: 0,
+            occupiedVolume: 0
+      });
+    });
+    testDeletePosition({id:"800234543832"});
+    afterEach(async () => {
+      await uc.deleteAll();
+    });
+  });
+  
+  async function testDeletePosition(positions) {
+    test("deletePosition", async () => {
+      let res = await uc.deletePosition(positions['id']);
+      expect(res['ans']).toEqual(204);
+    });
+  }

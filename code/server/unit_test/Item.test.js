@@ -1,16 +1,19 @@
 const ItemController = require("../modules/Controller/ItemController");
 const UserController = require("../modules/Controller/UserController");
 const SKUController = require("../modules/Controller/SKUController");
+const PositionController = require("../modules/Controller/PositionController");
 const DAO = require("../modules/DB/DAO");
 const dao = new DAO();
 const uc = new ItemController(dao);
 const uc_user = new UserController(dao);
 const uc_sku = new SKUController(dao);
+const uc_pos = new PositionController(dao); 
 
 
 describe("getItems", () => {
     beforeEach(async () => {
       await uc.deleteAll();
+    //   await uc_pos.deleteAll();
     //   await uc_user.deleteAll();
     //   await uc_sku.deleteAll();
     //   await uc_user.create();
@@ -183,3 +186,27 @@ async function testModifyItem(Items) {
     });
     });
 }
+
+describe("deleteItem", () => {
+    beforeEach(async () => {
+      await uc.deleteAll();
+      await uc.createItem(
+        12,
+        "a new item",
+        10.99,
+        1,
+        2
+  );
+    });
+    testDeleteItem({id:1});
+    afterEach(async () => {
+      await uc.deleteAll();
+    });
+  });
+  
+  async function testDeleteItem(Items) {
+    test("deleteItem", async () => {
+      let res = await uc.deleteItem(Items['id']);
+      expect(res['ans']).toEqual(204);
+    });
+  }

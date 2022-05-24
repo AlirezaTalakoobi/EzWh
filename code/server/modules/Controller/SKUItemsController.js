@@ -84,6 +84,7 @@ class SKUItemsController {
 
   editRFID = async (rfid, newRFID, newAvailable, newDateOfStock) => {
     try {
+      console.log(newRFID);
       const sql = await this.dao.all("Select * from SKU_ITEM where RFID=? ", [
         rfid,
       ]);
@@ -105,7 +106,6 @@ class SKUItemsController {
             newDateOfStock,
             rfid,
           ]);
-          console.log(result);
           return result;
         } catch {
           return { message: "Item with new RFID already existing" };
