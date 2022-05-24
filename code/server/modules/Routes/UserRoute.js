@@ -86,7 +86,7 @@ router.get("/suppliers", async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
-router.get("/userinfo", uc.loggedin);
+//router.get("/userinfo", uc.loggedin);
 router.post(
   "/managerSessions",
   oneOf([
