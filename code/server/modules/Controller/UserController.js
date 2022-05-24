@@ -10,7 +10,6 @@ class UserController {
   newUser = async (name, surname, username, type, password) => {
     const salt = await bcrypt.genSaltSync(saltRounds);
     const hash = await bcrypt.hashSync(password, salt);
-    console.log(hash);
     const sql =
       "INSERT INTO USER(name, surname,email, type, password) VALUES (?,?,?,?,?)";
     try {
@@ -51,6 +50,7 @@ class UserController {
   };
 
   getUser = async (username, password) => {
+    console.log(username);
     const sql =
       "SELECT id, name, surname,email, password, type FROM USER WHERE email=?";
     let result = await this.dao.get(sql, [username]);
@@ -91,7 +91,6 @@ class UserController {
     }
   };
   editUser = async (username, oldType, newType) => {
-    console.log(oldType);
     try {
       if (
         (await this.dao.get("Select * from USER where email=? and type=?", [
@@ -133,6 +132,7 @@ class UserController {
   deleteAll = async () => {
     try {
       const res = await this.dao.run("Delete from USER", []);
+
       if (res) {
         return true;
       }

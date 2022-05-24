@@ -46,7 +46,6 @@ router.post(
       req.body.type,
       req.body.password
     );
-    console.log(user);
     if (user === false) {
       return res.status(500).json({ message: "Internal Server Error" });
     } else if (user.message) {
@@ -74,19 +73,15 @@ router.get("/users", async (req, res) => {
 });
 
 /* MANAGER  */
-//router.get("/managerSessions", uc.getStoredUsers);
 router.get("/suppliers", async (req, res) => {
   const suppliers = await uc.getSuppliers();
-  if (suppliers) {
-    return res.status(200).json(suppliers);
-  }
-  if (suppliers.message) {
-    return res.status(404).json(suppliers.message);
-  } else {
+  if (suppliers.error) {
+    return res.status(404).json(suppliers.error);
+  } else if (res === false) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
+  return res.status(200).json(suppliers);
 });
-router.get("/userinfo", uc.loggedin);
 router.post(
   "/managerSessions",
   oneOf([
@@ -107,7 +102,6 @@ router.post(
   },
   async (req, res) => {
     const user = await uc.getUser(req.body.username, req.body.password);
-    console.log(user);
     if (user === undefined) {
       return res.status(404).json({ message: "User not existing" });
     } else if (user.message) {
@@ -171,7 +165,6 @@ router.post(
   },
   async (req, res) => {
     const user = await uc.getUser(req.body.username, req.body.password);
-    console.log(user);
     if (user === undefined) {
       return res.status(404).json({ message: "User not existing" });
     } else if (user.message) {
@@ -203,7 +196,7 @@ router.post(
   },
   async (req, res) => {
     const user = await uc.getUser(req.body.username, req.body.password);
-    console.log(user);
+
     if (user === undefined) {
       return res.status(404).json({ message: "User not existing" });
     } else if (user.message) {
@@ -235,7 +228,7 @@ router.post(
   },
   async (req, res) => {
     const user = await uc.getUser(req.body.username, req.body.password);
-    console.log(user);
+
     if (user === undefined) {
       return res.status(404).json({ message: "User not existing" });
     } else if (user.message) {
@@ -267,7 +260,7 @@ router.post(
   },
   async (req, res) => {
     const user = await uc.getUser(req.body.username, req.body.password);
-    console.log(user);
+
     if (user === undefined) {
       return res.status(404).json({ message: "User not existing" });
     } else if (user.message) {
@@ -311,7 +304,7 @@ router.put(
       req.body.oldType,
       req.body.newType
     );
-    console.log(user);
+
     if (user === false) {
       return res.status(500).json({ message: "generic error" });
     } else if (user.message) {
@@ -356,4 +349,13 @@ router.delete(
     }
   }
 );
+router.delete("/deleteAllUsers", async (req, res) => {
+  const result = await uc.deleteAll();
+  var httpStatusCode = 204;
+  if (!result) {
+    httpStatusCode = 500;
+  }
+  res.status(httpStatusCode).end();
+});
+
 module.exports = router;
