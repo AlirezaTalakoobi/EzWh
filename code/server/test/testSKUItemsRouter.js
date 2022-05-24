@@ -100,18 +100,6 @@ function newSKUItem(expectedHTTPStatus, RFID, SKUId, DateOfStock) {
     }
   });
 }
-// function getSKUITEMS(expectedHTTPStatus, RFID, SKUId, Available, DateOfStock) {
-//   it("getting items from the system", function (done) {
-//     agent.get("/api/skuitems/").then(function (res) {
-//       res.should.have.status(expectedHTTPStatus);
-//       res.body[0].RFID.should.equal(RFID);
-//       res.body[0].SKUId.should.equal(SKUId);
-//       res.body[0].Available.should.equal(Available);
-//       res.body[0].DateOfStock.should.equal(DateOfStock);
-//       done();
-//     });
-//   });
-// }
 
 function getSKUITEMS(expectedHTTPStatus, RFID, SKUId, Available, DateOfStock) {
   it("getting items from the system", function (done) {
