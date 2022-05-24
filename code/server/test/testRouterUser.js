@@ -337,7 +337,6 @@ function managerSessions(expectedHTTPStatus, username, password, type) {
       .post("/api/managerSessions/")
       .send(user)
       .then(function (res) {
-        console.log(res.body);
         if (
           username === undefined ||
           password.length < 8 ||

@@ -133,7 +133,6 @@ router.post(
   },
   async (req, res) => {
     const user = await uc.getUser(req.body.username, req.body.password);
-    console.log(user);
     if (user === undefined) {
       return res.status(404).json({ message: "User not existing" });
     } else if (user.message) {
