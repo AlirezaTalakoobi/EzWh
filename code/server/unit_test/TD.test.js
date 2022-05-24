@@ -1,49 +1,45 @@
 const TDController = require("../modules/Controller/TDController");
 const DAO = require("../modules/DB/DAO");
 const dao = new DAO();
-const TDC = new SKUController(dao);
+const TDC = new TDController(dao);
 
 
 describe("getItems", () => {
     beforeEach(async () => {
       await TDC.deleteAll();
-    //   await uc_user.deleteAll();
-    //   await uc_sku.deleteAll();
-    //   await uc_user.create();
-    //   await uc_sku.create(); 
-      await TDC.createItem(
-            33,
-            "a new item",
-            "Pouya",
-            1
+    
+      await TDC.TestDescriptor(
+            5,
+            "cvbc",
+            "bvnvn",
+            4
             
       );
     });
     afterEach(async () => {
         await TDC.deleteAll();
-        //   await uc_user.deleteAll();
-        //   await uc_sku.deleteAll();
+       
     });
-    testGetItems(
+    testTestDescriptor(
         {
-            id : 12,
-            description : "a new item",
-            price : 10.99,
-            SKUId : 1,
-            supplierId : 2
+            id: 5,
+            Name:"cvbc",
+            proceduredescription: "bvnvn",
+            idSKU:4
 
         });
     });
 
-async function TestTdescriptor(Items) {
+async function testTestDescriptor() {
     test("getItems", async () => {
-        let res = await TDC.TestDescriptor();
-        expect(Items).toEqual({
-            id : res["result"][0].id,
-            description : res["result"][0].description,
-            price : res["result"][0].price,
-            SKUId : res["result"][0].SKUId,
-            supplierId : res["result"][0].supplierId
+        let res = await TDC.TestDescriptor(Id);
+        console.log(res);
+        expect(Id).toEqual({
+            Id : res["result"][0].id,
+            Name : res["result"][0].description,
+            proceduredescription: res["result"][0].weight,
+            idSKU : res["result"][0].volume,
+            
     });
     });
 }
