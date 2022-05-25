@@ -124,4 +124,13 @@ router.delete("/testdescriptor/:id",  [param("id").isNumeric().not().optional()]
   }
 },td.deleteTD);
 
+router.delete("/deleteAllTD", async (req, res) => {
+  const result = await td.deleteAll();
+  var httpStatusCode = 204;
+  if (!result) {
+    httpStatusCode = 500;
+  }
+  res.status(httpStatusCode).end();
+});
+
 module.exports = router;

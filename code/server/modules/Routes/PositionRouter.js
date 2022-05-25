@@ -147,6 +147,16 @@ async (req, res) => {
 }
 );
 
+router.delete("/deleteAllPositions",
+async (req,res) => {
+  let ans = await uc.deleteAll();
+  if(ans){
+    return res.status(204).send("204 No Content");
+  }
+  else{
+      return res.status(503).send("503 Service Unavailable")
+  }
+});
 /* Clerk  */
 // router.get("/position", uc.getPosition);
 // router.put("/position/:positionID/changeID", uc.changePositionID);

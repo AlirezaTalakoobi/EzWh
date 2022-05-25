@@ -171,4 +171,15 @@ router.delete(
   su.deleteSKU
 );
 
+router.delete("/deleteAllSku",
+async (req,res) => {
+  let ans = await su.deleteAll();
+  if(ans){
+    return res.status(204).send("204 No Content");
+  }
+  else{
+      return res.status(503).send("503 Service Unavailable")
+  }
+});
+
 module.exports = router;
