@@ -449,6 +449,38 @@ WRONG INPUTS
 | SKUItems test | testDeleteItem                    |
 | SKUItems test | testDeleteItemNotFound            |
 
+### Test cases Item
+
+| Unit name      | Jest test case  |
+|----------------|-----------------|
+| Item test      | testGetItems    |
+| Item test      | testGetItemByID |
+| Item test      | testCreateItem  |
+| Item test      | testModifyItem  |
+| Item test      | testDeleteItem  |
+
+
+### Test cases Position
+
+| Unit name          | Jest test case       |
+|--------------------|----------------------|
+| Position test      | testGetPosition      |
+| Position test      | testCreatePosition   |
+| Position test      | testModifyPosition   |
+| Position test      | testChangePositionID |
+| Position test      | testDeletePosition   |
+
+
+### Test cases TestResult
+
+| Unit name          | Jest test case       |
+|--------------------|----------------------|
+| TestResult test      | testGetTestResultsByRFID      |
+| TestResult test      | testGetTestResultsForRFIDByID   |
+| TestResult test      | testModifyTestResult   |
+| TestResult test      | testChangePositionID |
+| TestResult test      | testDeleteTestResult   |
+
 ### Code coverage report
 
 ####Users Coverage
