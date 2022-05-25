@@ -39,20 +39,20 @@ describe("test get item api", () => {
 describe("test edit item api", () => {
   deleteAllData(204);
   newSKUItem(200, "12345678909876543212345678909876", "2020/11/03", undefined);
-  editUser(
+  editItem(
     200,
     "12345678909876543212345678909876",
     "12345678909876543212345678909879",
     15
   );
-  editUser(
+  editItem(
     404,
     "12345678909876543212345678909871",
     "12345678909876543212345678909877",
     1
   );
-  editUser(422);
-  editUser(422, "123456789098765432123");
+  editItem(422);
+  editItem(422, "123456789098765432123");
 });
 
 describe("test delete item api", () => {
@@ -184,7 +184,7 @@ function getSKUItemByRFID(expectedHTTPStatus, RFID, Available, DateOfStock) {
   });
 }
 
-function editUser(expectedHTTPStatus, RFID, newRFID, newAvailable) {
+function editItem(expectedHTTPStatus, RFID, newRFID, newAvailable) {
   it("edit items", function (done) {
     let item = {
       RFID: RFID,

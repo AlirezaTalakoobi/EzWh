@@ -449,12 +449,110 @@ WRONG INPUTS
 | SKUItems test | testDeleteItem                    |
 | SKUItems test | testDeleteItemNotFound            |
 
+### Test cases SKU
+
+| Unit name | Jest test case    |
+| --------- | ----------------- |
+| SKU test  | TestSKC           |
+| SKU test  | testgetSKU        |
+| SKU test  | testEtdit         |
+| SKU test  | testEtditposition |
+
+### Test cases Position
+
+| Unit name     | Jest test case       |
+| ------------- | -------------------- |
+| Position test | testgetPosition      |
+| Position test | testCreatePosition   |
+| Position test | testModifyPosition   |
+| Position test | testChangePositionID |
+| Position test | testDeletePosition   |
+
+### Test cases Internal Order
+
+| Unit name           | Jest test case                             |
+| ------------------- | ------------------------------------------ |
+| Internal Order test | testGetInternalAllOrders                   |
+| Internal Order test | testGetInternalOrdersIssued                |
+| Internal Order test | testGetInternalOrdersAccepted              |
+| Internal Order test | testGetInternalOrder                       |
+| Internal Order test | testGetInternalOrderNotFound               |
+| Internal Order test | testCreateInternalOrder                    |
+| Internal Order test | testCreateInternalOrderInvalidProducts     |
+| Internal Order test | testCreateInternalOrderInvalidCustomer     |
+| Internal Order test | testModifyStateOfInternalOrderNotCompleted |
+| Internal Order test | testModifyStateOfInternalOrderCompleted    |
+
+### Test cases Restock Order
+
+| Unit name          | Jest test case                            |
+| ------------------ | ----------------------------------------- |
+| Restock Order test | testGetRestockAllOrders                   |
+| Restock Order test | testGetRestockOrdersIssued                |
+| Restock Order test | testGetRestockOrder                       |
+| Restock Order test | testCreateRestockOrder                    |
+| Restock Order test | testCreateRestockOrderInvalidData         |
+| Restock Order test | testModifyStateOfRestockOrder             |
+| Restock Order test | testAddSkuItemsToRestockOrder             |
+| Restock Order test | testAddSkuItemsToRestockOrderInvalidItems |
+| Restock Order test | testAddTransportNoteToRestockOrder        |
+| Restock Order test | testDeleteRestockOrder                    |
+
+### Test cases Item
+
+| Unit name | Jest test case  |
+| --------- | --------------- |
+| Item test | testgetItem     |
+| Item test | testCreateItem  |
+| Item test | testModifyItem  |
+| Item test | testDeleteItem  |
+| Item test | testGetItemByID |
+
+### Test cases Return Order
+
+| Unit name         | Jest test case                                     |
+| ----------------- | -------------------------------------------------- |
+| Return Order test | testGetReturnAllOrders                             |
+| Return Order test | testGetReturnOrder                                 |
+| Return Order test | testCreateReturnOrder                              |
+| Return Order test | testCreateReturnOrderRestockOrderNotFound          |
+| Return Order test | testCreateReturnOrderInvalidItemsWrongPrice        |
+| Return Order test | testCreateReturnOrderInvalidItemsWrongSKUIdForItem |
+| Return Order test | testCreateReturnOrderInvalidItemsWrongDescription  |
+| Return Order test | testDeleteReturnOrder                              |
+
+### Test cases Test Descriptor
+
+| Unit name            | Jest test case         |
+| -------------------- | ---------------------- |
+| Test Descriptor test | newTestDescriptor      |
+| Test Descriptor test | getTestDescriptionById |
+| Test Descriptor test | testsetTD              |
+| Test Descriptor test | testnewDC              |
+| Test Descriptor test | testEtditbyId          |
+
+### Test cases Test Result
+
+| Unit name        | Jest test case            |
+| ---------------- | ------------------------- |
+| Test Result test | testGetTestResultsByRFID  |
+| Test Result test | getTestResultsForRFIDByID |
+| Test Result test | testCreateTestResult      |
+| Test Result test | testModifyTestResult      |
+| Test Result test | testDeleteTestResult      |
+
 ### Code coverage report
 
 ####Users Coverage
 ![image](/Unit%20Tests%20Coverage/Schermata%202022-05-25%20alle%2016.06.22.png)
 ####SKUItems Coverage (**SKU is checked in another test coverage**)
 ![image](/Unit%20Tests%20Coverage/Schermata%202022-05-25%20alle%2016.06.41.png)
+####Item Coverage
+![image](/Unit%20Tests%20Coverage/Schermata%202022-05-25%20alle%2023.33.55.png)
+####Item Coverage
+![image](/Unit%20Tests%20Coverage/Schermata%202022-05-25%20alle%2023.42.37.png)
+####Restock Orders Coverage
+![image](/Unit%20Tests%20Coverage/Schermata%202022-05-25%20alle%2023.44.40.png)
 
 ### Loop coverage analysis
 
