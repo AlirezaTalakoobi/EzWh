@@ -42,11 +42,11 @@ describe('test TD apis', () => {
     // UpdateTDPositionByID(200,11,newitem)
     
      getTD(200,item);
-     getskuTDId(200, 49, item);
+     getskuTDId(200, 52, item);
      newTD(200, item)
-     UpdateTDByID(200,49,newitem)
+     UpdateTDByID(200,52,newitem)
     // deleteItem(204,100);
-      deleteTD(422,49);
+      deleteTD(200,52);
 
 
     // });
