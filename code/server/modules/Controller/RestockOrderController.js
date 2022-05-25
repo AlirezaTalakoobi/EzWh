@@ -267,11 +267,15 @@ class RestockOrderController {
       //     !req.body.skuItems.every(si => this.validateSkuItemInRestockOrder(si))) {
       //   return res.status(422).json({ message: "Unprocessable server entity" });
       // }      
-      const idSql = "SELECT ID FROM RESTOCK_ORDER WHERE ID = ? AND state = ?";
-      const idRes = await this.dao.get(idSql, [id, "DELIVERED"]);
+      const idSql = "SELECT ID, state FROM RESTOCK_ORDER WHERE ID = ?";
+      const idRes = await this.dao.get(idSql, [id]);
 
       if(idRes === undefined){
         return -1;
+      }
+
+      if(idRes.state !== "DELIVERED"){
+        return -3;
       }
 
       const products = await this.getProductsForRestockOrder(id);
@@ -299,15 +303,7 @@ class RestockOrderController {
 
   addTransportNoteToRestockOrder = async (id, transportNote) => {
     try {
-      // if (!Number.isInteger(parseInt(req.params.id)) ||
-      //     Object.keys(req.body).length !== 1 ||
-      //     !Object.keys(req.body).includes("transportNote") ||
-      //     !Object.keys(req.body.transportNote).length !== 1 ||
-      //     !Object.keys(req.body.transportNote).includes("deliveryDate") ||
-      //     !dayjs(req.body.transportNote.deliveryDate)) {
-      //   return res.status(422).json({ message: "Unprocessable Entity" });
-      // }
-
+      
       const idSql = "SELECT ID, state FROM RESTOCK_ORDER WHERE ID = ?";
       const result = await this.dao.get(idSql, [id]);
       

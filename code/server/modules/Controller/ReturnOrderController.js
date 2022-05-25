@@ -123,7 +123,7 @@ class ReturnOrderController {
       
       const sql = "DELETE FROM RETURN_ORDER WHERE ID = ?";
       const idSql = "SELECT ID FROM RETURN_ORDER WHERE ID = ?";
-      const idRes = await this.dao.get(idSql, [req.params.id]);
+      const idRes = await this.dao.get(idSql, [id]);
 
       if(idRes === undefined){
         return -1;

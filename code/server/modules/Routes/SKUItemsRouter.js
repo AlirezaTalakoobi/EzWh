@@ -158,4 +158,18 @@ router.delete("/deleteAllSKUItems", async (req, res) => {
   }
   res.status(httpStatusCode).end();
 });
+
+
+router.delete(
+  "/skuitems",
+  async (req, res) => {
+    const result = await sic.deleteAll();
+    if (result === false) {
+      return res.status(500).json({ message: "generic error" });
+    } else {
+      return res.status(204).end();
+    }
+  }
+);
+
 module.exports = router;

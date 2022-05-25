@@ -130,4 +130,15 @@ async (req,res) => {
   }
 });
 
+router.delete("/items",
+async (req,res) => {
+  let ans = await uc.deleteAll();
+  if(ans){
+    return res.status(204).send("204 No Content");
+  }
+  else{
+      return res.status(503).send("503 Service Unavailable");
+  }
+});
+
 module.exports = router;

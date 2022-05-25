@@ -58,7 +58,7 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: "Request Format Error" });
+      return res.status(422).json({ error: "Request Format Error" });
     }
     next();
   },
@@ -91,6 +91,18 @@ router.delete(
     }
     if(orderId === -1){
       return res.status(404).json({error: "Order Not Found"});
+    }
+    return res.status(204).json(orderId);
+  }
+);
+
+
+router.delete(
+  "/returnOrders",
+  async (req, res) => {
+    const orderId = await sic.deleteAllReturnOrders();
+    if(!orderId){
+      return res.status(503).json({error: "Service Unavailable"});
     }
     return res.status(204).json(orderId);
   }

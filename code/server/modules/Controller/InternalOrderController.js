@@ -266,7 +266,7 @@ class InternalOrderController {
       
       const sql = "DELETE FROM INTERNAL_ORDER WHERE ID = ?";
       const idSql = "SELECT ID FROM INTERNAL_ORDER WHERE ID = ?";
-      const idRes = await this.dao.get(idSql, [req.params.id]);
+      const idRes = await this.dao.get(idSql, [id]);
 
       if(idRes === undefined){
         return -1;
@@ -283,20 +283,20 @@ class InternalOrderController {
 
 
 
- deleteAllInternalOrders = async () => {
-  try{
-    // if(!Number.isInteger(parseInt(id))){
-    //   return res.status(422).json({message: "Unprocessable Entity"});
-    // }
-    
-    const sql = "DELETE FROM INTERNAL_ORDER";
+  deleteAllInternalOrders = async () => {
+    try{
+      // if(!Number.isInteger(parseInt(id))){
+      //   return res.status(422).json({message: "Unprocessable Entity"});
+      // }
+      
+      const sql = "DELETE FROM INTERNAL_ORDER";
 
-    await this.dao.run(sql, []);
+      await this.dao.run(sql, []);
 
-    return true;
-  } catch {
-    return false;
-  }
+      return true;
+    } catch {
+      return false;
+    }
 
   }
 

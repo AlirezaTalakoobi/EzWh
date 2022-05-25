@@ -182,4 +182,18 @@ async (req,res) => {
   }
 });
 
+
+router.delete(
+  "/skus",
+  async (req, res) => {
+    const result = await su.deleteAllSKU();
+    if (result == 1) {
+      return res.status(500).json("Internal Server Error");
+    } else {
+      return res.status(204).json({ message: "All skus deleted" });
+    }
+  }
+);
+
+
 module.exports = router;
