@@ -553,6 +553,20 @@ WRONG INPUTS
 ![image](/Unit%20Tests%20Coverage/Schermata%202022-05-25%20alle%2023.42.37.png)
 ####Restock Orders Coverage
 ![image](/Unit%20Tests%20Coverage/Schermata%202022-05-25%20alle%2023.44.40.png)
+####Internal Orders Coverage
+![image](/Unit%20Tests%20Coverage/Schermata%202022-05-25%20alle%2023.47.09.png)
+####Return Orders Coverage
+![image](/Unit%20Tests%20Coverage/Schermata%202022-05-25%20alle%2023.48.32.png)
+####SKU Coverage
+![image](/Unit%20Tests%20Coverage/Schermata%202022-05-25%20alle%2023.50.18.png)
+
+#### Test Descriptor Coverage
+
+![image](/Unit%20Tests%20Coverage/Schermata%202022-05-25%20alle%2023.51.29.png)
+
+#### Test Result Coverage
+
+![image](/Unit%20Tests%20Coverage/Schermata%202022-05-25%20alle%2023.52.17.png)
 
 ### Loop coverage analysis
 
