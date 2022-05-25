@@ -88,7 +88,7 @@ router.post(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: "Request Format Incorrect" });
+      return res.status(422).json({ error: "Request Format Incorrect" });
     }
     next();
   },
@@ -123,7 +123,7 @@ router.put(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: "Request Format Incorrect" });
+      return res.status(422).json({ error: "Request Format Incorrect" });
     }
     next();
   },
@@ -165,6 +165,9 @@ router.put(
     if(orderId === -2){
         return res.status(422).json({error: "Invalid SKU Items"});
     }
+    if(orderId === -3){
+        return res.status(422).json({error: "Order Not In Delivered State"});
+    }
     return res.status(200).json(orderId);
   }
 );
@@ -179,7 +182,7 @@ router.put(
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: "Request Format Incorrect" });
+      return res.status(422).json({ error: "Request Format Incorrect" });
     }
     next();
   },
@@ -220,5 +223,19 @@ router.delete(
   }
 );
 
+
+router.delete(
+  "/restockOrders",
+  async (req, res) => {
+    const orderId = await sic.deleteAllRestockOrders();
+    if(!orderId){
+      return res.status(503).json({error: "Service Unavailable"});
+    }
+    return res.status(204).json({message: "All restock orders deleted"});
+  }
+);
+
 module.exports = router;
+
+
 
