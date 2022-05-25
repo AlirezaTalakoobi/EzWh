@@ -3,24 +3,12 @@
 const dayjs = require('dayjs');
 
 class RestockOrderController {
-  static lastRestockOrderId = 1;
+
   constructor(dao) {
     this.dao = dao;
     this.possibleStates = ["ISSUED", "DELIVERY", "DELIVERED", "TESTED", "COMPLETEDRETURN", "COMPLETED"];
   }
 
-  // validateRestockOrder = (restockOrder) => {
-  //   if(Object.keys(restockOrder).length !== 3 ||
-  //     !Object.keys(restockOrder).includes("issueDate") ||
-  //     !Object.keys(restockOrder).includes("products") ||
-  //     !Object.keys(restockOrder).includes("supplierId") ||
-  //     !dayjs(restockOrder.issueDate, "YYYY/MM/DD HH:mm").isValid() ||
-  //     !Number.isInteger(restockOrder.supplierId) ||
-  //     !restockOrder.products.every(p => this.validateProductInRestockOrder(p))) {
-  //     return false;
-  //   }
-  //   return true;
-  // }
 
   validateProductsInRestockOrder = async (supplierId, products) => {
     const itemSql = "SELECT ID, price FROM ITEM WHERE supplierID = ? AND skuID = ?";
@@ -38,6 +26,7 @@ class RestockOrderController {
   validateSkuItemsInRestockOrder = async (skuItems, products) => {
     const skus = products.map(p => ({skuID: p.SKUId, max: p.qty, current: 0}));
     const itemSql = "SELECT RFID FROM SKU_ITEM WHERE RFID = ?";
+
     for(let skuItem of skuItems){
       let sku = skus.find(s => s.skuID === skuItem.SKUId);
       let rfid = await this.dao.get(itemSql, [skuItem.rfid]);
@@ -130,10 +119,6 @@ class RestockOrderController {
 
   getRestockOrder = async (id) => {
     try{
-      // if(!Number.isInteger(parseInt(id))){
-      //   //return res.status(422).json({message: "Unprocessable Entity"});
-      //   return {message: "Unprocessable Entity"};
-      // }
       const sql = "SELECT ID, issueDate, state, supplierID, transportNote FROM RESTOCK_ORDER WHERE ID = ?";
       const result = await this.dao.get(sql, [id]);
       if(!result){
@@ -233,9 +218,6 @@ class RestockOrderController {
       const sql = "INSERT INTO RESTOCK_ORDER (issueDate, state, supplierID) VALUES (?,?,?)";
 
       const id = await this.dao.run(sql, [issueDate, "ISSUED", supplierId]);
-      if(id.id > 0){
-        RestockOrderController.lastRestockOrderId = id.id ;
-      }
 
       await this.addProductsToRestockOrder(id.id, supplierId, products);
 

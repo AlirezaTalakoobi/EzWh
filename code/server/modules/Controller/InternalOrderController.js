@@ -23,10 +23,10 @@ class InternalOrderController {
 
   validateSkuItemsInInternalOrder = async (skuItems, products) => {
     const skus = products.map(p => ({skuID: p.SKUId, max: p.qty, current: 0}));
-    const itemSql = "SELECT RFID FROM SKU_ITEM WHERE RFID = ? AND available > ?";
+    const itemSql = "SELECT RFID FROM SKU_ITEM WHERE RFID = ?";
     for(let skuItem of skuItems){
       let sku = skus.find(s => s.skuID === skuItem.SkuId);
-      let rfid = await this.dao.get(itemSql, [skuItem.RFID, 0]);
+      let rfid = await this.dao.get(itemSql, [skuItem.RFID]);
       if(sku === undefined || rfid === undefined || sku.current >= sku.max){
         return false;
       }
@@ -226,14 +226,6 @@ class InternalOrderController {
   
   changeStateOfInternalOrder = async (id, state, skuItems) => {
     try{
-      // if (!Number.isInteger(parseInt(req.params.id)) ||
-      //     Object.keys(req.body).length > 2 ||
-      //     !Object.keys(req.body).includes("newState") ||
-      //     !this.possibleStates.includes(req.body.newState) ||
-      //     (Object.keys(req.body).length === 2 && !Object.keys(req.body).includes("products")) ||
-      //     (Object.keys(req.body).length === 2 && !req.body.products.every(p => this.validateSkuItemInInternalOrder(p)))) {
-      //   return res.status(422).json({ message: "Unprocessable Entity" });
-      // }
 
       const idSql = "SELECT ID FROM INTERNAL_ORDER WHERE ID = ?";
       const idRes = await this.dao.get(idSql, [id]);

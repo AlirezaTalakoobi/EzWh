@@ -1,106 +1,112 @@
 const restockC = require("../modules/Controller/RestockOrderController");
 const userC = require("../modules/Controller/UserController");
 const skuC = require("../modules/Controller/SKUController");
+const itemC = require("../modules/Controller/ItemController");
+const skuItemC = require("../modules/Controller/SKUItemsController");
+
 const DAO = require("../modules/DB/DAO");
+
 const { expect } = require("chai");
+
 const dao = new DAO();
+
 const rc = new restockC(dao);
 const uc = new userC(dao);
 const sc = new skuC(dao);
-
+const ic = new itemC(dao);
+const sic = new skuItemC(dao);
 
 
 describe("Get restock orders", () => {
-  let userId = 1;
-  let skus = {first: 1, second: 2};
-  let orderId;
 
   beforeEach(async () => {
       await rc.deleteAllRestockOrders();
-      await rc.createRestockOrder("2021/11/29 09:33", userId, [{SKUId: skus.second, description: "New super cool mountain bike: CANYON STOIC 4", price: 1700, qty: 5}]);
-      await rc.createRestockOrder("2022/05/05 09:33", userId, [{SKUId: skus.first, description: "Sweet restock of requested Acer Aspire 3", price: 170, qty: 10}]);
-      //await uc.deleteAll();
-      //await sc.deleteAllSkus();
-      //newSKU
-      //userId = await uc.newUser("Giulio", "Sunder", "gs@ezwh.com", "supplier", "hello");
+      await uc.deleteAll();
+      await sc.deleteAllSKU();
+      await ic.deleteAll();
   })
-  testGetRestockAllOrders([{
-    issueDate: "2021/11/29 09:33",
-    state: "ISSUED",
-    skuItems: [],
-    supplierId: userId,
-    products: [{SKUId: skus.second, description: "New super cool mountain bike: CANYON STOIC 4", price: 1700, qty: 5}]
-  }, {
-    issueDate: "2022/05/05 09:33",
-    state: "ISSUED",
-    skuItems: [],
-    supplierId: userId,
-    products: [{SKUId: skus.first, description: "Sweet restock of requested Acer Aspire 3", price: 170, qty: 10}]
-  }]);
+  testGetRestockAllOrders();
 });
 
 
-async function testGetRestockAllOrders(orders){
-  test("getRestockOrder", async () => {
+async function testGetRestockAllOrders(){
+  test("getRestockOrders", async () => {
+    const user = await uc.newUser("Michael", "Jordan", "mj@ezwh.com", "supplier", "MJtheGOAT");
+    
+    const sku1 = await sc.newSKU({description: "Acer Aspire 3", weight: 100, volume: 20, price: 237, availableQuantity: 15});
+    const sku2 = await sc.newSKU({description: "Canyon Stoic 4", weight: 14000, volume: 400, price: 1789, availableQuantity: 10});
+
+    await ic.createItem(1, "official supply for acer aspire", 250, sku1.id, user.id);
+    await ic.createItem(2, "official supply for canyon stoic", 1500, sku2.id, user.id);
+
+    const order1 = await rc. createRestockOrder("2021/11/29 09:33", user.id, [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1500, qty: 5}]);
+    const order2 = await rc. createRestockOrder("2022/05/05 09:33", user.id, [{SKUId: sku1.id, description: "Sweet restock of requested Acer Aspire 3", price: 250, qty: 10}]);
+
     const result = await rc.getRestockOrders();
+    
+    const expectedOrders = [{
+      id: order1,
+      issueDate: "2021/11/29 09:33",
+      state: "ISSUED",
+      skuItems: [],
+      supplierId: user.id,
+      products: [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1500, qty: 5}]
+    }, {
+      id: order2,
+      issueDate: "2022/05/05 09:33",
+      state: "ISSUED",
+      skuItems: [],
+      supplierId: user.id,
+      products: [{SKUId: sku1.id, description: "Sweet restock of requested Acer Aspire 3", price: 250, qty: 10}]
+    }]
+    
     expect(result.length).equal(2);
-    expect(result[0]).to.deep.equal({
-      id: restockC.lastRestockOrderId - 1,
-      state: orders[0].state,
-      skuItems: orders[0].skuItems,
-      issueDate: orders[0].issueDate,
-      supplierId: orders[0].supplierId,
-      products: orders[0].products
-    });
-    expect(result[1]).to.deep.equal({
-      id: restockC.lastRestockOrderId,
-      state: orders[1].state,
-      skuItems: orders[1].skuItems,
-      issueDate: orders[1].issueDate,
-      supplierId: orders[1].supplierId,
-      products: orders[1].products
-    })
+    expect(result).to.deep.equal(expectedOrders);
   })
 }
 
 
 
 describe("Get restock orders issued", () => {
-  let userId = 1;
-  let skus = {first: 1, second: 2};
-  
+
   beforeEach(async () => {
-      await rc.deleteAllRestockOrders();
-      await rc. createRestockOrder("2021/11/29 09:33", userId, [{SKUId: skus.second, description: "New super cool mountain bike: CANYON STOIC 4", price: 1700, qty: 5}]);
-      let orderId = await rc. createRestockOrder("2022/05/05 09:33", userId, [{SKUId: skus.first, description: "Sweet restock of requested Acer Aspire 3", price: 170, qty: 10}]);
-      await rc.changeStateOfRestockOrder(orderId, "DELIVERED");
-      //await uc.deleteAll();
-      //await sc.deleteAllSkus();
-      //newSKU
-      //userId = await uc.newUser("Giulio", "Sunder", "gs@ezwh.com", "supplier", "hello");
+    await rc.deleteAllRestockOrders();
+    await uc.deleteAll();
+    await sc.deleteAllSKU();
+    await ic.deleteAll();
   })
-  testGetRestockOrdersIssued([{
-    issueDate: "2021/11/29 09:33",
-    state: "ISSUED",
-    skuItems: [],
-    supplierId: userId,
-    products: [{SKUId: skus.second, description: "New super cool mountain bike: CANYON STOIC 4", price: 1700, qty: 5}]
-  }]);
+
+  testGetRestockOrdersIssued();
 });
 
 
 async function testGetRestockOrdersIssued(orders){
   test("getRestockOrder", async () => {
+    const user = await uc.newUser("Michael", "Jordan", "mj@ezwh.com", "supplier", "MJtheGOAT");
+    
+    const sku1 = await sc.newSKU({description: "Acer Aspire 3", weight: 100, volume: 20, price: 237, availableQuantity: 15});
+    const sku2 = await sc.newSKU({description: "Canyon Stoic 4", weight: 14000, volume: 400, price: 1789, availableQuantity: 10});
+
+    await ic.createItem(1, "official supply for acer aspire", 250, sku1.id, user.id);
+    await ic.createItem(2, "official supply for canyon stoic", 1500, sku2.id, user.id);
+
+    const order1 = await rc. createRestockOrder("2021/11/29 09:33", user.id, [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1500, qty: 5}]);
+    const order2 = await rc. createRestockOrder("2022/05/05 09:33", user.id, [{SKUId: sku1.id, description: "Sweet restock of requested Acer Aspire 3", price: 250, qty: 10}]);
+
+    await rc.changeStateOfRestockOrder(order2, "DELIVERY");
     const result = await rc.getRestockOrdersIssued();
+    
+    const expectedOrders = [{
+      id: order1,
+      issueDate: "2021/11/29 09:33",
+      state: "ISSUED",
+      skuItems: [],
+      supplierId: user.id,
+      products: [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1500, qty: 5}]
+    }]
+    
     expect(result.length).equal(1);
-    expect(result[0]).to.deep.equal({
-      id: restockC.lastRestockOrderId - 1,
-      state: orders[0].state,
-      skuItems: orders[0].skuItems,
-      issueDate: orders[0].issueDate,
-      supplierId: orders[0].supplierId,
-      products: orders[0].products
-    });
+    expect(result).to.deep.equal(expectedOrders);
   })
 }
 
@@ -108,32 +114,43 @@ async function testGetRestockOrdersIssued(orders){
 
 
 describe("Get restock order by id", () => {
-  let userId = 1;
-  let skus = {first: 1, second: 2};
 
   beforeEach(async () => {
-      await rc.deleteAllRestockOrders();
-      await rc. createRestockOrder("2021/11/29 09:33", userId, [{SKUId: skus.second, description: "New super cool mountain bike: CANYON STOIC 4", price: 1700, qty: 5}]);
-      //await uc.deleteAll();
-      //await sc.deleteAllSkus();
-      //newSKU
-      //userId = await uc.newUser("Giulio", "Sunder", "gs@ezwh.com", "supplier", "hello");
+    await rc.deleteAllRestockOrders();
+    await uc.deleteAll();
+    await sc.deleteAllSKU();
+    await ic.deleteAll();
   })
-  testGetRestockOrder("2021/11/29 09:33", userId, [{SKUId: skus.second, description: "New super cool mountain bike: CANYON STOIC 4", price: 1700, qty: 5}]);
+
+  testGetRestockOrder();
 });
 
 
-async function testGetRestockOrder(issueDate, supplierId, products){
+async function testGetRestockOrder(){
   test("getRestockOrder", async () => {
-    const order = await rc.getRestockOrder(restockC.lastRestockOrderId);
-    expect(order).to.deep.equal({
-      id: restockC.lastRestockOrderId,
+    const user = await uc.newUser("Michael", "Jordan", "mj@ezwh.com", "supplier", "MJtheGOAT");
+    
+    const sku1 = await sc.newSKU({description: "Acer Aspire 3", weight: 100, volume: 20, price: 237, availableQuantity: 15});
+    const sku2 = await sc.newSKU({description: "Canyon Stoic 4", weight: 14000, volume: 400, price: 1789, availableQuantity: 10});
+
+    await ic.createItem(1, "official supply for acer aspire", 250, sku1.id, user.id);
+    await ic.createItem(2, "official supply for canyon stoic", 1500, sku2.id, user.id);
+
+    const order1 = await rc. createRestockOrder("2021/11/29 09:33", user.id, [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1500, qty: 5}]);
+    const order2 = await rc. createRestockOrder("2022/05/05 09:33", user.id, [{SKUId: sku1.id, description: "Sweet restock of requested Acer Aspire 3", price: 250, qty: 10}]);
+
+    const result = await rc.getRestockOrder(order1);
+    
+    const expectedOrder = {
+      id: order1,
+      issueDate: "2021/11/29 09:33",
       state: "ISSUED",
       skuItems: [],
-      issueDate: issueDate,
-      supplierId: supplierId,
-      products: products
-    })
+      supplierId: user.id,
+      products: [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1500, qty: 5}]
+    }
+
+    expect(result).to.deep.equal(expectedOrder)
   })
 }
 
@@ -142,122 +159,254 @@ async function testGetRestockOrder(issueDate, supplierId, products){
 
 
 describe("Create new restock order and retrieve it by id", () => {
-    let userId = 1;
-    let skus = {first: 1, second: 2};
 
     beforeEach(async () => {
-        await rc.deleteAllRestockOrders();
-        //await uc.deleteAll();
-        //await sc.deleteAllSkus();
-        //newSKU
-        //userId = await uc.newUser("Giulio", "Sunder", "gs@ezwh.com", "supplier", "hello");
-    })
-    testCreateRestockOrder("2021/11/29 09:33", userId, [{SKUId: skus.second, description: "New super cool mountain bike: CANYON STOIC 4", price: 1700, qty: 5}]);
+      await rc.deleteAllRestockOrders();
+      await uc.deleteAll();
+      await sc.deleteAllSKU();
+      await ic.deleteAll();
+    });
+
+    testCreateRestockOrder();
+    testCreateRestockOrderInvalidData();
 });
 
 
-async function testCreateRestockOrder(issueDate, supplierId, products){
+async function testCreateRestockOrder(){
   test("createRestockOrder", async () => {
-    const orderId = await rc.createRestockOrder(issueDate, supplierId, products);
-    const order = await rc.getRestockOrder(orderId);
-    expect(orderId).greaterThanOrEqual(1);
-    expect(order).to.deep.equal({
-      id: orderId,
+    const user = await uc.newUser("Michael", "Jordan", "mj@ezwh.com", "supplier", "MJtheGOAT");
+    
+    const sku1 = await sc.newSKU({description: "Acer Aspire 3", weight: 100, volume: 20, price: 237, availableQuantity: 15});
+    const sku2 = await sc.newSKU({description: "Canyon Stoic 4", weight: 14000, volume: 400, price: 1789, availableQuantity: 10});
+
+    await ic.createItem(1, "official supply for acer aspire", 250, sku1.id, user.id);
+    await ic.createItem(2, "official supply for canyon stoic", 1500, sku2.id, user.id);
+
+    const order1 = await rc. createRestockOrder("2021/11/29 09:33", user.id, [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1500, qty: 5}]);
+    
+    const result = await rc.getRestockOrder(order1);
+    
+    const expectedOrder = {
+      id: order1,
+      issueDate: "2021/11/29 09:33",
       state: "ISSUED",
       skuItems: [],
-      issueDate: issueDate,
-      supplierId: supplierId,
-      products: products
-    })
+      supplierId: user.id,
+      products: [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1500, qty: 5}]
+    }
+
+    expect(order1).greaterThanOrEqual(1);
+    expect(result).to.deep.equal(expectedOrder);
+  })
+}
+
+
+
+async function testCreateRestockOrderInvalidData(){
+  test("createRestockOrderInvalidData", async () => {
+    const user = await uc.newUser("Michael", "Jordan", "mj@ezwh.com", "supplier", "MJtheGOAT");
+    
+    const sku2 = await sc.newSKU({description: "Canyon Stoic 4", weight: 14000, volume: 400, price: 1789, availableQuantity: 10});
+
+    await ic.createItem(2, "official supply for canyon stoic", 1500, sku2.id, user.id);
+
+    const order1 = await rc. createRestockOrder("2021/11/29 09:33", user.id, [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1550, qty: 5}]);
+    
+    const result = await rc.getRestockOrder(order1);
+
+    expect(order1).equal(-1);
+    expect(result).to.deep.equal(-1);
   })
 }
 
 
 
 describe("Modify state of restock order and retrieve it by id", () => {
-  let userId = 1;
-  let skus = {first: 1, second: 2};
 
   beforeEach(async () => {
-      await rc.deleteAllRestockOrders();
-      await rc. createRestockOrder("2021/11/29 09:33", userId, [{SKUId: skus.second, description: "New super cool mountain bike: CANYON STOIC 4", price: 1700, qty: 5}]);
+    await rc.deleteAllRestockOrders();
+    await uc.deleteAll();
+    await sc.deleteAllSKU();
+    await ic.deleteAll();
+  });
 
-      //await uc.deleteAll();
-      //await sc.deleteAllSkus();
-      //newSKU
-      //userId = await uc.newUser("Giulio", "Sunder", "gs@ezwh.com", "supplier", "hello");
-  })
-  testModifyStateOfRestockOrder("DELIVERED");
+  testModifyStateOfRestockOrder();
 });
 
 
-async function testModifyStateOfRestockOrder(newState) {
+async function testModifyStateOfRestockOrder() {
   test("changeStateOfRestockOrder", async () => {
-    await rc.changeStateOfRestockOrder(restockC.lastRestockOrderId, newState);
-    const order = await rc.getRestockOrder(restockC.lastRestockOrderId);
+    const user = await uc.newUser("Michael", "Jordan", "mj@ezwh.com", "supplier", "MJtheGOAT");
+    
+    const sku1 = await sc.newSKU({description: "Acer Aspire 3", weight: 100, volume: 20, price: 237, availableQuantity: 15});
+    const sku2 = await sc.newSKU({description: "Canyon Stoic 4", weight: 14000, volume: 400, price: 1789, availableQuantity: 10});
+
+    await ic.createItem(1, "official supply for acer aspire", 250, sku1.id, user.id);
+    await ic.createItem(2, "official supply for canyon stoic", 1500, sku2.id, user.id);
+
+    const order1 = await rc. createRestockOrder("2021/11/29 09:33", user.id, [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1500, qty: 5}]);
+    
+    await rc.changeStateOfRestockOrder(order1, "DELIVERED");
+    const result = await rc.getRestockOrder(order1);
     //console.log(res);
-    expect(order).to.deep.equal({
-        id: restockC.lastRestockOrderId,
-        state: newState,
-        skuItems: order.skuItems,
-        issueDate: order.issueDate,
-        supplierId: order.supplierId,
-        products: order.products
-    });
+    const expectedOrder = {
+      id: order1,
+      issueDate: "2021/11/29 09:33",
+      state: "DELIVERED",
+      skuItems: [],
+      supplierId: user.id,
+      products: [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1500, qty: 5}]
+    }
+
+    expect(result).to.deep.equal(expectedOrder);
   });
 }
 
 
 describe("Add sku items to restock order", () => {
-  let userId = 1;
-  let skus = {first: 1, second: 2};
 
   beforeEach(async () => {
-      await rc.deleteAllRestockOrders();
-      let orderId = await rc. createRestockOrder("2021/11/29 09:33", userId, [{SKUId: skus.second, description: "New super cool mountain bike: CANYON STOIC 4", price: 1700, qty: 5}]);
-      await rc.changeStateOfRestockOrder(orderId, "DELIVERED");
-      //await uc.deleteAll();
-      //await sc.deleteAllSkus();
-      //newSKU
-      //userId = await uc.newUser("Giulio", "Sunder", "gs@ezwh.com", "supplier", "hello");
-  })
-  testAddSkuItemsToRestockOrder([{"SKUId":2,"rfid":"01934560000000000080002345678901"}]);
+    await rc.deleteAllRestockOrders();
+    await uc.deleteAll();
+    await sc.deleteAllSKU();
+    await ic.deleteAll();
+    await sic.deleteAll();
+  });
+
+  testAddSkuItemsToRestockOrder();
+  testAddSkuItemsToRestockOrderInvalidItems();
 });
 
 
-async function testAddSkuItemsToRestockOrder(skuItems) {
+async function testAddSkuItemsToRestockOrder() {
   test("addSkuItemsToRestockOrder", async () => {
-    const result = await rc.addSkuItemsToRestockOrder(restockC.lastRestockOrderId, skuItems);
-    const allItems = await rc.getSkuItemsForRestockOrder(restockC.lastRestockOrderId);
-    expect(result).equal(restockC.lastRestockOrderId);
-    expect(skuItems.every(newItem => allItems.find(item => item.rfid === newItem.rfid))).equal(true);
+    const user = await uc.newUser("Michael", "Jordan", "mj@ezwh.com", "supplier", "MJtheGOAT");
+    
+    const sku1 = await sc.newSKU({description: "Acer Aspire 3", weight: 100, volume: 20, price: 237, availableQuantity: 15});
+
+    await ic.createItem(1, "official supply for acer aspire", 250, sku1.id, user.id);
+
+    const order2 = await rc. createRestockOrder("2022/05/05 09:33", user.id, [{SKUId: sku1.id, description: "Sweet restock of requested Acer Aspire 3", price: 250, qty: 10}]);
+    await rc.changeStateOfRestockOrder(order2, "DELIVERED");
+
+    const skuItems = [{SKUId: sku1.id, rfid: "01234567890123456789012345678901"}, {SKUId: sku1.id, rfid: "98765432109876543210987654321098"}];
+  
+    await rc.addSkuItemsToRestockOrder(order2, skuItems);
+    const result = await rc.getRestockOrder(order2);
+
+    const expectedOrder = {
+      id: order2,
+      issueDate:"2022/05/05 09:33",
+      state: "DELIVERED",
+      products: [{SKUId: sku1.id, description:"Sweet restock of requested Acer Aspire 3", price: 250, qty: 10}],
+      supplierId : user.id,
+      skuItems: [{SKUId: skuItems[0].SKUId, rfid: skuItems[0].rfid}, {SKUId: skuItems[1].SKUId, rfid: skuItems[1].rfid}]
+    }
+
+    expect(result).to.deep.equal(expectedOrder);
+  });
+}
+
+
+async function testAddSkuItemsToRestockOrderInvalidItems() {
+  test("addSkuItemsToRestockOrderInvalidItems", async () => {
+    const user = await uc.newUser("Michael", "Jordan", "mj@ezwh.com", "supplier", "MJtheGOAT");
+    
+    const sku1 = await sc.newSKU({description: "Acer Aspire 3", weight: 100, volume: 20, price: 237, availableQuantity: 15});
+
+    await ic.createItem(1, "official supply for acer aspire", 250, sku1.id, user.id);
+
+    const order2 = await rc. createRestockOrder("2022/05/05 09:33", user.id, [{SKUId: sku1.id, description: "Sweet restock of requested Acer Aspire 3", price: 250, qty: 10}]);
+    await rc.changeStateOfRestockOrder(order2, "DELIVERED");
+
+    const skuItems = [{SKUId: sku1.id + 4, rfid: "01234567890123456789012345678901"}, {SKUId: sku1.id, rfid: "98765432109876543210987654321098"}];
+  
+    const res = await rc.addSkuItemsToRestockOrder(order2, skuItems);
+    const result = await rc.getRestockOrder(order2);
+
+    const expectedOrder = {
+      id: order2,
+      issueDate:"2022/05/05 09:33",
+      state: "DELIVERED",
+      products: [{SKUId: sku1.id, description:"Sweet restock of requested Acer Aspire 3", price: 250, qty: 10}],
+      supplierId : user.id,
+      skuItems: []
+    }
+
+    expect(res).equal(-2);
+    expect(result).to.deep.equal(expectedOrder);
   });
 }
 
 
 
 describe("Add transport note to a restock order", () => {
-  let userId = 1;
-  let skus = {first: 1, second: 2};
 
   beforeEach(async () => {
-      await rc.deleteAllRestockOrders();
-      let orderId = await rc. createRestockOrder("2021/11/29 09:33", userId, [{SKUId: skus.second, description: "New super cool mountain bike: CANYON STOIC 4", price: 1700, qty: 5}]);
-      await rc.changeStateOfRestockOrder(orderId, "DELIVERED");
-      //await uc.deleteAll();
-      //await sc.deleteAllSkus();
-      //newSKU
-      //userId = await uc.newUser("Giulio", "Sunder", "gs@ezwh.com", "supplier", "hello");
+    await rc.deleteAllRestockOrders();
+    await uc.deleteAll();
+    await sc.deleteAllSKU();
+    await ic.deleteAll();
   })
-  testAddTransportNoteToRestockOrder({deliveryDate: "2021/12/09"});
+  testAddTransportNoteToRestockOrder();
 });
 
 
 async function testAddTransportNoteToRestockOrder(transportNote) {
   test("addTransportNoteToRestockOrder", async () => {
-    const result = await rc.addTransportNoteToRestockOrder(restockC.lastRestockOrderId, transportNote);
-    const order = await rc.getRestockOrder(restockC.lastRestockOrderId);
-    expect(result).equal(restockC.lastRestockOrderId);
-    expect(order.transportNote).to.deep.equal(transportNote);
+    const user = await uc.newUser("Michael", "Jordan", "mj@ezwh.com", "supplier", "MJtheGOAT");
+    
+    const sku2 = await sc.newSKU({description: "Canyon Stoic 4", weight: 14000, volume: 400, price: 1789, availableQuantity: 10});
+
+    await ic.createItem(2, "official supply for canyon stoic", 1500, sku2.id, user.id);
+
+    const order1 = await rc. createRestockOrder("2021/11/29 09:33", user.id, [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1500, qty: 5}]);
+    
+    await rc.changeStateOfRestockOrder(order1, "DELIVERED");
+
+    await rc.addTransportNoteToRestockOrder(order1, {deliveryDate: "2021/12/09"});
+    const result = await rc.getRestockOrder(order1);
+    
+    const expectedOrder = {
+      id: order1,
+      issueDate: "2021/11/29 09:33",
+      state: "DELIVERED",
+      skuItems: [],
+      supplierId: user.id,
+      products: [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1500, qty: 5}],
+      transportNote: {deliveryDate: "2021/12/09"}
+    }
+
+    expect(result).to.deep.equal(expectedOrder);
+  });
+}
+
+
+describe("Delete a restock order", () => {
+
+  beforeEach(async () => {
+    await rc.deleteAllRestockOrders();
+    await uc.deleteAll();
+    await sc.deleteAllSKU();
+    await ic.deleteAll();
+  })
+  testDeleteRestockOrder();
+});
+
+
+async function testDeleteRestockOrder() {
+  test("deleteRestockOrder", async () => {
+    const user = await uc.newUser("Michael", "Jordan", "mj@ezwh.com", "supplier", "MJtheGOAT");
+    
+    const sku2 = await sc.newSKU({description: "Canyon Stoic 4", weight: 14000, volume: 400, price: 1789, availableQuantity: 10});
+
+    await ic.createItem(2, "official supply for canyon stoic", 1500, sku2.id, user.id);
+
+    const order1 = await rc. createRestockOrder("2021/11/29 09:33", user.id, [{SKUId: sku2.id, description: "New super cool mountain bike: CANYON STOIC 4", price: 1500, qty: 5}]);
+
+    await rc.deleteRestockOrder(order1);
+    const result = await rc.getRestockOrder(order1);
+
+    expect(result).to.deep.equal(-1);
   });
 }

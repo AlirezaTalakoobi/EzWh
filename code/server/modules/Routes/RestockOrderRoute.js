@@ -200,7 +200,7 @@ router.put(
 
 router.delete(
   "/restockOrder/:id",
-  [param("id").isNumeric()],
+  [param("id").notEmpty().isNumeric()],
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
