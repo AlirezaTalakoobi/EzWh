@@ -163,7 +163,7 @@ async (req, res) => {
     } else if (sku == false) {
       res.status(500).json("Internal Server Error");
     } else {
-      return res.status(200).json({ message: "Seccess" });
+      return res.status(204).json({ message: "Seccess" });
     }
   },
   su.deleteSKU
