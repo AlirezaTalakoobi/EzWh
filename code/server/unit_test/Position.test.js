@@ -176,7 +176,7 @@ async function testChangePositionID(positions) {
 describe("deletePosition", () => {
     beforeEach(async () => {
       await uc.deleteAll();
-      await uc.createItem({
+      await uc.createPosition({
         ID:"800234543832",
             aisleID: "8002",
             row: "3454",
@@ -196,6 +196,6 @@ describe("deletePosition", () => {
   async function testDeletePosition(positions) {
     test("deletePosition", async () => {
       let res = await uc.deletePosition(positions['id']);
-      expect(res['ans']).toEqual(204);
+      expect(res).toEqual(204);
     });
   }

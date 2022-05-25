@@ -180,14 +180,14 @@ async function testModifyTestResult(Test) {
 describe("deleteTestResult", () => {
     beforeEach(async () => {
       await uc.deleteAll();
-      await uc.createItem(
+      await uc.createTestResult(
         "01234567890123456789012345678901",
           12,
           "2021/11/28",
           true
   );
     });
-    testDeleteTestResult({id:1,rfid:"01234567890123456789012345678901"});
+    testDeleteTestResult({id:12,rfid:"01234567890123456789012345678901"});
     afterEach(async () => {
       await uc.deleteAll();
     });
@@ -196,6 +196,6 @@ describe("deleteTestResult", () => {
   async function testDeleteTestResult(Test) {
     test("deleteItem", async () => {
       let res = await uc.deleteTestResult(Test['rfid'],Test['id']);
-      expect(res['ans']).toEqual(204);
+      expect(res).toEqual(204);
     });
   }

@@ -3,61 +3,53 @@
 const dayjs = require('dayjs');
 
 class RestockOrderController {
+
   constructor(dao) {
     this.dao = dao;
     this.possibleStates = ["ISSUED", "DELIVERY", "DELIVERED", "TESTED", "COMPLETEDRETURN", "COMPLETED"];
   }
 
-  validateRestockOrder = (restockOrder) => {
-    if(Object.keys(restockOrder).length !== 3 ||
-      !Object.keys(restockOrder).includes("issueDate") ||
-      !Object.keys(restockOrder).includes("products") ||
-      !Object.keys(restockOrder).includes("supplierId") ||
-      !dayjs(restockOrder.issueDate, "YYYY/MM/DD HH:mm").isValid() ||
-      !Number.isInteger(restockOrder.supplierId) ||
-      !restockOrder.products.every(p => this.validateProductInRestockOrder(p))) {
-      return false;
+
+  validateProductsInRestockOrder = async (supplierId, products) => {
+    const itemSql = "SELECT ID, price FROM ITEM WHERE supplierID = ? AND skuID = ?";
+    for(let product of products){
+      let item = await this.dao.get(itemSql, [supplierId, product.SKUId]);
+      if(item === undefined || item.price !== product.price){
+          return false;
+      }
+    }
+    
+    return true;
+  }
+
+
+  validateSkuItemsInRestockOrder = async (skuItems, products) => {
+    const skus = products.map(p => ({skuID: p.SKUId, max: p.qty, current: 0}));
+    const itemSql = "SELECT RFID FROM SKU_ITEM WHERE RFID = ?";
+
+    for(let skuItem of skuItems){
+      let sku = skus.find(s => s.skuID === skuItem.SKUId);
+      let rfid = await this.dao.get(itemSql, [skuItem.rfid]);
+      if(sku === undefined || rfid !== undefined || sku.current >= sku.max){
+          return false;
+      }
+      sku.current += 1;
     }
     return true;
   }
 
-  validateProductInRestockOrder = (product) => {
-    if(Object.keys(product).length !== 4 ||
-      !Object.keys(product).includes("SKUId") ||
-      !Object.keys(product).includes("description") ||
-      !Object.keys(product).includes("price") ||
-      !Object.keys(product).includes("qty") ||
-      !Number.isInteger(product.SKUId) ||
-      !Number.isInteger(product.qty) ||
-      Number.isNaN(Number(product.price))){
-        return false;
-    }
-    return true;
-  }
 
-  validateSkuItemInRestockOrder = (skuItem) => {
-    if(Object.keys(skuItem).length !== 2 ||
-      !Object.keys(skuItem).includes("rfid") ||
-      !Object.keys(skuItem).includes("SKUId") ||
-      skuItem.rfid.length !== 32 ||
-      !Number.isInteger(parseInt(skuItem.rfid)) ||
-      !Number.isInteger(skuItem.SKUId)){
-      return false;
-    }
-    return true;
-  }
-
-  addProductsToRestockOrder = async (restockOrderID, restockOrder) => {
-    for(let product of restockOrder.products){
+  addProductsToRestockOrder = async (restockOrderId, supplierId, products) => {
+    for(let product of products){
       let itemSql = "SELECT ID FROM ITEM WHERE supplierID = ? AND skuID = ?";
-      let itemID = await this.dao.get(itemSql, [restockOrder.supplierId, product.SKUId]);
-      let itemInRestockOrderSql = "INSERT INTO ITEM_IN_RESTOCK_ORDER (restockOrderID, itemID, quantity) VALUES (?, ?, ?)";
-      await this.dao.run(itemInRestockOrderSql, [restockOrderID, itemID.ID, product.qty]);
+      let item = await this.dao.get(itemSql, [supplierId, product.SKUId]);
+      let itemInRestockOrderSql = "INSERT INTO ITEM_IN_RESTOCK_ORDER (restockOrderID, itemID, description, price, quantity) VALUES (?, ?, ?, ?, ?)";
+      await this.dao.run(itemInRestockOrderSql, [restockOrderId, item.ID, product.description, product.price, product.qty]);
     }
   }
 
   getProductsForRestockOrder = async (id) => {
-    const productsSql = "SELECT skuID, description, price, quantity FROM ITEM I, ITEM_IN_RESTOCK_ORDER IRO WHERE I.ID = IRO.itemID AND IRO.restockOrderID = ?";
+    const productsSql = "SELECT skuID, IRO.description, IRO.price, quantity FROM ITEM I, ITEM_IN_RESTOCK_ORDER IRO WHERE I.ID = IRO.itemID AND IRO.restockOrderID = ?";
     const products = await this.dao.all(productsSql, [id]);
     return products.map(product => ({
       SKUId: product.skuID,
@@ -78,10 +70,14 @@ class RestockOrderController {
   }
 
 
-  getRestockOrders = async (req, res) => {
+  getRestockOrders = async () => {
     try {
       const sql = "SELECT ID, issueDate, state, supplierID, transportNote FROM RESTOCK_ORDER";
       let restockOrders = await this.dao.all(sql, []);
+
+      if(restockOrders === undefined){
+        return -1;
+      }
 
       restockOrders = restockOrders.map(element => {
         if(element.transportNote){
@@ -112,22 +108,22 @@ class RestockOrderController {
         restockOrder.skuItems = [...skuItems];
       }
 
-      return res.status(200).json(restockOrders);
+      //return res.status(200).json(restockOrders);
+      return restockOrders;
     } catch {
-      return res.status(500).json({message: "Internal server error"});
+      //return res.status(500).json({message: "Internal server error"});
+      return false;
     }
     
   };
 
-  getRestockOrder = async (req, res) => {
+  getRestockOrder = async (id) => {
     try{
-      if(!Number.isInteger(parseInt(req.params.id))){
-        return res.status(422).json({message: "Unprocessable Entity"});
-      }
       const sql = "SELECT ID, issueDate, state, supplierID, transportNote FROM RESTOCK_ORDER WHERE ID = ?";
-      const result = await this.dao.get(sql, [req.params.id]);
+      const result = await this.dao.get(sql, [id]);
       if(!result){
-        return res.status(404).json({message: "Not Found"});
+        //return res.status(404).json({message: "Not Found"});
+        return -1;
       }
 
       let restockOrder = result.transportNote ? {
@@ -153,18 +149,25 @@ class RestockOrderController {
       const skuItems = await this.getSkuItemsForRestockOrder(restockOrder.id);
       restockOrder.skuItems = [...skuItems];
 
-      return res.status(200).json(restockOrder);
+      //return res.status(200).json(restockOrder);
+      return restockOrder;
     } catch {
-      return res.status(500).json({message: "Internal server error"});
+      //return res.status(500).json({message: "Internal server error"});
+      return false;
     }
     
   }
 
 
-  getRestockOrdersIssued = async (req, res) => {
+  getRestockOrdersIssued = async () => {
     try{
       const sql = "SELECT ID, issueDate, state, supplierID FROM RESTOCK_ORDER WHERE state = ?";
       let restockOrders = await this.dao.all(sql, ["ISSUED"]);
+
+      if(restockOrders === undefined){
+        return -1;
+      }
+
       restockOrders = restockOrders.map(element => ({
         id: element.ID,
         issueDate: element.issueDate,
@@ -181,170 +184,187 @@ class RestockOrderController {
         restockOrder.skuItems = [...skuItems];
       }
 
-      return res.status(200).json(restockOrders);
+      // return res.status(200).json(restockOrders);
+      return restockOrders;
     } catch {
-      return res.status(500).json({message: "Internal server error"});
+      // return res.status(500).json({message: "Internal server error"});
+      return false;
     }
   }
 
-  getRestockOrderReturnItems = async (req, res) => {
+  getRestockOrderReturnItems = async (id) => {
     try{
-      if(!Number.isInteger(parseInt(req.params.id))){
-        return res.status(422).json({message: "Unprocessable Entity"});
-      }
       const skuItemsSql = "SELECT SI.skuID, SI.RFID FROM SKU_ITEM SI WHERE restockOrderID = ? AND SI.RFID NOT IN (SELECT DISTINCT T.RFID FROM TEST_RESULT T WHERE T.result = 0)";
       const skuItems = await this.dao.all(skuItemsSql, [req.params.id]);
-      if(!skuItems){
-        return res.status(404).json({message: "Not Found"});
+      if(skuItems === undefined){
+        // return res.status(404).json({message: "Not Found"});
+        return -1;
       }
-      return res.status(200).json(skuItems.map(skuItem => ({
+      return skuItems.map(skuItem => ({
         rfid: skuItem.RFID,
         SKUId: skuItem.skuId
-      })));
+      }));
     } catch {
-      return res.status(500).json({message: "Internal server error"});
+      return false;
     }
     
   }
 
-  createRestockOrder = async (req, res) => {
+  createRestockOrder = async (issueDate, supplierId, products) => {
     try{
-      
-      if (!this.validateRestockOrder(req.body)) {
-        return res.status(422).json({ error: "Unprocessable Entity" });
+      if(!await this.validateProductsInRestockOrder(supplierId, products)){
+        return -1;
       }
-      console.log("VALID");
       const sql = "INSERT INTO RESTOCK_ORDER (issueDate, state, supplierID) VALUES (?,?,?)";
 
-      const id = await this.dao.run(sql, [req.body.issueDate, "ISSUED", req.body.supplierId]);
+      const id = await this.dao.run(sql, [issueDate, "ISSUED", supplierId]);
 
-      await this.addProductsToRestockOrder(id.id, req.body);
+      await this.addProductsToRestockOrder(id.id, supplierId, products);
 
-      return res.status(201).json({message: "Created"});
+      //return res.status(201).json({message: "Created"});
+      return id.id;
     } catch {
-      return res.status(503).json({message: "Service Unavailable"});
+      return false;
     }
 
   }
 
   
-  changeStateOfRestockOrder = async (req, res) => {
+  changeStateOfRestockOrder = async (id, state) => {
     try{
-      if (!Number.isInteger(parseInt(req.params.id)) ||
-          Object.keys(req.body).length !== 1 ||
-          !Object.keys(req.body).includes("newState") ||
-          !this.possibleStates.includes(req.body.newState)) {
-        return res.status(422).json({ message: "Unprocessable Entity" });
-      }
+      // if (!Number.isInteger(parseInt(req.params.id)) ||
+      //     Object.keys(req.body).length !== 1 ||
+      //     !Object.keys(req.body).includes("newState") ||
+      //     !this.possibleStates.includes(req.body.newState)) {
+      //   return res.status(422).json({ message: "Unprocessable Entity" });
+      // }
 
       const idSql = "SELECT ID FROM RESTOCK_ORDER WHERE ID = ?";
-      const id = await this.dao.get(idSql, [req.params.id]);
+      const idRes = await this.dao.get(idSql, [id]);
 
-      if(!id){
-        return res.status(404).json({message: "Not Found"});
+      if(idRes === undefined){
+        return -1;
       }
 
       const sql = "UPDATE RESTOCK_ORDER SET state = ? WHERE ID = ?";
 
-      const result = await this.dao.run(sql, [req.body.newState, req.params.id]);
+      await this.dao.run(sql, [state, id]);
 
-      return res.status(200).json({message: "OK"});
+      return id;
 
     } catch {
-      return res.status(503).json({message: "Internal server error"});
+      return false;
     }
     
   }
 
 
-  addSkuItemsToRestockOrder = async (req, res) => {
+  addSkuItemsToRestockOrder = async (id, skuItems) => {
     try{
-      if (!Number.isInteger(parseInt(req.params.id)) ||
-          Object.keys(req.body).length !== 1 ||
-          !Object.keys(req.body).includes("skuItems") ||
-          !req.body.skuItems.every(si => this.validateSkuItemInRestockOrder(si))) {
-        return res.status(422).json({ message: "Unprocessable server entity" });
+      // if (!Number.isInteger(parseInt(req.params.id)) ||
+      //     Object.keys(req.body).length !== 1 ||
+      //     !Object.keys(req.body).includes("skuItems") ||
+      //     !req.body.skuItems.every(si => this.validateSkuItemInRestockOrder(si))) {
+      //   return res.status(422).json({ message: "Unprocessable server entity" });
+      // }      
+      const idSql = "SELECT ID FROM RESTOCK_ORDER WHERE ID = ? AND state = ?";
+      const idRes = await this.dao.get(idSql, [id, "DELIVERED"]);
+
+      if(idRes === undefined){
+        return -1;
       }
 
-      const idSql = "SELECT ID FROM RESTOCK_ORDER WHERE ID = ?";
-      const id = await this.dao.get(idSql, [req.params.id]);
+      const products = await this.getProductsForRestockOrder(id);
+      const oldSkuItems = await this.getSkuItemsForRestockOrder(id);
 
-      if(!id){
-        return res.status(404).json({message: "Not Found"});
+      if(!await this.validateSkuItemsInRestockOrder([...oldSkuItems, ...skuItems], products)){
+        return -2;
       }
+
 
       //const sql = "UPDATE SKU_ITEM SET restockOrderID = ? WHERE RFID = ?";
       const sql = "INSERT INTO SKU_ITEM (RFID, available, dateOfStock, skuID, restockOrderID) VALUES (?,?,?,?,?)";
 
-      for(let skuItem of req.body.skuItems){
-        await this.dao.run(sql, [skuItem.rfid, 1, dayjs(), skuItem.SKUId, req.params.id]);
+      for(let skuItem of skuItems){
+        await this.dao.run(sql, [skuItem.rfid, 0, dayjs().format("YYYY/MM/DD"), skuItem.SKUId, id]);
       }
 
-      return res.status(200).json({message: "OK"});
+      return id;
     } catch {
-      return res.status(503).json({message: "Service Unavailable"});
+      return false;
     }
 
   }
 
 
-  addTransportNoteToRestockOrder = async (req, res) => {
+  addTransportNoteToRestockOrder = async (id, transportNote) => {
     try {
-      if (!Number.isInteger(parseInt(req.params.id)) ||
-          Object.keys(req.body).length !== 1 ||
-          !Object.keys(req.body).includes("transportNote") ||
-          !Object.keys(req.body.transportNote).length !== 1 ||
-          !Object.keys(req.body.transportNote).includes("deliveryDate") ||
-          !dayjs(req.body.transportNote.deliveryDate)) {
-        return res.status(422).json({ message: "Unprocessable Entity" });
-      }
+      // if (!Number.isInteger(parseInt(req.params.id)) ||
+      //     Object.keys(req.body).length !== 1 ||
+      //     !Object.keys(req.body).includes("transportNote") ||
+      //     !Object.keys(req.body.transportNote).length !== 1 ||
+      //     !Object.keys(req.body.transportNote).includes("deliveryDate") ||
+      //     !dayjs(req.body.transportNote.deliveryDate)) {
+      //   return res.status(422).json({ message: "Unprocessable Entity" });
+      // }
 
       const idSql = "SELECT ID, state FROM RESTOCK_ORDER WHERE ID = ?";
-      const result = await this.dao.get(idSql, [req.params.id]);
-
+      const result = await this.dao.get(idSql, [id]);
+      
+      if(result.ID === undefined){
+              return -1;
+      }
+      
       if(result.state !== "DELIVERED"){
-        return res.status(422).json({ message: "Unprocessable Entity" });
+        return -2;
       }
 
-      if(!result.id){
-        return res.status(404).json({message: "Not Found"});
-      }
+      
 
       const sql = "UPDATE RESTOCK_ORDER SET transportNote = ? WHERE ID = ?";
 
-      await this.dao.run(sql, [req.body.transportNote.deliveryDate, req.params.id]);
+      await this.dao.run(sql, [transportNote.deliveryDate, id]);
 
-      return res.status(200).json({message: "OK"});
+      return result.ID;
     } catch {
-      return res.status(503).json({message: "Service Unavailable"});
+      return false;
     }
 
   }
 
 
-  deleteRestockOrder = async (req, res) => {
+  deleteRestockOrder = async (id) => {
     try{
-      if(!Number.isInteger(parseInt(req.params.id))){
-        return res.status(422).json({message: "Unprocessable Entity"});
-      }
+      // if(!Number.isInteger(parseInt(req.params.id))){
+      //   return res.status(422).json({message: "Unprocessable Entity"});
+      // }
       
       const sql = "DELETE FROM RESTOCK_ORDER WHERE ID = ?";
       const idSql = "SELECT ID FROM RESTOCK_ORDER WHERE ID = ?";
-      const id = await this.dao.get(idSql, [req.params.id]);
+      const idRes = await this.dao.get(idSql, [id]);
 
-      if(!id){
-        return res.status(404).json({message: "Not Found"});
+      if(idRes.ID === undefined){
+        return -1;
       }
 
-      await this.dao.run(sql, [req.params.id]);
+      await this.dao.run(sql, [id]);
 
-      return res.status(200).json({message: "Success"});
+      return id;
     } catch {
-      return res.status(500).json({message: "Internal server error"});
-    }
-
+      return false;
+    } 
   }
-  
+
+
+  deleteAllRestockOrders = async () => {
+    try{
+      const sql = "DELETE FROM RESTOCK_ORDER";
+      await this.dao.run(sql);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 }
 
 module.exports = RestockOrderController;

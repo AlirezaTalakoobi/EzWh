@@ -7,31 +7,18 @@ class ReturnOrderController {
     this.dao = dao;
   }
 
-  validateReturnOrder = (returnOrder) => {
-    if(Object.keys(returnOrder).length !== 3 ||
-      !Object.keys(returnOrder).includes("returnDate") ||
-      !Object.keys(returnOrder).includes("products") ||
-      !Object.keys(returnOrder).includes("restockOrderId") ||
-      !dayjs(returnOrder.returnDate, "YYYY/MM/DD HH:mm").isValid() ||
-      !Number.isInteger(returnOrder.restockOrderId) ||
-      !returnOrder.products.every(p => this.validateSkuItemInReturnOrder(p))) {
-      return false;
-    }
-    return true;
-  }
 
-  validateSkuItemInReturnOrder = (skuItem) => {
-    if(Object.keys(skuItem).length !== 4 ||
-      !Object.keys(skuItem).includes("RFID") ||
-      !Object.keys(skuItem).includes("SKUId") ||
-      !Object.keys(skuItem).includes("description") ||
-      !Object.keys(skuItem).includes("price") ||
-      skuItem.RFID.length !== 32 ||
-      !Number.isInteger(parseInt(skuItem.RFID)) ||
-      !Number.isInteger(skuItem.SKUId) ||
-      Number.isNaN(Number(skuItem.price))){
-      return false;
-    }
+  validateSkuItemsInReturnOrder = async (skuItems, restockOrderId) => {
+    const sql = "SELECT RFID FROM SKU_ITEM WHERE restockOrderID = ? AND RFID = ?";
+    const sql2 = "SELECT IRO.description, IRO.price FROM ITEM I, ITEM_IN_RESTOCK_ORDER IRO WHERE I.skuID = ? AND I.ID = IRO.itemID AND IRO.restockOrderID = ?";
+
+    for(let skuItem of skuItems){
+      const result = await this.dao.get(sql, [restockOrderId, skuItem.RFID]);
+      const result2 = await this.dao.get(sql2, [skuItem.SKUId, restockOrderId])
+      if(result === undefined || result2 === undefined || result2.description !== skuItem.description || result2.price !== skuItem.price){
+        return false;
+      }
+    }    
     return true;
   }
 
@@ -45,7 +32,7 @@ class ReturnOrderController {
 
 
   getSkuItemsForReturnOrder = async (id) => {
-    const skuItemsSql = "SELECT RFID, skuID, description, price FROM SKU_ITEM, SKU WHERE skuID = ID AND returnOrderID = ?";
+    const skuItemsSql = "SELECT RFID, SI.skuID, IRO.description, IRO.price FROM SKU_ITEM SI, ITEM I, ITEM_IN_RESTOCK_ORDER IRO WHERE SI.skuID = I.skuID AND I.ID = IRO.itemID AND IRO.restockOrderID = SI.restockOrderID AND returnOrderID = ?";
     const skuItems = await this.dao.all(skuItemsSql, [id]);
 
     return skuItems.map(skuItem => ({
@@ -57,39 +44,40 @@ class ReturnOrderController {
   }
 
 
-  getReturnOrders = async (req, res) => {
+  getReturnOrders = async () => {
     try {
       const sql = "SELECT ID, returnDate, restockOrderID FROM RETURN_ORDER";
       let returnOrders = await this.dao.all(sql, []);
+
+      if(returnOrders === undefined){
+        return -1;
+      }
 
       returnOrders = returnOrders.map(element => ({
           id: element.ID,
           returnDate: element.returnDate,
           products: [],
           restockOrderId: element.restockOrderID
-        }));
+      }));
 
       for (let returnOrder of returnOrders) {
         const skuItems = await this.getSkuItemsForReturnOrder(returnOrder.id);
         returnOrder.products = [...skuItems];
       }
 
-      return res.status(200).json(returnOrders);
+      return returnOrders;
     } catch {
-      return res.status(500).json({message: "Internal server error"});
+      return false;
     }
     
   };
 
-  getReturnOrder = async (req, res) => {
+  getReturnOrder = async (id) => {
     try{
-      if(!Number.isInteger(parseInt(req.params.id))){
-        return res.status(422).json({message: "Unprocessable Entity"});
-      }
       const sql = "SELECT ID, returnDate, restockOrderID FROM RETURN_ORDER WHERE ID = ?";
-      const result = await this.dao.get(sql, [req.params.id]);
+      const result = await this.dao.get(sql, [id]);
       if(!result){
-        return res.status(404).json({message: "Not Found"});
+        return -1;
       }
 
       let returnOrder = {
@@ -102,54 +90,65 @@ class ReturnOrderController {
       const skuItems = await this.getSkuItemsForReturnOrder(returnOrder.id);
       returnOrder.products = [...skuItems];
 
-      return res.status(200).json(returnOrder);
+      return returnOrder;
     } catch {
-      return res.status(500).json({message: "Internal server error"});
+      return false;
     }
     
   }
 
 
-  createReturnOrder = async (req, res) => {
-    try{
-      
-      if (!this.validateReturnOrder(req.body)) {
-        return res.status(422).json({ error: "Unprocessable Entity" });
+  createReturnOrder = async (returnDate, restockOrderId, products) => {
+    try {
+      if (!await this.validateSkuItemsInReturnOrder(products, restockOrderId)) {
+        return -1;
       }
 
       const sql = "INSERT INTO RETURN_ORDER (returnDate, restockOrderID) VALUES (?,?)";
 
-      const id = await this.dao.run(sql, [req.body.returnDate, req.body.restockOrderId]);
+      const id = await this.dao.run(sql, [returnDate, restockOrderId]);
 
-      await this.addSkuItemsToReturnOrder(id.id, req.body.products);
+      await this.addSkuItemsToReturnOrder(id.id, products);
 
-      return res.status(201).json({message: "Created"});
+      return id.id;
     } catch {
-      return res.status(503).json({message: "Service Unavailable"});
+      return false;
     }
 
   }
 
 
-  deleteReturnOrder = async (req, res) => {
-    try{
-      if(!Number.isInteger(parseInt(req.params.id))){
-        return res.status(422).json({message: "Unprocessable Entity"});
-      }
+  deleteReturnOrder = async (id) => {
+    try {
       
       const sql = "DELETE FROM RETURN_ORDER WHERE ID = ?";
       const idSql = "SELECT ID FROM RETURN_ORDER WHERE ID = ?";
-      const id = await this.dao.get(idSql, [req.params.id]);
+      const idRes = await this.dao.get(idSql, [req.params.id]);
 
-      if(!id){
-        return res.status(404).json({message: "Not Found"});
+      if(idRes === undefined){
+        return -1;
       }
 
-      await this.dao.run(sql, [req.params.id]);
+      await this.dao.run(sql, [id]);
 
-      return res.status(200).json({message: "Success"});
+      return id;
     } catch {
-      return res.status(500).json({message: "Internal server error"});
+      return false;
+    }
+
+  }
+
+
+  deleteAllReturnOrders = async () => {
+    try {
+      
+      const sql = "DELETE FROM RETURN_ORDER";
+
+      await this.dao.run(sql, []);
+
+      return true;
+    } catch {
+      return false;
     }
 
   }
