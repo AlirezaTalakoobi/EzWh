@@ -23,7 +23,7 @@ class TDController {
   
       }
       ))
-      console.log(result);
+      //console.log(result);
       let ret = {
         
         ans : 200,
@@ -121,12 +121,12 @@ class TDController {
         let data = Body;
         const sql = "update TEST_DESCRIPTOR set name=?, procedureDescription=?, skuID=? where ID=?";
         const r = await this.dao.get('Select * from SKU where ID=?', [[data.newIdSKU]])
-        console.log(r);
+        
         if(r!==undefined){
           
          let result = await this.dao.run(sql, [data.newName,data.newProcedureDescription,data.newIdSKU, ID]);
          
-
+          
         return result// res.status(200).json(result);
         }
         else{
@@ -140,9 +140,8 @@ class TDController {
 }
 
   deleteTD = async (ID) => {
-    if (Object.keys(ID).length === 0) {
-      return 1//res.status(422).json({ error: "(validation of id failed" });
-    }
+    
+    
     if(await this.dao.get('Select * from TEST_DESCRIPTOR where ID=?', [[ID]])!==undefined){
       try {
         const sql = "DELETE FROM TEST_DESCRIPTOR where ID=?";

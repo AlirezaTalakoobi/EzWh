@@ -104,22 +104,24 @@ router.delete("/testdescriptor/:id",  [param("id").isNumeric().not().optional()]
 (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
+    return res.status(333).json({ errors: errors.array() });
   }
   next();
 },async (req, res) => {
   const params =req.params.id
  
   const Test = await td.deleteTD(params);
-  if (Test.message) {
-    console.log(Test);
-    res.status(422).json(Test.message)
-  }else if(Test == 2){
+  if(Test !== undefined) {
+    return res.status(200).json({message:"Seccess"})
+  } 
+  // else if (Object.keys(params).length === 0) {
+    
+  //   return res.status(422).json({ error: "(validation of id failed" });  
+  // }
+  else if(Test == 2){
     res.status(503).json("Internal Server Error");
 
-  }else {
-    return res.status(204).json({message:"Seccess"})
-  } 
+  }
 },td.deleteTD);
 
 module.exports = router;
