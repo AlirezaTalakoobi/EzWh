@@ -7,17 +7,40 @@ const dao = new DAO();
 const uc = new ItemController(dao);
 const uc_user = new UserController(dao);
 const uc_sku = new SKUController(dao);
-const uc_pos = new PositionController(dao); 
+const uc_pos = new PositionController(dao);
 
 
 describe("getItems", () => {
     beforeEach(async () => {
       await uc.deleteAll();
-    //   await uc_pos.deleteAll();
     //   await uc_user.deleteAll();
     //   await uc_sku.deleteAll();
-    //   await uc_user.create();
-    //   await uc_sku.create(); 
+    //   await uc_user.newUser({
+    //     name:"John",
+    //     surname : "Smith",
+    //     username:"user1@ezwh.com",
+    //     type : "customer",
+    //     password : "testpassword",
+
+    //   });
+    //   await uc_pos.createItem({
+    //     positionID:"800234543412",
+    //     aisleID: "8002",
+    //     row: "3454",
+    //     col: "3412",
+    //     maxWeight: 1000,
+    //     maxVolume: 1000
+
+    // });
+    //   await uc_sku.newSKU({
+    //     description : "a new sku",
+    //      weight : 100,
+    //      volume : 50,
+    //      notes : "first SKU",
+    //      price : 10.99,
+    //      availableQuantity : 50
+    //   }); 
+      
       await uc.createItem(
             12,
             "a new item",
@@ -28,8 +51,8 @@ describe("getItems", () => {
     });
     afterEach(async () => {
         await uc.deleteAll();
-        //   await uc_user.deleteAll();
-        //   await uc_sku.deleteAll();
+        // await uc_user.deleteAll();
+        // await uc_sku.deleteAll();
     });
     testGetItems(
         {
@@ -198,7 +221,7 @@ describe("deleteItem", () => {
         2
   );
     });
-    testDeleteItem({id:1});
+    testDeleteItem({id:12});
     afterEach(async () => {
       await uc.deleteAll();
     });
@@ -207,6 +230,6 @@ describe("deleteItem", () => {
   async function testDeleteItem(Items) {
     test("deleteItem", async () => {
       let res = await uc.deleteItem(Items['id']);
-      expect(res['ans']).toEqual(204);
+      expect(res).toEqual(204);
     });
   }
