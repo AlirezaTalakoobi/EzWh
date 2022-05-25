@@ -116,7 +116,7 @@ createTestResult = async (rfid, idTestDescriptor, date, Result) => {
 
     }
     catch(err){
-        console.log(err);
+        // console.log(err);
         return 503;
     }
 };
@@ -127,18 +127,22 @@ modifyTestResult = async (newIdTestDescriptor, newDate, newResult,rfid, id) => {
         const args_c_1 = [newIdTestDescriptor];
         let check1 = await this.dao.all(sql_c_1,args_c_1);
         if (check1.length === 0) {
+            console.log("1")
             return 404;
         }
         const sql_c_2 = 'SELECT RFID FROM SKU_ITEM WHERE RFID=? ';
         const args_c_2 = [rfid];
         let check2 = await this.dao.all(sql_c_2,args_c_2);
         if (check2.length === 0) {
+            console.log("2")
+
             return 404;
         }
         const sql_c_3 = 'SELECT ID FROM TEST_RESULT WHERE ID=? ';
         const args_c_3 = [id];
         let check3 = await this.dao.all(sql_c_3,args_c_3);
         if (check3.length === 0) {
+            console.log("3")
             return 404;
         }
         const sql = "UPDATE TEST_RESULT SET testDescriptorID = ?, date = ?, result = ?  WHERE RFID = ? and ID = ?";

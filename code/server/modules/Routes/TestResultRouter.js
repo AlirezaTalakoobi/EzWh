@@ -66,7 +66,6 @@ async (req,res) =>{
         ApiInfo === undefined ||
         ApiInfo.rfid === undefined ||
         ApiInfo.idTestDescriptor === undefined ||
-        ApiInfo.Date === undefined ||
         ApiInfo.Result === undefined
       ) {
         return res.status(422).send("422 Unprocessable Entity(validation of request body or of rfid failed)");
@@ -108,7 +107,7 @@ async (req,res) =>{
     if(ans == 404){
       return res.status(404).send("404 NOT FOUND");
     }
-    else if(ans == 201){
+    else if(ans == 200){
       return res.send(200).send("200 OK");
     }
     else{
@@ -130,6 +129,15 @@ async (req,res) =>{
   else{
       return res.status(503).send("503 Service Unavailable")
   }
+});
+
+router.delete("/deleteAllTests", async (req, res) => {
+  const result = await uc.deleteAll();
+  var httpStatusCode = 204;
+  if (!result) {
+    httpStatusCode = 500;
+  }
+  res.status(httpStatusCode).end();
 });
 
 
