@@ -5,16 +5,12 @@ const ItemController = require("../Controller/ItemController");
 const DAO = require("../DB/DAO");
 const dao = new DAO();
 const uc = new ItemController(dao);
-const { body, param, validationResult } = require("express-validator");
+const {check, body, param, validationResult } = require("express-validator");
 
 /* Manager  */
 // router.get("/items", uc.getItems);
-router.get("/items/:id", param("id").isInt(),
+router.get("/items/:id",
 async (req,res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).send("422 Unprocessable Entity");
-  }
   const result = await uc.getItemByID(req.params.id);
     if(result["ans"] == 200){
         return res.status(200).json(result["result"]);
@@ -51,6 +47,7 @@ router.post(
       return res.status(422).send("422 Unprocessable Entity");
     }
     if (Object.keys(req.body).length === 0) {
+
       return res.status(422).send("422 Unprocessable Entity");
     }
     const ApiInfo = req.body;
@@ -80,12 +77,9 @@ router.post(
   }
 );
 
-router.put("/item/:id", param("id").isInt(),
+router.put("/item/:id",
 async (req,res) =>{
-  const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).send("422 Unprocessable Entity");
-    }
+
     if (Object.keys(req.body).length === 0) {
       return res.status(422).send("422 Unprocessable Entity");
     }
@@ -102,7 +96,7 @@ async (req,res) =>{
     if(ans == 404){
       return res.status(404).send("404 NOT FOUND");
     }
-    else if(ans == 201){
+    else if(ans == 200){
       return res.send(200).send("200 OK");
     }
     else{
@@ -118,6 +112,17 @@ async (req,res) => {
   }
   let ans = await uc.deleteItem(req.params.id);
   if(ans == 204){
+    return res.status(204).send("204 No Content");
+  }
+  else{
+      return res.status(503).send("503 Service Unavailable")
+  }
+});
+
+router.delete("/deleteAllItems",
+async (req,res) => {
+  let ans = await uc.deleteAll();
+  if(ans){
     return res.status(204).send("204 No Content");
   }
   else{

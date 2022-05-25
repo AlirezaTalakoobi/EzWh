@@ -79,6 +79,7 @@ class ItemController {
       const args_c_2 = [SKUId];
       let check2 = await this.dao.all(sql_c_2, args_c_2);
       if (check2.length === 0) {
+
         return 404
       }
 
@@ -99,12 +100,14 @@ class ItemController {
     }
   };
 
-  modifyItem = async (id,newDescription,newPrice) => {
+  modifyItem = async (id,newPrice,newDescription) => {
     try {
+      
       const sql_c_1 = "SELECT * FROM ITEM WHERE ID= ?";
       const args_c_1 = [id];
       let check1 = await this.dao.all(sql_c_1, args_c_1);
       if (check1.length === 0) {
+
         return 404;
       }
 
