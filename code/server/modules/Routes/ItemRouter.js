@@ -66,7 +66,7 @@ router.post(
       return res.status(422).send("422 Unprocessable Entity");
     }
 
-    let ans = await uc.createPosition(ApiInfo.id, ApiInfo.description, ApiInfo.price, ApiInfo.SKUId, ApiInfo.supplierId);
+    let ans = await uc.createItem(ApiInfo.id, ApiInfo.description, ApiInfo.price, ApiInfo.SKUId, ApiInfo.supplierId);
     if(ans == 201){
       return res.status(201).send("201 Created");
     }

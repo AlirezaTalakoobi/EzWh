@@ -50,7 +50,6 @@ class UserController {
   };
 
   getUser = async (username, password) => {
-    console.log(username);
     const sql =
       "SELECT id, name, surname,email, password, type FROM USER WHERE email=?";
     let result = await this.dao.get(sql, [username]);

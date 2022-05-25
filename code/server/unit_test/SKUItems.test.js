@@ -144,10 +144,10 @@ async function testGetSKUItemBYIDGreaterQuantity() {
     await sku.editRFID(
       "12345678901234567890123456789020",
       "12345678901234567890123456789020",
-      "1",
+      "100",
       "2021/11/30"
     );
-    let res = await sku.getSKUItemsBySKUId("item.id");
+    let res = await sku.getSKUItemsBySKUId(newitem.id);
     expect(res).toEqual({ message: "no item associated to id" });
   });
 }
@@ -172,7 +172,7 @@ async function testGetSKUItemBYIDNotExisting() {
       "1",
       "2021/11/30"
     );
-    let res = await sku.getSKUItemsBySKUId("item.id");
+    let res = await sku.getSKUItemsBySKUId(99999999999);
     expect(res).toEqual({ message: "no item associated to id" });
   });
 }
