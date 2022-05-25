@@ -14,7 +14,7 @@ class TDController {
     // }
     try {
       const sql = "SELECT * FROM TEST_DESCRIPTOR"
-      const result = await this.dao.all(sql,[])
+      let result = await this.dao.all(sql,[])
       result =result.map((Test) => ({
         Id: Test.ID,
         Name: Test.name,
