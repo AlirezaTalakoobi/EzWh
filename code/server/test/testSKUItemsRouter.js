@@ -18,24 +18,6 @@ describe("test insert item api", () => {
   newSKUItem(409, "12345678909876543212345678909876", "2020/11/03", undefined);
 });
 
-function newSku() {
-  return new Promise((resolve, reject) => {
-    agent
-      .post("/api/sku/")
-      .send({
-        description: "a new sku",
-        weight: 100,
-        volume: 50,
-        notes: "first SKU",
-        price: 10.99,
-        availableQuantity: 50,
-      })
-      .then(function (res) {
-        resolve(res.body.id);
-      });
-  });
-}
-
 //GETITEMS
 describe("test get items api", () => {
   beforeEach(async () => {
@@ -97,6 +79,7 @@ describe("test delete item api", () => {
       deleteItem(404, "12345678909876543212345678909877");
       deleteItem(422, "29876543212345678909877");
     });
+  deleteAllData(204);
 });
 function deleteAllData(expectedHTTPStatus) {
   it("Deleting data", function (done) {
