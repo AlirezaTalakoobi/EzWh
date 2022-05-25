@@ -17,6 +17,7 @@ router.post(
   ],
   (req, res, next) => {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res
         .status(422)
@@ -64,12 +65,12 @@ router.get(
   },
   async (req, res) => {
     const sku = await sic.getSKUItemsBySKUId(req.params.id);
-    if (sku) {
-      return res.status(200).json(sku);
-    } else if (sku.message) {
+    if (sku.message) {
       return res.status(404).json(sku.message);
-    } else {
+    } else if (sku === false) {
       return res.status(500).json({ message: "Internal Server Error" });
+    } else {
+      return res.status(200).json(sku);
     }
   }
 );
@@ -87,12 +88,12 @@ router.get(
   },
   async (req, res) => {
     const sku = await sic.getSKUItemsByRFID(req.params.rfid);
-    if (sku) {
-      return res.status(200).json(sku);
-    } else if (sku.message) {
+    if (sku.message) {
       return res.status(404).json(sku.message);
-    } else {
+    } else if (sku === undefined) {
       return res.status(500).json({ message: "Internal Server Error" });
+    } else {
+      return res.status(200).json(sku);
     }
   }
 );
@@ -101,12 +102,9 @@ router.put(
   [
     param("rfid").isString().isLength({ min: 32, max: 32 }).not().optional(),
     check("newRFID").optional().isString().isLength({ max: 32 }),
-    check("newAvailable").isNumeric().optional(),
+    check("newAvailable").isNumeric({ min: 1 }).optional(),
   ],
   (req, res, next) => {
-    if (Object.keys(req.body).length === 0) {
-      return res.status(422).json({ error: "Empty Body request" });
-    }
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({
@@ -122,12 +120,12 @@ router.put(
       parseInt(req.body.newAvailable),
       req.body.newDateOfStock
     );
-    if (response) {
-      return res.status(200).json(response);
-    } else if (response.message) {
-      return res.status(404).json(response.message);
-    } else {
+    if (response.item) {
+      return res.status(404).json(response.item);
+    } else if (response === false) {
       return res.status(500).json({ message: "Internal Server Error" });
+    } else {
+      return res.status(200).json(response);
     }
   }
 );
@@ -152,4 +150,12 @@ router.delete(
     }
   }
 );
+router.delete("/deleteAllSKUItems", async (req, res) => {
+  const result = await sic.deleteAll();
+  var httpStatusCode = 204;
+  if (!result) {
+    httpStatusCode = 500;
+  }
+  res.status(httpStatusCode).end();
+});
 module.exports = router;

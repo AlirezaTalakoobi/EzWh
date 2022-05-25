@@ -1,5 +1,6 @@
 "use strict"
 
+const { promise, reject } = require("bcrypt/promises")
 const { body } = require("express-validator")
 
 class TDController {
@@ -13,8 +14,8 @@ class TDController {
     // }
     try {
       const sql = "SELECT * FROM TEST_DESCRIPTOR"
-      const result = await this.dao.all(sql)
-      return result.map((Test) => ({
+      const result = await this.dao.all(sql,[])
+      result =result.map((Test) => ({
         Id: Test.ID,
         Name: Test.name,
         proceduredescription: Test.procedureDescription,
@@ -22,14 +23,29 @@ class TDController {
   
       }
       ))
-      
-    } catch {
-      return {message: "Internal Error"}
+      let ret = {
+        ans : 200,
+        result : result
+      }
+      return ret;
+     }
+     catch(error){
+       let ret = {
+         ans : 500,
+         result : {}
+       }
+      return ret;
+     }
     }
-  }
-
+  
+      
+    
+  //}
+  
   getTestDescriptionById = async (param) => {
+    
     if (Object.keys(param).length === 0) {
+      console.log(param)
       return { error: "validation of id failed" }//res.status(422).json({ error: "validation of id failed" });
     }
 
@@ -52,30 +68,31 @@ class TDController {
 
         }))
       
-    } catch {
+    }
+    
+    catch {
       return 2   //res.status(500).json("generic error");
     }
   };
 
-  newTestDescriptor = (Body) => {
+  newTestDescriptor = (name,procedureDescription,idSKU) => {
     //console.log(req.body);
     const sql =
       "INSERT INTO TEST_DESCRIPTOR(name,procedureDescription,skuID) VALUES (?,?,?)";
     //returns this.dao.run(sql)
 
-    if (Object.keys(Body).length === 0) {
-      return { error: "(validation of request body failed" }  //res.status(422).json({ error: "(validation of request body failed" });
-    }
+
     // const result = this.dao.get("Select * from SKUItems where rfid=?");
     // if (result.length != 0) {
     //   return res.status(422).json("Unprocessable Entity");
     // } else {
-    let data = Body;
+    //let data = Body;
     try {
-      let result = this.dao.run(sql, [data.name,data.procedureDescription,data.idSKU])
+      let result = this.dao.run(sql, [name,procedureDescription,idSKU])
       return result
       
-    } catch {
+    } catch(err) {
+      //console.log(err)
       return 2
     } 
       // .then(res.status(201).json("Success"))
@@ -134,6 +151,19 @@ class TDController {
     }
     else{
       return { message: "Test descriptor not existing" }// res.status(404).json("Test descriptor not existing")
+    }
+  };
+
+  
+  deleteAll = async () => {
+    
+    const sql = "DELETE FROM TEST_DESCRIPTOR ";
+    try{
+        let result = await this.dao.run(sql, []);
+        return true;
+    }
+    catch(err){
+      return false;
     }
   };
 }

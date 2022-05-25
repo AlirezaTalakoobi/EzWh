@@ -82,6 +82,10 @@ router.get("/suppliers", async (req, res) => {
   }
   return res.status(200).json(suppliers);
 });
+<<<<<<< HEAD
+//router.get("/userinfo", uc.loggedin);
+=======
+>>>>>>> 34005aa8d3de0c6e66320efafb8e57b35a353eff
 router.post(
   "/managerSessions",
   oneOf([
@@ -133,7 +137,6 @@ router.post(
   },
   async (req, res) => {
     const user = await uc.getUser(req.body.username, req.body.password);
-    console.log(user);
     if (user === undefined) {
       return res.status(404).json({ message: "User not existing" });
     } else if (user.message) {

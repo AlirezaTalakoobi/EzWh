@@ -9,17 +9,13 @@ const td = new TDController(dao);
 const { check, param, validationResult, Result} = require("express-validator");
 
 router.get("/testdescriptors",
-async (req, res) => {
-  const Test = await td.TestDescriptor();
-  //console.log(skus);
-  if (Test === undefined) {
-    return res.status(401).json({ message: "SKU does not exist" });
-
-  } else if (Test.message) {
-  
-    return res.status(500).json(Test.message);
-  } else {
-    res.status(200).json(Test);
+async (req,res) => {
+  const result = await td.TestDescriptor(); 
+  if(result["ans"] == 200){
+      return res.status(200).json(result["result"]);
+  }
+  else{
+      return res.status(500).send("500 Internal Server Error");
   }
 }, td.TestDescriptor);
 router.get("/testdescriptors/:id",[param("id").isNumeric().not().optional()],
@@ -61,9 +57,11 @@ router.post("/testdescriptor",[
     }
     next();
   },async(req, res) => {
-   
-    const Test = await td.newTestDescriptor(req.body);
-    
+    let  data = req.body;
+    const Test = await td.newTestDescriptor(data.name,data.procedureDescription,data.idSKU);
+    if (Object.keys(data).length === 0) {
+      return res.status(422).json ("(validation of request body failed")  //res.status(422).json({ error: "(validation of request body failed" });
+    }
     if ( Test.message) {
       return res.status(422).json(Test.message);
       
@@ -114,7 +112,7 @@ router.delete("/testdescriptor/:id",  [param("id").isNumeric().not().optional()]
  
   const Test = await td.deleteTD(params);
   if (Test.message) {
-    
+    console.log(Test);
     res.status(422).json(Test.message)
   }else if(Test == 2){
     res.status(503).json("Internal Server Error");

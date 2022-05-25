@@ -246,6 +246,18 @@ class SKUController {
     } catch {
       return 1; //res.status(500).json("Internal Server Error");
     }
+  }
+  
+  deleteAll = async () => {
+    
+    const sql = "DELETE FROM SKU";
+    try{
+        let result = await this.dao.run(sql, []);
+        return true;
+    }
+    catch(err){
+      return false;
+    }
   };
 }
 
