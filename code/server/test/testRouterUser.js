@@ -196,6 +196,53 @@ describe("test delete user api", () => {
   deleteUser(204, "user1@ezwh.com", "customer");
   deleteUser(404, "user4@ezwh.com", "customer");
   deleteUser(422, "user1@ezwh.com", "manager");
+  deleteAllData(204);
+});
+
+describe("create setup users", () => {
+  deleteAllData(204);
+  newUser(
+    200,
+    "Davide",
+    "Andriano",
+    "user1@ezwh.com",
+    "testpassword",
+    "customer"
+  );
+
+  newUser(
+    200,
+    "Pouya",
+    "Hakimifard",
+    "qualityEmployee@ezwh.com",
+    "testpassword",
+    "qualityEmployee"
+  );
+  newUser(200, "Giulio", "Sunder", "clerk1@ezwh.com", "testpassword", "clerk");
+  newUser(
+    200,
+    "Alireza",
+    "Talakoobi",
+    "deliveryEmployee@ezwh.com",
+    "testpassword",
+    "deliveryEmployee"
+  );
+  newUser(
+    200,
+    "Luca",
+    "Ardito",
+    "supplier@ezwh.com",
+    "testpassword",
+    "supplier"
+  );
+  newUser(
+    200,
+    "Maurizio",
+    "Morisio",
+    "manager@ezwh.com",
+    "testpassword",
+    "manager"
+  );
 });
 
 //functions

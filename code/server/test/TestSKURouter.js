@@ -46,11 +46,11 @@ describe('test SKU apis', () => {
     //"testDescriptors" : [1,3,4]
 
 
-    newTD(200, item)
-     UpdateTDPositionByID(200,11,newitem)
-     UpdateTDByID(200,11,newitem)
+    newSKU(200, item)
+     UpdateTDPositionByID(200,350,newitem)
+     UpdateTDByID(200,350,newitem)
      getTD(200,item);
-    getskubyId(200, 11, item);
+    getskubyId(200, 350, item);
      deleteItem(204,100);
     // deleteItem(422);
 
@@ -128,8 +128,8 @@ describe('test SKU apis', () => {
         });
     }
 
-    function newTD(expectedHTTPStatus, item) {
-        it('adding a new TD', (done) => {
+    function newSKU(expectedHTTPStatus, item) {
+        it('adding a new SKU', (done) => {
             if (item !== undefined) {
                 agent.post('/api/sku')
                     .send(item)
@@ -156,7 +156,7 @@ describe('test SKU apis', () => {
     }
 
     function UpdateTDByID(expectedHTTPStatus,id,newitem) {
-        it('Updating TD By ID',  (done)=> {
+        it('Updating SKU By ID',  (done)=> {
             if (newitem !== undefined) {
             
                 agent.put('/api/sku/' + id)
@@ -181,7 +181,7 @@ describe('test SKU apis', () => {
 
 
     function UpdateTDPositionByID(expectedHTTPStatus,id,position) {
-        it('Updating TD By ID',  (done)=> {
+        it('Updating SKU By ID',  (done)=> {
             if (position !== undefined) {
             
                 agent.put('/api/sku/' + id)
