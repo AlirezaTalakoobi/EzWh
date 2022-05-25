@@ -118,7 +118,7 @@ router.delete("/testdescriptor/:id",  [param("id").isNumeric().not().optional()]
     res.status(503).json("Internal Server Error");
 
   }else {
-    return res.status(200).json({message:"Seccess"})
+    return res.status(204).json({message:"Seccess"})
   } 
 },td.deleteTD);
 

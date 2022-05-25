@@ -23,9 +23,12 @@ class TDController {
   
       }
       ))
+      console.log(result);
       let ret = {
+        
         ans : 200,
         result : result
+        
       }
       return ret;
      }
