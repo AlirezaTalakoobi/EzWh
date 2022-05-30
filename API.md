@@ -4,12 +4,13 @@ Version: 1.0
 
 Date: 03 May 2022
 
-| Change | Description |
-|---|------|
-| issue 2 | fixed comment, 'delete a position receiving its positionId |
-| issue 11 | fixed POST /api/item,  now receives both SKU.id and Item.id |
+| Change   | Description                                                |
+| -------- | ---------------------------------------------------------- |
+| issue 2  | fixed comment, 'delete a position receiving its positionId |
+| issue 11 | fixed POST /api/item, now receives both SKU.id and Item.id |
 
 ## INDEX
+
 [SKU](#sku)
 
 [SKU Item](#sku-item)
@@ -40,38 +41,37 @@ Date: 03 May 2022
 - **Request body**: empty.
 - **Response**: `200 OK` (success); body: An array of objects, each describing id, description, weight, volume, notes position, available Quantity, price and a list of testDescriptors of a SKU
 
-    ```
-    [
-        {
-            "id":1,
-           "description" : "a new sku",
-            "weight" : 100,
-            "volume" : 50,
-            "notes" : "first SKU",
-            "position" : "800234523412",
-            "availableQuantity" : 50,
-            "price" : 10.99,
-            "testDescriptors" : [1,3,4]
-        },
-        {
-            "id":2,
-           "description" : "another sku",
-            "weight" : 101,
-            "volume" : 60,
-            "notes" : "second SKU",
-            "position" : "800234543412",
-            "availableQuantity" : 55,
-            "price" : 10.99,
-            "testDescriptors" : [2,5,7]
-        },
-        ....
-    ]
+  ```
+  [
+      {
+          "id":1,
+         "description" : "a new sku",
+          "weight" : 100,
+          "volume" : 50,
+          "notes" : "first SKU",
+          "position" : "800234523412",
+          "availableQuantity" : 50,
+          "price" : 10.99,
+          "testDescriptors" : [1,3,4]
+      },
+      {
+          "id":2,
+         "description" : "another sku",
+          "weight" : 101,
+          "volume" : 60,
+          "notes" : "second SKU",
+          "position" : "800234543412",
+          "availableQuantity" : 55,
+          "price" : 10.99,
+          "testDescriptors" : [2,5,7]
+      },
+      ....
+  ]
 
-    ```
+  ```
 
-
-- **Permissions allowed**:  Manager, Customer, Clerk
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager, Customer, Clerk
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
 
 #### **/api/skus/:id**
 
@@ -80,7 +80,6 @@ Date: 03 May 2022
 - **Request body**: none
 - **Response**: `200 OK` (success); body: An object describing the SKU
 
-    
         {
            "description" : "a new sku",
             "weight" : 100,
@@ -92,7 +91,7 @@ Date: 03 May 2022
             "testDescriptors" : [1,3,4]
         }
 
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `404 Not Found` (no SKU associated to id), `422 Unprocessable Entity` (validation of id failed), `500 Internal Server Error` (generic error).
 
 ### POST
@@ -102,25 +101,23 @@ Date: 03 May 2022
 - **Creates a new SKU with an empty array of testDescriptors.**
 - **Request header** has a line: `Content-Type: application/json`.
 - **Request body**: a JSON object containing description, weight, volume, notes, price and availableQuantity.
- Example of Request body
+  Example of Request body
 
-    ```
-        {
-            "description" : "a new sku",
-            "weight" : 100,
-            "volume" : 50,
-            "notes" : "first SKU",
-            "price" : 10.99,
-            "availableQuantity" : 50
-        }
-    ```
+  ```
+      {
+          "description" : "a new sku",
+          "weight" : 100,
+          "volume" : 50,
+          "notes" : "first SKU",
+          "price" : 10.99,
+          "availableQuantity" : 50
+      }
+  ```
 
-
-- **Response header**:  `201 Created` (success). 
+- **Response header**: `201 Created` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of request body failed), `503 Service Unavailable` (generic error).
-
 
 ### PUT
 
@@ -129,7 +126,7 @@ Date: 03 May 2022
 - **Modify an existing SKU. When a newAvailableQuantity is sent, occupiedWeight and occupiedVolume fields of the position (if the SKU is associated to a position) are modified according to the new available quantity.**
 - **Request header** has a line: `Content-Type: application/json` and req.params.id to retrieve id.
 - **Request body**: a JSON object containing id and new description, new weight, new volume, new notes, new Price and newAvailableQuantity, newTestDescriptors.
-If some fields doesn't change, send the old value.
+  If some fields doesn't change, send the old value.
 
 Example of Request body
 
@@ -142,9 +139,9 @@ Example of Request body
         "newAvailableQuantity" : 50
     }
 
-- **Response header**:  `200 OK` (success). 
+- **Response header**: `200 OK` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not found` (SKU not existing), `422 Unprocessable Entity` (validation of request body failed or if with newAvailableQuantity position is not capable enough in weight or in volume), `503 Service Unavailable` (generic error).
 
 #### **/api/sku/:id/position**
@@ -159,9 +156,9 @@ Example of Request body:
         "position": "800234523412"
     }
 
-- **Response header**:  `200 OK` (success). 
+- **Response header**: `200 OK` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not found` (Position not existing or SKU not existing), `422 Unprocessable Entity` (validation of position through the algorithm failed or position isn't capable to satisfy volume and weight constraints for available quantity of sku or position is already assigned to a sku), `503 Service Unavailable` (generic error).
 
 ### DELETE
@@ -171,9 +168,9 @@ Example of Request body:
 - **Delete a SKU receiving its id.**
 - **Request header** : req.params.id to retrieve id
 - **Request body**: none
-- **Response header**:  `204 No Content` (success).
+- **Response header**: `204 No Content` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of id failed), `503 Service Unavailable` (generic error).
 
 ## SKU ITEM
@@ -186,27 +183,26 @@ Example of Request body:
 - **Request body**: empty.
 - **Response**: `200 OK` (success); body: An array of objects, each describing RFID, SKUId, Available and Date of Stock of a SKU item
 
-    ```
-        [
-            {
-                "RFID":"12345678901234567890123456789014",
-                "SKUId":1,
-                "Available":0,
-                "DateOfStock":"2021/11/29 12:30",
-            },
-            {
-                "RFID":"12345678901234567890123456789015",
-                "SKUId":1,
-                "Available":1,
-                "DateOfStock":"2021/11/29 12:30"
-            },
-            ....
-        ]
-    ```
+  ```
+      [
+          {
+              "RFID":"12345678901234567890123456789014",
+              "SKUId":1,
+              "Available":0,
+              "DateOfStock":"2021/11/29 12:30",
+          },
+          {
+              "RFID":"12345678901234567890123456789015",
+              "SKUId":1,
+              "Available":1,
+              "DateOfStock":"2021/11/29 12:30"
+          },
+          ....
+      ]
+  ```
 
-
-- **Permissions allowed**:  Manager
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
 
 #### **/api/skuitems/sku/:id**
 
@@ -214,25 +210,24 @@ Example of Request body:
 - **Request body**: empty.
 - **Response**: `200 OK` (success); body: An array of objects, each describing RFID, SKUId and Date of Stock of a SKU item
 
-    ```
-        [
-            {
-                "RFID":"12345678901234567890123456789014",
-                "SKUId":1,
-                "DateOfStock":"2021/11/29 12:30"
-            },
-            {
-                "RFID":"12345678901234567890123456789015",
-                "SKUId":1,
-                "DateOfStock":"2021/11/29 12:30"
-            },
-            ....
-        ]
-    ```
+  ```
+      [
+          {
+              "RFID":"12345678901234567890123456789014",
+              "SKUId":1,
+              "DateOfStock":"2021/11/29 12:30"
+          },
+          {
+              "RFID":"12345678901234567890123456789015",
+              "SKUId":1,
+              "DateOfStock":"2021/11/29 12:30"
+          },
+          ....
+      ]
+  ```
 
-
-- **Permissions allowed**:  Manager, Customer
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions),`404 Not Found` (no SKU associated to id), `422 Unprocessable Entity` (validation of id failed) `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager, Customer
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not Found` (no SKU associated to id), `422 Unprocessable Entity` (validation of id failed) `500 Internal Server Error` (generic error).
 
 #### **/api/skuitems/:rfid**
 
@@ -241,17 +236,16 @@ Example of Request body:
 - **Request body**: none
 - **Response**: `200 OK` (success); body: An object describing the SKU item
 
-    ```
-            {
-                "RFID":"12345678901234567890123456789015",
-                "SKUId":1,
-                "Available":1,
-                "DateOfStock":"2021/11/29 12:30"
-            }
-    ```
+  ```
+          {
+              "RFID":"12345678901234567890123456789015",
+              "SKUId":1,
+              "Available":1,
+              "DateOfStock":"2021/11/29 12:30"
+          }
+  ```
 
-
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `404 Not Found` (no SKU Item associated to rfid), `422 Unprocessable Entity` (validation of rfid failed), `500 Internal Server Error` (generic error).
 
 ### POST
@@ -261,7 +255,7 @@ Example of Request body:
 - **Creates a new SKU item with Available =0.**
 - **Request header** has a line: `Content-Type: application/json`.
 - **Request body**: a JSON object containing RFID, SKUId and DateOfStock. DateOfStock can be null, in the format "YYYY/MM/DD" or in format "YYYY/MM/DD HH:MM"
- Example of Request body
+  Example of Request body
 
 ```
     {
@@ -271,10 +265,9 @@ Example of Request body:
     }
 ```
 
-
-- **Response header**:  `201 Created` (success). 
+- **Response header**: `201 Created` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager, Clerk
+- **Permissions allowed**: Manager, Clerk
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not Found` (no SKU associated to SKUId) `422 Unprocessable Entity` (validation of request body failed), `503 Service Unavailable` (generic error).
 
 ### PUT
@@ -293,9 +286,9 @@ Example of Request body:
     }
 ```
 
-- **Response header**:  `200 OK` (success). 
+- **Response header**: `200 OK` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not Found` (no SKU Item associated to rfid), `422 Unprocessable Entity` (validation of request body or of rfid failed), `503 Service Unavailable` (generic error).
 
 ### DELETE
@@ -305,11 +298,10 @@ Example of Request body:
 - **Delete a SKU item receiving his rfid.**
 - **Request header** : req.params.rfid to retrieve rfid
 - **Request body**: none
-- **Response header**:  `204 No Content` (success).
+- **Response header**: `204 No Content` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of rfid failed), `503 Service Unavailable` (generic error).
-
 
 ## POSITION
 
@@ -347,9 +339,8 @@ Example of Request body:
     ]
 ```
 
-
-- **Permissions allowed**:  Manager, Clerk
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager, Clerk
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
 
 ### POST
 
@@ -360,7 +351,7 @@ Example of Request body:
 - **Request body**: a JSON object containing positionID,aisleID, row, col, maxWeight and maxVolume. By default occupiedWeight and occupiedVolume are setted to 0. aisleID, row and col are strings of 4 digits. positionID is derived from aisleID,row and col.
 
 Example of Request body
-    
+
 ```
         {
             "positionID":"800234543412",
@@ -372,19 +363,19 @@ Example of Request body
         }
 ```
 
-
-- **Response header**:  `201 Created` (success). 
+- **Response header**: `201 Created` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of request body failed), `503 Service Unavailable` (generic error).
 
 ### PUT
+
 #### **/api/position/:positionID**
 
 - **Modify a position identified by positionID.**
 - **Request header** has a line: `Content-Type: application/json` and req.params.positionID to retrieve positionID.
 - **Request body**: a JSON object with newAisleID, newRow, newCol,newMaxWeight, newMaxVolume, newOccupiedWeight and newOccupiedVolume. This updates also positionID.
-    
+
 ```
         {
             "newAisleID": "8002",
@@ -397,10 +388,9 @@ Example of Request body
         }
 ```
 
-        
-- **Response header**:  `200 OK` (success). 
+- **Response header**: `200 OK` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager, Clerk
+- **Permissions allowed**: Manager, Clerk
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `404 Not Found` (no position associated to positionID), `422 Unprocessable Entity` (validation of request body or of positionID failed), `503 Service Unavailable` (generic error).
 
 #### **/api/position/:positionID/changeID**
@@ -408,17 +398,16 @@ Example of Request body
 - **Modify the positionID of a position position, given its old positionID.**
 - **Request header** has a line: `Content-Type: application/json` and req.params.positionID to retrieve positionID.
 - **Request body**: a JSON object with new positionID. This updates also aisleID,row and col
-    
+
 ```
         {
             "newPositionID": "800234543412"
         }
 ```
 
-        
-- **Response header**:  `200 OK` (success). 
+- **Response header**: `200 OK` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `404 Not Found` (no position associated to positionID), `422 Unprocessable Entity` (validation of request body or of positionID failed), `503 Service Unavailable` (generic error).
 
 ### DELETE
@@ -428,17 +417,17 @@ Example of Request body
 - **Delete a position receiving its positionID.**
 - **Request header** : req.params.positionID to retrieve positionID
 - **Request body**: none
-- **Response header**:  `204 No Content` (success).
+- **Response header**: `204 No Content` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of positionID failed), `503 Service Unavailable` (generic error).
-
 
 ## TEST DESCRIPTOR
 
 ### GET
 
 #### **/api/testDescriptors**
+
 - **Return an array containing all test descriptors**.
 - **Request body**: empty.
 - **Response**: `200 OK` (success); body: An array of objects, each describing id, name, procedureDescription and idSKU of a test descriptor
@@ -462,9 +451,8 @@ Example of Request body
     ]
 ```
 
-
-- **Permissions allowed**:  Manager, Quality Employee
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager, Quality Employee
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
 
 #### **/api/testDescriptors/:id**
 
@@ -472,7 +460,7 @@ Example of Request body
 - **Request header** : req.params.id to retrieve id
 - **Request body**: none
 - **Response**: `200 OK` (success); body: An object describing the test descriptor
-  
+
 ```
         {
             "id":1,
@@ -482,8 +470,7 @@ Example of Request body
         }
 ```
 
-
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `404 Not Found` (no test descriptor associated id), `422 Unprocessable Entity` (validation of id failed), `500 Internal Server Error` (generic error).
 
 ### POST
@@ -493,7 +480,7 @@ Example of Request body
 - **Creates a new test descriptor.**
 - **Request header** has a line: `Content-Type: application/json`.
 - **Request body**: a JSON object containing name, procedureDescription and idSKU.
-    
+
 ```
         {
             "name":"test descriptor 3",
@@ -502,19 +489,19 @@ Example of Request body
         }
 ```
 
-
-- **Response header**:  `201 Created` (success). 
+- **Response header**: `201 Created` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `404 Not Found` (no sku associated idSKU),`422 Unprocessable Entity` (validation of request body failed), `503 Service Unavailable` (generic error).
 
 ### PUT
+
 #### **/api/testDescriptor/:id**
 
 - **Modify a testDescriptor, given its id.**
 - **Request header** has a line: `Content-Type: application/json` and req.params.id to retrieve id.
 - **Request body**: a JSON object with new name, new procedureDescription and newIdSKU. If some fields don't change, send the old value.
-    
+
 ```
         {
             "newName":"test descriptor 1",
@@ -523,25 +510,22 @@ Example of Request body
         }
 ```
 
-        
-- **Response header**:  `200 OK` (success). 
+- **Response header**: `200 OK` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not Found` (no test descriptor associated id or no sku associated to IDSku), `422 Unprocessable Entity` (validation of request body or of id failed), `503 Service Unavailable` (generic error).
-
 
 ### DELETE
 
 #### **/api/testDescriptor/:id**
-        
+
 - **Delete a test descriptor, given its id.**
 - **Request header** : req.params.id to retrieve id
 - **Request body**: none
-- **Response header**:  `204 No Content` (success).
+- **Response header**: `204 No Content` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of id failed), `503 Service Unavailable` (generic error).
-
 
 ## TEST RESULT
 
@@ -572,16 +556,15 @@ Example of Request body
     ]
 ```
 
-
-- **Permissions allowed**:  Manager, Quality Employee
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), 404 Not Found` (no sku item associated to rfid) `,422 Unprocessable Entity` (validation of rfid failed), `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager, Quality Employee
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), 404 Not Found`(no sku item associated to rfid)`,422 Unprocessable Entity`(validation of rfid failed),`500 Internal Server Error` (generic error).
 
 #### **/api/skuitems/:rfid/testResults/:id**
 
-- **Return  a single test result for a certain sku item identified by RFID.**
+- **Return a single test result for a certain sku item identified by RFID.**
 - **Request header** : req.params.id to retrieve id of test result, req.params.rfid to retreive rfid of sku item
 - **Request body**: none
-- **Response**: `200 OK` (success); body: An object describing the test result    
+- **Response**: `200 OK` (success); body: An object describing the test result
 
 ```
         {
@@ -592,8 +575,7 @@ Example of Request body
         }
 ```
 
-
-- **Permissions allowed**:  Manager, Quality Employee
+- **Permissions allowed**: Manager, Quality Employee
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `404 Not Found` (no test result associated to id or no sku item associated to rfid), `422 Unprocessable Entity` (validation of id or of rfid failed), `500 Internal Server Error` (generic error).
 
 ### POST
@@ -603,7 +585,7 @@ Example of Request body
 - **Creates a new test Result for a certain sku item identified by RFID.**
 - **Request header** has a line: `Content-Type: application/json`.
 - **Request body**: a JSON object containing idTestDescriptor, Date and Result.
-    
+
 ```
         {
             "rfid":"12345678901234567890123456789016",
@@ -613,19 +595,19 @@ Example of Request body
         }
 ```
 
-
-- **Response header**:  `201 Created` (success). 
+- **Response header**: `201 Created` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager, Quality Employee
-- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),404 Not Found` (no sku item associated to rfid or no test descriptor associated to idTestDescriptor) ` ,422 Unprocessable Entity` (validation of request body or of rfid failed), `503 Service Unavailable` (generic error).
+- **Permissions allowed**: Manager, Quality Employee
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),404 Not Found`(no sku item associated to rfid or no test descriptor associated to idTestDescriptor)` ,422 Unprocessable Entity`(validation of request body or of rfid failed),`503 Service Unavailable` (generic error).
 
 ### PUT
+
 #### **/api/skuitems/:rfid/testResult/:id**
 
 - **Modify a test Result identified by id for a certain sku item identified by RFID.**
 - **Request header** has a line: `Content-Type: application/json` , req.params.rfid to retrieve rfid of sku item and req.params.id to retrieve id of test result
 - **Request body**: a JSON object with new testDescriptor, newDate and newResult.
-    
+
 ```
         {
             "newIdTestDescriptor":12,
@@ -634,13 +616,10 @@ Example of Request body
         }
 ```
 
-        
-- **Response header**:  `200 OK` (success). 
+- **Response header**: `200 OK` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager, Quality Employee
-- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), 404 Not Found` (no sku item associated to rfid or no test descriptor associated to newIdTestDescriptor or no test result associated to id) ` , `422 Unprocessable Entity` (validation of request body, of id or of rfid failed), `503 Service Unavailable` (generic error).
-
-
+- **Permissions allowed**: Manager, Quality Employee
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), 404 Not Found`(no sku item associated to rfid or no test descriptor associated to newIdTestDescriptor or no test result associated to id)` , `422 Unprocessable Entity` (validation of request body, of id or of rfid failed), `503 Service Unavailable` (generic error).
 
 ### DELETE
 
@@ -649,9 +628,9 @@ Example of Request body
 - **Delete a test result, given its id for a certain sku item identified by RFID.**
 - **Request header** : req.params.id to retrieve id of test resutl, req.params.rfid to retreive rfid of sku item
 - **Request body**: none
-- **Response header**:  `204 No Content` (success).
+- **Response header**: `204 No Content` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager, Quality Employee
+- **Permissions allowed**: Manager, Quality Employee
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of id or of rfid failed), `503 Service Unavailable` (generic error).
 
 ## USER
@@ -659,12 +638,12 @@ Example of Request body
 ### GET
 
 #### **/api/userinfo**
-  - **Returns user informations if logged in.**
-  - **Request body:** empty.
-  - **Response:** `200 Ok` (success)  
-  - **Response body:** user info (id, username, name, surname, type).
-  - **Error responses:** `401 Unauthorized` (not logged in) or `500 Internal Server Error` (generic error).
 
+- **Returns user informations if logged in.**
+- **Request body:** empty.
+- **Response:** `200 Ok` (success)
+- **Response body:** user info (id, username, name, surname, type).
+- **Error responses:** `401 Unauthorized` (not logged in) or `500 Internal Server Error` (generic error).
 
 #### **/api/suppliers**
 
@@ -686,10 +665,8 @@ Example of Request body
     },...]
 ```
 
-
-- **Permissions allowed**:  Manager
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
-
+- **Permissions allowed**: Manager
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
 
 #### **/api/users**
 
@@ -713,9 +690,8 @@ Example of Request body
     },...]
 ```
 
-
-- **Permissions allowed**:  Manager
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
 
 ### POST
 
@@ -726,7 +702,6 @@ Example of Request body
 - **Request body**: a JSON object containing username, name, surname, password, type. username is the email. Password MUST BE AT LEAST 8 characters.
 - **Possible types** : customer, qualityEmployee, clerk, deliveryEmployee, supplier
 - **Manager accounts are already created (hard coded) and Administrator is covered by manager**
-
 
 ```
     {
@@ -739,70 +714,70 @@ Example of Request body
     }
 ```
 
-
-- **Response header**:  `201 Created` (success). 
+- **Response header**: `201 Created` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`409 Conflict` (user with same mail and type already exists), `422 Unprocessable Entity` (validation of request body failed or attempt to create manager or administrator accounts), `503 Service Unavailable` (generic error).
 
 #### **/api/managerSessions**
 
 - **Login of managers**
-- **Request header** has a line: `Content-Type: application/json`. 
+- **Request header** has a line: `Content-Type: application/json`.
 - **Request body**: username and password. Username must be an email
-- **Response**: `200 Ok` (success)  
+- **Response**: `200 Ok` (success)
 - **Response body**: manager info (id, username, name).
 - **Error responses**: `401 Unauthorized` (wrong username and/or password) or `500 Internal Server Error` (generic error).
 
 #### **/api/customerSessions**
 
 - **Login of customers**
-- **Request header** has a line: `Content-Type: application/json`. 
-- **Request body**: username and password.  Username must be an email
-- **Response**: `200 Ok` (success)  
+- **Request header** has a line: `Content-Type: application/json`.
+- **Request body**: username and password. Username must be an email
+- **Response**: `200 Ok` (success)
 - **Response body**: customer info (id, username, name).
 - **Error responses**: `401 Unauthorized` (wrong username and/or password) or `500 Internal Server Error` (generic error).
 
 #### **/api/supplierSessions**
 
 - **Login of suppliers**
-- **Request header** has a line: `Content-Type: application/json`. 
-- **Request body**: username and password.  Username must be an email
-- **Response**: `200 Ok` (success)  
+- **Request header** has a line: `Content-Type: application/json`.
+- **Request body**: username and password. Username must be an email
+- **Response**: `200 Ok` (success)
 - **Response body**: supplier info (id, username, name).
 - **Error responses**: `401 Unauthorized` (wrong username and/or password) or `500 Internal Server Error` (generic error).
 
 #### **/api/clerkSessions**
 
 - **Login of clerks**
-- **Request header** has a line: `Content-Type: application/json`. 
-- **Request body**: username and password.  Username must be an email
-- **Response**: `200 Ok` (success)  
+- **Request header** has a line: `Content-Type: application/json`.
+- **Request body**: username and password. Username must be an email
+- **Response**: `200 Ok` (success)
 - **Response body**: clerk info (id, username, name).
 - **Error responses**: `401 Unauthorized` (wrong username and/or password) or `500 Internal Server Error` (generic error).
 
 #### **/api/qualityEmployeeSessions**
 
 - **Login of quality employees**
-- **Request header** has a line: `Content-Type: application/json`. 
-- **Request body**: username and password.  Username must be an email
-- **Response**: `200 Ok` (success)  
+- **Request header** has a line: `Content-Type: application/json`.
+- **Request body**: username and password. Username must be an email
+- **Response**: `200 Ok` (success)
 - **Response body**: qualityEmployee info (id, username, name).
 - **Error responses**: `401 Unauthorized` (wrong username and/or password) or `500 Internal Server Error` (generic error).
 
 #### **/api/deliveryEmployeeSessions**
 
 - **Login of delivery employees**
-- **Request header** has a line: `Content-Type: application/json`. 
-- **Request body**: username and password.  Username must be an email
-- **Response**: `200 Ok` (success)  
+- **Request header** has a line: `Content-Type: application/json`.
+- **Request body**: username and password. Username must be an email
+- **Response**: `200 Ok` (success)
 - **Response body**: delivery employee info (id, username, name).
 - **Error responses**: `401 Unauthorized` (wrong username and/or password) or `500 Internal Server Error` (generic error).
 
 #### **/api/logout**
+
 - **Perfoms logout**
 - **Request body**: empty.
-- **Response**: `200 Ok` (success)  
+- **Response**: `200 Ok` (success)
 - **Response body**: empty.
 - **Error responses**: `500 Internal Server Error` (generic error).
 
@@ -814,7 +789,6 @@ Example of Request body
 - **Request header** has a line: `Content-Type: application/json` and req.params.username to retrieve username (email).
 - **Possible types** : customer, qualityEmployee, clerk, deliveryEmployee, supplier
 - **Request body**: a JSON object with oldType and newType.
-    
 
 ```
     {
@@ -823,10 +797,9 @@ Example of Request body
     }
 ```
 
-
-- **Response header**:  `200 OK` (success). 
+- **Response header**: `200 OK` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not found` (wrong username or oldType fields or user doesn't exists), `422 Unprocessable Entity` (validation of request body or of username failed or attempt to modify rights to administrator or manager), `503 Service Unavailable` (generic error).
 
 ### DELETE
@@ -838,11 +811,10 @@ Example of Request body
 - **Request header** : req.params.username to retrieve username. req.params.type to retrieve type.
 - **Possible types** : customer, qualityEmployee, clerk, deliveryEmployee, supplier
 - **Request body**: none
-- **Response header**:  `204 No Content` (success).
+- **Response header**: `204 No Content` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of username or of type failed or attempt to delete a manager/administrator), `503 Service Unavailable` (generic error).
-
 
 ## RESTOCK ORDER
 
@@ -872,11 +844,11 @@ Example of Request body
     ]
 ```
 
-
-- **Permissions allowed**:  Manager, Clerk, Quality Employee
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager, Clerk, Quality Employee
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
 
 #### **/api/restockOrdersIssued**
+
 Returns an array of all restock orders in state = ISSUED. Example:
 
 - **Return an array containing all restock orders in state = ISSUED**.
@@ -898,17 +870,16 @@ Returns an array of all restock orders in state = ISSUED. Example:
     ]
 ```
 
-
-- **Permissions allowed**:  Manager, Supplier
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager, Supplier
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
 
 #### **/api/restockOrders/:id**
+
 - **Return a restock order, given its id**.
 - **Request header** : req.params.id to retrieve id
 - **Request body**: none
 - **Response**: `200 OK` (success); body: An object describing the restock order
 
-    
 ```
         {
             "issueDate":"2021/11/29 09:33",
@@ -922,34 +893,33 @@ Returns an array of all restock orders in state = ISSUED. Example:
         }
 ```
 
-
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `404 Not Found` (no restock order associated to id), `422 Unprocessable Entity` (validation of id failed), `500 Internal Server Error` (generic error).
 
 #### **/api/restockOrders/:id/returnItems**
+
 - **Return sku items to be returned of a restock order, given its id. A sku item need to be returned if it haven't passed at least one quality test**
 - **Request header** : req.params.id to retrieve id
 - **Request body**: none
 - **Response**: `200 OK` (success); body: An object describing the restock order's items to be returned
 
-    
 ```
          [{"SKUId":12,"rfid":"12345678901234567890123456789016"},
          {"SKUId":12,       "rfid":"12345678901234567890123456789017"},...]
 
 ```
 
-
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `404 Not Found` (no restock order associated to id), `422 Unprocessable Entity` (validation of id failed or restock order state != COMPLETEDRETURN), `500 Internal Server Error` (generic error).
 
 ### POST
 
 #### **/api/restockOrder**
+
 - **Creates a new restock order in state = ISSUED with an empty list of skuItems.**
 - **Request header** has a line: `Content-Type: application/json`.
 - **Request body**: a JSON object containing issueDate, products and supplierId.
-    
+
 ```
         {
             "issueDate":"2021/11/29 09:33",
@@ -959,74 +929,74 @@ Returns an array of all restock orders in state = ISSUED. Example:
         }
 ```
 
-
-- **Response header**:  `201 Created` (success). 
+- **Response header**: `201 Created` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager, Supplier
+- **Permissions allowed**: Manager, Supplier
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of request body failed), `503 Service Unavailable` (generic error).
 
-
 ### PUT
+
 #### **/api/restockOrder/:id**
+
 - **Modify the state of a restock order, given its id.**
 - **Request header** has a line: `Content-Type: application/json` and req.params.id to retrieve id.
 - **Request body**: a JSON object with newState.
-    
+
 ```
         {
             "newState":"DELIVERED"
         }
 ```
 
-
-- **Response header**:  `200 OK` (success). 
+- **Response header**: `200 OK` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager, Clerk
+- **Permissions allowed**: Manager, Clerk
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not Found` (no restock order associated to id), `422 Unprocessable Entity` (validation of request body or of id failed), `503 Service Unavailable` (generic error).
 
 #### **/api/restockOrder/:id/skuItems**
+
 - **Add a non empty list of skuItems to a restock order, given its id. If a restock order has already a non empty list of skuItems, merge both arrays**
 - **Request header** has a line: `Content-Type: application/json` and req.params.id to retrieve id.
 - **Request body**: a JSON object with skuItems.
-    
+
 ```
         {
             "skuItems" : [{"SKUId":12,"rfid":"12345678901234567890123456789016"},{"SKUId":12,"rfid":"12345678901234567890123456789017"},...]
         }
 ```
 
-
-- **Response header**:  `200 OK` (success). 
+- **Response header**: `200 OK` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager, Clerk
+- **Permissions allowed**: Manager, Clerk
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not Found` (no restock order associated to id), `422 Unprocessable Entity` (validation of request body or of id failed or order state != DELIVERED), `503 Service Unavailable` (generic error).
 
 #### **/api/restockOrder/:id/transportNote**
+
 - **Add a transport note to a restock order, given its id.**
 - **Request header** has a line: `Content-Type: application/json` and req.params.id to retrieve id.
 - **Request body**: a JSON object with transportNote.
-    
+
 ```
         {
             "transportNote":{"deliveryDate":"2021/12/29"}
         }
 ```
 
-
-- **Response header**:  `200 OK` (success). 
+- **Response header**: `200 OK` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager, Supplier
+- **Permissions allowed**: Manager, Supplier
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not Found` (no restock order associated to id), `422 Unprocessable Entity` (validation of request body or of id failed or order state != DELIVERY or deliveryDate is before issueDate), `503 Service Unavailable` (generic error).
 
 ### DELETE
 
 #### **/api/restockOrder/:id**
+
 - **Delete a restock order, given its id.**
 - **Request header** : req.params.id to retrieve id
 - **Request body**: none
-- **Response header**:  `204 No Content` (success).
+- **Response header**: `204 No Content` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of id failed), `503 Service Unavailable` (generic error).
 
 ## RETURN ORDER
@@ -1034,6 +1004,7 @@ Returns an array of all restock orders in state = ISSUED. Example:
 ### GET
 
 #### **/api/returnOrders**
+
 - **Return an array containing all return orders**.
 - **Request body**: empty.
 - **Response**: `200 OK` (success); body: An array of objects, each describing id, returnDate, products and restockOrderId of a Return order.
@@ -1051,17 +1022,16 @@ Returns an array of all restock orders in state = ISSUED. Example:
     ]
 ```
 
-
-- **Permissions allowed**:  Manager
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
 
 #### **/api/returnOrders/:id**
+
 - **Return a return order, given its id**.
 - **Request header** : req.params.id to retrieve id
 - **Request body**: none
 - **Response**: `200 OK` (success); body: An object describing the return order
 
-    
 ```
         {
             "returnDate":"2021/11/29 09:33",
@@ -1071,17 +1041,17 @@ Returns an array of all restock orders in state = ISSUED. Example:
         }
 ```
 
-
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `404 Not Found` (no return order associated to id), `422 Unprocessable Entity` (validation of id failed), `500 Internal Server Error` (generic error).
 
 ### POST
 
 #### **/api/returnOrder**
+
 - **Creates a new return order.**
 - **Request header** has a line: `Content-Type: application/json`.
 - **Request body**: a JSON object containing returnDate, products and restockOrderId.
-    
+
 ```
         {
             "returnDate":"2021/11/29 09:33",
@@ -1091,26 +1061,24 @@ Returns an array of all restock orders in state = ISSUED. Example:
         }
 ```
 
-
-- **Response header**:  `201 Created` (success). 
+- **Response header**: `201 Created` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not Found` (no restock order associated to restockOrderId), `422 Unprocessable Entity` (validation of request body failed), `503 Service Unavailable` (generic error).
-
 
 ### PUT
 
 ### DELETE
 
 #### **/api/returnOrder/:id**
+
 - **Delete a return order, given its id.**
 - **Request header** : req.params.id to retrieve id
 - **Request body**: none
-- **Response header**:  `204 No Content` (success).
+- **Response header**: `204 No Content` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of id failed), `503 Service Unavailable` (generic error).
-
 
 ## INTERNAL ORDER
 
@@ -1146,9 +1114,8 @@ Returns an array of all restock orders in state = ISSUED. Example:
     ]
 ```
 
-
-- **Permissions allowed**:  Manager
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
 
 #### **/api/internalOrdersIssued**
 
@@ -1170,11 +1137,11 @@ Returns an array of all restock orders in state = ISSUED. Example:
     ]
 ```
 
-
-- **Permissions allowed**:  Manager, Customer
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager, Customer
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
 
 #### **/api/internalOrdersAccepted**
+
 - **Return an array containing all internal orders in state = ACCEPTED**.
 - **Request body**: empty.
 - **Response**: `200 OK` (success); body: An array of objects, each describing id, issueDate, state, products and customerId of an Internal order. Products contains SKUId, description, price and qty.
@@ -1193,9 +1160,8 @@ Returns an array of all restock orders in state = ISSUED. Example:
     ]
 ```
 
-
-- **Permissions allowed**:  Manager, Delivery Employee
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager, Delivery Employee
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
 
 #### **/api/internalOrders/:id**
 
@@ -1203,7 +1169,7 @@ Returns an array of all restock orders in state = ISSUED. Example:
 - **Request header** : req.params.id to retrieve id
 - **Request body**: none
 - **Response**: `200 OK` (success); body: An object describing the internal order. Products contains SKUId, description, price and qty if state !=COMPLETED, otherwise it contains SKUId, description, price, RFID.
-    
+
 ```
         {
             "id":1,
@@ -1215,8 +1181,7 @@ Returns an array of all restock orders in state = ISSUED. Example:
         }
 ```
 
-
-- **Permissions allowed**:  Manager, Delivery Employee
+- **Permissions allowed**: Manager, Delivery Employee
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `404 Not Found` (no internal order associated to id), `422 Unprocessable Entity` (validation of id failed), `500 Internal Server Error` (generic error).
 
 ### POST
@@ -1226,8 +1191,7 @@ Returns an array of all restock orders in state = ISSUED. Example:
 - **Creates a new internal order in state = ISSUED.**
 - **Request header** has a line: `Content-Type: application/json`.
 - **Request body**: a JSON object containing issueDate, products and customerId.
-    
-    
+
 ```
         {
             "issueDate":"2021/11/29 09:33",
@@ -1237,19 +1201,19 @@ Returns an array of all restock orders in state = ISSUED. Example:
         }
 ```
 
-
-- **Response header**:  `201 Created` (success). 
+- **Response header**: `201 Created` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager, Customer
+- **Permissions allowed**: Manager, Customer
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of request body failed), `503 Service Unavailable` (generic error).
 
 ### PUT
+
 #### **/api/internalOrders/:id**
 
 - **Modify the state of an internal order, given its id. If newState is = COMPLETED an array of RFIDs is sent**
 - **Request header** has a line: `Content-Type: application/json` and req.params.id to retrieve id.
 - **Request body**: a JSON object with newState and if newState= COMPLETED also a products array containing SKuID and RFID. If state is not COMPLETED and a products array is sent, it is ignored.
-    
+
 ```
         {
             "newState":"ACCEPTED"
@@ -1263,21 +1227,21 @@ Returns an array of all restock orders in state = ISSUED. Example:
         }
 ```
 
-
-- **Response header**:  `200 OK` (success). 
+- **Response header**: `200 OK` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager, Delivery Employee, Internal Customer
+- **Permissions allowed**: Manager, Delivery Employee, Internal Customer
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not Found` (no internal order associated to id), `422 Unprocessable Entity` (validation of request body or of id failed), `503 Service Unavailable` (generic error).
 
 ### DELETE
 
 #### **/api/internalOrders/:id**
+
 - **Delete an internal order, given its id.**
 - **Request header** : req.params.id to retrieve id
 - **Request body**: none
-- **Response header**:  `204 No Content` (success).
+- **Response header**: `204 No Content` (success).
 - **Response body**: none.
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of id failed), `503 Service Unavailable` (generic error).
 
 ## ITEM
@@ -1290,30 +1254,29 @@ Returns an array of all restock orders in state = ISSUED. Example:
 - **Request body**: empty.
 - **Response**: `200 OK` (success); body: An array of objects, each describing id, description, price, SKUId and supplierId
 
-    ```
-    [
-        {
-            "id":1,
-            "description" : "a new item",
-            "price" : 10.99,
-            "SKUId" : 1,
-            "supplierId" : 2
-        },
-        {
-            "id":2,
-            "description" : "another item",
-            "price" : 12.99,
-            "SKUId" : 2,
-            "supplierId" : 1
-        },
-        ....
-    ]
+  ```
+  [
+      {
+          "id":1,
+          "description" : "a new item",
+          "price" : 10.99,
+          "SKUId" : 1,
+          "supplierId" : 2
+      },
+      {
+          "id":2,
+          "description" : "another item",
+          "price" : 12.99,
+          "SKUId" : 2,
+          "supplierId" : 1
+      },
+      ....
+  ]
 
-    ```
+  ```
 
-
-- **Permissions allowed**:  Manager, Supplier
-- **Error responses**:  `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
+- **Permissions allowed**: Manager, Supplier
+- **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error).
 
 #### **/api/items/:id**
 
@@ -1322,7 +1285,6 @@ Returns an array of all restock orders in state = ISSUED. Example:
 - **Request body**: none
 - **Response**: `200 OK` (success); body: An object describing the Item
 
-    
         {
             "id":1,
             "description" : "a new item",
@@ -1331,7 +1293,7 @@ Returns an array of all restock orders in state = ISSUED. Example:
             "supplierId" : 2
         }
 
-- **Permissions allowed**:  Manager
+- **Permissions allowed**: Manager
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `404 Not Found` (no item associated to id), `422 Unprocessable Entity` (validation of id failed), `500 Internal Server Error` (generic error).
 
 ### POST
@@ -1341,24 +1303,22 @@ Returns an array of all restock orders in state = ISSUED. Example:
 - **Creates a new Item**
 - **Request header** has a line: `Content-Type: application/json`.
 - **Request body**: a JSON object containing id, description, price, SKUId, supplierId.
- Example of Request body
+  Example of Request body
 
-    ```
-        {
-            "id" : 12,
-            "description" : "a new item",
-            "price" : 10.99,
-            "SKUId" : 1,
-            "supplierId" : 2
-        }
-    ```
+  ```
+      {
+          "id" : 12,
+          "description" : "a new item",
+          "price" : 10.99,
+          "SKUId" : 1,
+          "supplierId" : 2
+      }
+  ```
 
-
-- **Response header**:  `201 Created` (success). 
+- **Response header**: `201 Created` (success).
 - **Response body**: none.
 - **Permissions allowed**: Supplier
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not Found` (Sku not found), `422 Unprocessable Entity` (validation of request body failed or this supplier already sells an item with the same SKUId or supplier already sells an Item with the same ID), `503 Service Unavailable` (generic error).
-
 
 ### PUT
 
@@ -1367,7 +1327,7 @@ Returns an array of all restock orders in state = ISSUED. Example:
 - **Modify an existing item.**
 - **Request header** has a line: `Content-Type: application/json` and req.params.id to retrieve id.
 - **Request body**: a JSON object containing id and new description and new Price.
-If some fields doesn't change, send the old value.
+  If some fields doesn't change, send the old value.
 
 Example of Request body
 
@@ -1376,7 +1336,7 @@ Example of Request body
         "newPrice" : 10.99
     }
 
-- **Response header**:  `200 OK` (success). 
+- **Response header**: `200 OK` (success).
 - **Response body**: none.
 - **Permissions allowed**: Supplier
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions),`404 Not found` (Item not existing), `422 Unprocessable Entity` (validation of request body failed), `503 Service Unavailable` (generic error).
@@ -1388,7 +1348,7 @@ Example of Request body
 - **Delete an item receiving its id.**
 - **Request header** : req.params.id to retrieve id
 - **Request body**: none
-- **Response header**:  `204 No Content` (success).
+- **Response header**: `204 No Content` (success).
 - **Response body**: none.
 - **Permissions allowed**: Supplier
 - **Error responses**: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of id failed), `503 Service Unavailable` (generic error).

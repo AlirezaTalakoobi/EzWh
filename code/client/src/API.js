@@ -1,233 +1,233 @@
 async function logIn(credentials, type) {
-    //call: POST /api/...
-    let response = null;
-    switch (type) {
-      case "C":
-        response = await fetch("/api/customerSessions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
-        });
-        break;
-      case "M":
-        response = await fetch("/api/managerSessions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
-        });
-        break;
-      case "S":
-        response = await fetch("/api/supplierSessions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
-        });
-        break;
-      case "K":
-        response = await fetch("/api/clerkSessions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
-        });
-        break;
-      case "Q":
-        response = await fetch("/api/qualityEmployeeSessions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
-        });
-        break;
-      case "D":
-        response = await fetch("/api/deliveryEmployeeSessions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
-        });
-        break;
-      default:
-        //error: 
-        console.log("How did you get that?");
-        return null;
-    }
-    if (response.ok) {
-      console.log("client: login returned ok from server");
-      let user = await response.json();
-      user.type = type;
-      return user;
-    } else {
-      try {
-        const errDetail = await response.json();
-        throw errDetail.message;
-      } catch (err) {
-        throw err;
-      }
-    }
-  }
-  
-  async function logOut() {
-    await fetch("/api/logout", { method: "POST" });
-  }
-  
-  async function getUserInfo() {
-    const response = await fetch("/api/userinfo");
-    const userInfo = await response.json();
-    if (response.ok) {
-      return userInfo;
-    } else {
-      throw userInfo; // an object with the error coming from the server
-    }
-  }
-
-  function addPosition(newPosition) {
-    // call: POST /api/position
-    return new Promise((resolve, reject) => {
-      fetch("/api/position", {
+  //call: POST /api/...
+  let response = null;
+  switch (type) {
+    case "C":
+      response = await fetch("/api/customerSessions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newPosition),
-      })
-        .then((response) => {
-          if (response.ok) {
-            resolve(true);
-          } else {
-            response
-              .json()
-              .then((obj) => {
-                reject(obj);
-              }) // error msg in the response body
-              .catch((err) => {
-                reject({
-                  errors: [
-                    { param: "Application", msg: "Cannot parse server response" },
-                  ],
-                });
-              }); // something else
-          }
-        })
-        .catch((err) => {
-          reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] });
-        }); // connection errors
-    });
+        body: JSON.stringify(credentials),
+      });
+      break;
+    case "M":
+      response = await fetch("/api/managerSessions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+      break;
+    case "S":
+      response = await fetch("/api/supplierSessions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+      break;
+    case "K":
+      response = await fetch("/api/clerkSessions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+      break;
+    case "Q":
+      response = await fetch("/api/qualityEmployeeSessions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+      break;
+    case "D":
+      response = await fetch("/api/deliveryEmployeeSessions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+      break;
+    default:
+      //error:
+      console.log("How did you get that?");
+      return null;
   }
-
-  const getPositions = async () => {
-    // call: GET /api/positions
-    const response = await fetch("/api/positions");
-    const positions = await response.json();
-    if (response.ok) {
-      return positions;
+  if (response.ok) {
+    console.log("client: login returned ok from server");
+    let user = await response.json();
+    user.type = type;
+    return user;
+  } else {
+    try {
+      const errDetail = await response.json();
+      throw errDetail.message;
+    } catch (err) {
+      throw err;
     }
-  };
-
-  function editPositionBarcode(oldCode,newCode) {
-    // call: PUT /api/position
-    return new Promise((resolve, reject) => {
-      fetch("/api/position/"+oldCode+"/changeCode", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({newBarcode:newCode}),
-      })
-        .then((response) => {
-          if (response.ok) {
-            resolve(true);
-          } else {
-            response
-              .json()
-              .then((obj) => {
-                reject(obj);
-              }) // error msg in the response body
-              .catch((err) => {
-                reject({
-                  errors: [
-                    { param: "Application", msg: "Cannot parse server response" },
-                  ],
-                });
-              }); // something else
-          }
-        })
-        .catch((err) => {
-          reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] });
-        }); // connection errors
-    });
   }
+}
 
-  function editPosition(newPosition) {
-    // call: PUT /api/position
-    return new Promise((resolve, reject) => {
-      fetch("/api/position/"+newPosition.barcode, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newPosition),
-      })
-        .then((response) => {
-          if (response.ok) {
-            resolve(true);
-          } else {
-            response
-              .json()
-              .then((obj) => {
-                reject(obj);
-              }) // error msg in the response body
-              .catch((err) => {
-                reject({
-                  errors: [
-                    { param: "Application", msg: "Cannot parse server response" },
-                  ],
-                });
-              }); // something else
-          }
-        })
-        .catch((err) => {
-          reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] });
-        }); // connection errors
-    });
+async function logOut() {
+  await fetch("/api/logout", { method: "POST" });
+}
+
+async function getUserInfo() {
+  const response = await fetch("/api/userinfo");
+  const userInfo = await response.json();
+  if (response.ok) {
+    return userInfo;
+  } else {
+    throw userInfo; // an object with the error coming from the server
   }
+}
 
-  function deletePosition(barcode){
-    return new Promise((resolve, reject) => {
-      fetch("/api/position/"+barcode, {
-        method: "DELETE"
+function addPosition(newPosition) {
+  // call: POST /api/position
+  return new Promise((resolve, reject) => {
+    fetch("/api/position", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newPosition),
+    })
+      .then((response) => {
+        if (response.ok) {
+          resolve(true);
+        } else {
+          response
+            .json()
+            .then((obj) => {
+              reject(obj);
+            }) // error msg in the response body
+            .catch((err) => {
+              reject({
+                errors: [
+                  { param: "Application", msg: "Cannot parse server response" },
+                ],
+              });
+            }); // something else
+        }
       })
-        .then((response) => {
-          if (response.ok) {
-            resolve(true);
-          } else {
-            response
-              .json()
-              .then((obj) => {
-                reject(obj);
-              }) // error msg in the response body
-              .catch((err) => {
-                reject({
-                  errors: [
-                    { param: "Application", msg: "Cannot parse server response" },
-                  ],
-                });
-              }); // something else
-          }
-        })
-        .catch((err) => {
-          reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] });
-        }); // connection errors
-    });
+      .catch((err) => {
+        reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] });
+      }); // connection errors
+  });
+}
+
+const getPositions = async () => {
+  // call: GET /api/positions
+  const response = await fetch("/api/positions");
+  const positions = await response.json();
+  if (response.ok) {
+    return positions;
+  }
+};
+
+function editPositionBarcode(oldCode, newCode) {
+  // call: PUT /api/position
+  return new Promise((resolve, reject) => {
+    fetch("/api/position/" + oldCode + "/changeCode", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ newBarcode: newCode }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          resolve(true);
+        } else {
+          response
+            .json()
+            .then((obj) => {
+              reject(obj);
+            }) // error msg in the response body
+            .catch((err) => {
+              reject({
+                errors: [
+                  { param: "Application", msg: "Cannot parse server response" },
+                ],
+              });
+            }); // something else
+        }
+      })
+      .catch((err) => {
+        reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] });
+      }); // connection errors
+  });
+}
+
+function editPosition(newPosition) {
+  // call: PUT /api/position
+  return new Promise((resolve, reject) => {
+    fetch("/api/position/" + newPosition.barcode, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newPosition),
+    })
+      .then((response) => {
+        if (response.ok) {
+          resolve(true);
+        } else {
+          response
+            .json()
+            .then((obj) => {
+              reject(obj);
+            }) // error msg in the response body
+            .catch((err) => {
+              reject({
+                errors: [
+                  { param: "Application", msg: "Cannot parse server response" },
+                ],
+              });
+            }); // something else
+        }
+      })
+      .catch((err) => {
+        reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] });
+      }); // connection errors
+  });
+}
+
+function deletePosition(barcode) {
+  return new Promise((resolve, reject) => {
+    fetch("/api/position/" + barcode, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          resolve(true);
+        } else {
+          response
+            .json()
+            .then((obj) => {
+              reject(obj);
+            }) // error msg in the response body
+            .catch((err) => {
+              reject({
+                errors: [
+                  { param: "Application", msg: "Cannot parse server response" },
+                ],
+              });
+            }); // something else
+        }
+      })
+      .catch((err) => {
+        reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] });
+      }); // connection errors
+  });
 }
 
 const getSKU = async () => {
@@ -241,13 +241,12 @@ const getSKU = async () => {
 
 const getSingleSKU = async (id) => {
   // call: GET /api/skus/:id
-  const response = await fetch("/api/skus/"+id);
+  const response = await fetch("/api/skus/" + id);
   const sku = await response.json();
   if (response.ok) {
     return sku;
   }
 };
-
 
 function addSKU(newSku) {
   // call: POST /api/sku
@@ -283,10 +282,10 @@ function addSKU(newSku) {
   });
 }
 
-function editSKU(id,newSKU) {
+function editSKU(id, newSKU) {
   // call: PUT /api/sku/:id
   return new Promise((resolve, reject) => {
-    fetch("/api/sku/"+id, {
+    fetch("/api/sku/" + id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -317,10 +316,10 @@ function editSKU(id,newSKU) {
   });
 }
 
-function deleteSKU(id){
+function deleteSKU(id) {
   return new Promise((resolve, reject) => {
-    fetch("/api/skus/"+id, {
-      method: "DELETE"
+    fetch("/api/skus/" + id, {
+      method: "DELETE",
     })
       .then((response) => {
         if (response.ok) {
@@ -346,15 +345,15 @@ function deleteSKU(id){
   });
 }
 
-function editSKUPosition(id,barcode) {
+function editSKUPosition(id, barcode) {
   // call: PUT /api/sku/:id/position
   return new Promise((resolve, reject) => {
-    fetch("/api/sku/"+id+"/position", {
+    fetch("/api/sku/" + id + "/position", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({position:barcode}),
+      body: JSON.stringify({ position: barcode }),
     })
       .then((response) => {
         if (response.ok) {
@@ -423,10 +422,10 @@ function addTestDescriptor(newTestDescriptor) {
   });
 }
 
-function editTestDescriptor(id,newTestDescriptor) {
+function editTestDescriptor(id, newTestDescriptor) {
   // call: PUT /api/testDescriptor/:id
   return new Promise((resolve, reject) => {
-    fetch("/api/testDescriptor/"+id, {
+    fetch("/api/testDescriptor/" + id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -457,10 +456,10 @@ function editTestDescriptor(id,newTestDescriptor) {
   });
 }
 
-function deleteTestDescriptor(id){
+function deleteTestDescriptor(id) {
   return new Promise((resolve, reject) => {
-    fetch("/api/testDescriptor/"+id, {
-      method: "DELETE"
+    fetch("/api/testDescriptor/" + id, {
+      method: "DELETE",
     })
       .then((response) => {
         if (response.ok) {
@@ -538,10 +537,10 @@ function addUser(newUser) {
   });
 }
 
-function editUser(username,newUser) {
+function editUser(username, newUser) {
   // call: PUT /api/users/:username
   return new Promise((resolve, reject) => {
-    fetch("/api/users/"+username, {
+    fetch("/api/users/" + username, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -572,10 +571,10 @@ function editUser(username,newUser) {
   });
 }
 
-function deleteUser(username,type){
+function deleteUser(username, type) {
   return new Promise((resolve, reject) => {
-    fetch("/api/users/"+username+"/"+type, {
-      method: "DELETE"
+    fetch("/api/users/" + username + "/" + type, {
+      method: "DELETE",
     })
       .then((response) => {
         if (response.ok) {
@@ -621,7 +620,7 @@ const getIOAccepted = async () => {
 
 const getSingleIO = async (id) => {
   // call: GET /api/internalOrders/:id
-  const response = await fetch("/api/internalOrders/"+id);
+  const response = await fetch("/api/internalOrders/" + id);
   const IO = await response.json();
   if (response.ok) {
     return IO;
@@ -662,10 +661,10 @@ function addIO(newIO) {
   });
 }
 
-function editIO(id,newIO) {
+function editIO(id, newIO) {
   // call: PUT /api/internalOrders/:id
   return new Promise((resolve, reject) => {
-    fetch("/api/internalOrders/"+id, {
+    fetch("/api/internalOrders/" + id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -748,10 +747,10 @@ function addRO(newRO) {
   });
 }
 
-function editRO(id,newRO) {
+function editRO(id, newRO) {
   // call: PUT /api/restockOrder/:id
   return new Promise((resolve, reject) => {
-    fetch("/api/restockOrder/"+id, {
+    fetch("/api/restockOrder/" + id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -782,10 +781,10 @@ function editRO(id,newRO) {
   });
 }
 
-function addTransportNoteRO(id,newRO) {
+function addTransportNoteRO(id, newRO) {
   // call: PUT /api/restockOrder/:id/transportNote
   return new Promise((resolve, reject) => {
-    fetch("/api/restockOrder/"+id+"/transportNote", {
+    fetch("/api/restockOrder/" + id + "/transportNote", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -861,17 +860,17 @@ function addSKUItem(newSkuItem) {
 
 const getSingleRO = async (id) => {
   // call: GET /api/restockOrders/:id
-  const response = await fetch("/api/restockOrders/"+id);
+  const response = await fetch("/api/restockOrders/" + id);
   const RO = await response.json();
   if (response.ok) {
     return RO;
   }
 };
 
-function addSkuItemsRO(id,newRO) {
+function addSkuItemsRO(id, newRO) {
   // call: PUT /api/restockOrder/:id/skuItems
   return new Promise((resolve, reject) => {
-    fetch("/api/restockOrder/"+id+"/skuItems", {
+    fetch("/api/restockOrder/" + id + "/skuItems", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -938,7 +937,7 @@ function addTestResult(newTestResult) {
 
 const getTestResults = async (rfid) => {
   // call: GET /api/skuitems/:rfid/testResults
-  const response = await fetch("/api/skuitems/"+rfid+"/testResults");
+  const response = await fetch("/api/skuitems/" + rfid + "/testResults");
   const TestResults = await response.json();
   if (response.ok) {
     return TestResults;
@@ -947,17 +946,17 @@ const getTestResults = async (rfid) => {
 
 const getSingleSKUItem = async (rfid) => {
   // call: GET /api/skuitems/:rfid
-  const response = await fetch("/api/skuitems/"+rfid);
+  const response = await fetch("/api/skuitems/" + rfid);
   const item = await response.json();
   if (response.ok) {
     return item;
   }
 };
 
-function editSKUItem(rfid,newSKUItem) {
+function editSKUItem(rfid, newSKUItem) {
   // call: PUT /api/skuitems/:rfid
   return new Promise((resolve, reject) => {
-    fetch("/api/skuitems/"+rfid, {
+    fetch("/api/skuitems/" + rfid, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -990,7 +989,7 @@ function editSKUItem(rfid,newSKUItem) {
 
 const getSKUItemsToReturn = async (id) => {
   // call: GET /api/restockOrders/:id/returnItems
-  const response = await fetch("/api/restockOrders/"+id+"/returnItems");
+  const response = await fetch("/api/restockOrders/" + id + "/returnItems");
   const items = await response.json();
   if (response.ok) {
     return items;
@@ -1074,10 +1073,10 @@ function addItem(newItem) {
   });
 }
 
-function editItem(id,newItem) {
+function editItem(id, newItem) {
   // call: PUT /api/item/:id
   return new Promise((resolve, reject) => {
-    fetch("/api/item/"+id, {
+    fetch("/api/item/" + id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -1108,10 +1107,10 @@ function editItem(id,newItem) {
   });
 }
 
-function deleteItem(id){
+function deleteItem(id) {
   return new Promise((resolve, reject) => {
-    fetch("/api/items/"+id, {
-      method: "DELETE"
+    fetch("/api/items/" + id, {
+      method: "DELETE",
     })
       .then((response) => {
         if (response.ok) {
@@ -1137,54 +1136,53 @@ function deleteItem(id){
   });
 }
 
-  const API = {
-    logIn,
-    logOut,
-    getUserInfo,
-    addPosition,
-    getPositions,
-    editPosition,
-    editPositionBarcode,
-    deletePosition,
-    getSKU,
-    getSingleSKU,
-    addSKU,
-    editSKU,
-    deleteSKU,
-    editSKUPosition,
-    getTestDescriptors,
-    addTestDescriptor,
-    editTestDescriptor,
-    deleteTestDescriptor,
-    getUsers,
-    addUser,
-    editUser,
-    deleteUser,
-    getIOIssued,
-    getIOAccepted,
-    addIO,
-    editIO,
-    getSingleIO,
-    getSuppliers,
-    getSingleRO,
-    getROIssued,
-    getRO,
-    addRO,
-    editRO,
-    addTransportNoteRO,
-    getSKUItems,
-    addSKUItem,
-    addSkuItemsRO,
-    addTestResult,
-    getTestResults,
-    getSingleSKUItem,
-    editSKUItem,
-    getSKUItemsToReturn,
-    addREO,
-    getItem,
-    addItem,
-    editItem,
-    deleteItem
-    
-  };
-  export default API;
+const API = {
+  logIn,
+  logOut,
+  getUserInfo,
+  addPosition,
+  getPositions,
+  editPosition,
+  editPositionBarcode,
+  deletePosition,
+  getSKU,
+  getSingleSKU,
+  addSKU,
+  editSKU,
+  deleteSKU,
+  editSKUPosition,
+  getTestDescriptors,
+  addTestDescriptor,
+  editTestDescriptor,
+  deleteTestDescriptor,
+  getUsers,
+  addUser,
+  editUser,
+  deleteUser,
+  getIOIssued,
+  getIOAccepted,
+  addIO,
+  editIO,
+  getSingleIO,
+  getSuppliers,
+  getSingleRO,
+  getROIssued,
+  getRO,
+  addRO,
+  editRO,
+  addTransportNoteRO,
+  getSKUItems,
+  addSKUItem,
+  addSkuItemsRO,
+  addTestResult,
+  getTestResults,
+  getSingleSKUItem,
+  editSKUItem,
+  getSKUItemsToReturn,
+  addREO,
+  getItem,
+  addItem,
+  editItem,
+  deleteItem,
+};
+export default API;
