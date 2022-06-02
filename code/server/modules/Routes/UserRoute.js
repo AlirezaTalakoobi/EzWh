@@ -43,8 +43,8 @@ router.post(
       req.body.name,
       req.body.surname,
       req.body.username,
-      req.body.type,
-      req.body.password
+      req.body.password,
+      req.body.type
     );
     if (user === false) {
       return res.status(500).json({ message: "Internal Server Error" });

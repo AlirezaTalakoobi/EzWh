@@ -7,7 +7,7 @@ class UserController {
     this.dao = dao;
   }
 
-  newUser = async (name, surname, username, type, password) => {
+  newUser = async (name, surname, username, password, type) => {
     const salt = await bcrypt.genSaltSync(saltRounds);
     const hash = await bcrypt.hashSync(password, salt);
     const sql =

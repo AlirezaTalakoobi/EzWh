@@ -67,9 +67,7 @@ router.post(
     if (sku.message) {
       return res.status(503).json(sku.message);
     } else {
-      //console.log(result);
-
-      return res.status(200).json(sku);
+      return res.status(201).json(sku);
     }
   },
   su.newSKU
@@ -171,29 +169,22 @@ router.delete(
   su.deleteSKU
 );
 
-router.delete("/deleteAllSku",
-async (req,res) => {
+router.delete("/deleteAllSku", async (req, res) => {
   let ans = await su.deleteAll();
-  if(ans){
+  if (ans) {
     return res.status(204).send("204 No Content");
-  }
-  else{
-      return res.status(503).send("503 Service Unavailable")
+  } else {
+    return res.status(503).send("503 Service Unavailable");
   }
 });
 
-
-router.delete(
-  "/skus",
-  async (req, res) => {
-    const result = await su.deleteAllSKU();
-    if (result == 1) {
-      return res.status(500).json("Internal Server Error");
-    } else {
-      return res.status(204).json({ message: "All skus deleted" });
-    }
+router.delete("/skus", async (req, res) => {
+  const result = await su.deleteAllSKU();
+  if (result == 1) {
+    return res.status(500).json("Internal Server Error");
+  } else {
+    return res.status(204).json({ message: "All skus deleted" });
   }
-);
-
+});
 
 module.exports = router;
