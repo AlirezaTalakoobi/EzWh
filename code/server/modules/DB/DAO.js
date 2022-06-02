@@ -7,8 +7,6 @@ class DAO {
     this.db = new sqlite.Database("EZWH.db", (err) => {
       if (err) throw err;
     });
-
-    // this.newTableName();
   }
 
   run(sql, params = []) {

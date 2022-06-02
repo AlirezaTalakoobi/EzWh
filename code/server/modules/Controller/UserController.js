@@ -7,7 +7,7 @@ class UserController {
     this.dao = dao;
   }
 
-  newUser = async (name, surname, username, type, password) => {
+  newUser = async (name, surname, username, password, type) => {
     const salt = await bcrypt.genSaltSync(saltRounds);
     const hash = await bcrypt.hashSync(password, salt);
     const sql =
@@ -111,18 +111,21 @@ class UserController {
   };
   deleteUser = async (username, type) => {
     try {
-      if (
-        (await this.dao.get("Select * from USER where email=? and type=?", [
-          username,
-          type,
-        ])) === undefined
-      ) {
-        return {
-          message: "wrong username or oldType fields or user doesn't exists",
-        };
-      }
+      // if (
+      //   (await this.dao.get("Select * from USER where email=? and type=?", [
+      //     username,
+      //     type,
+      //   ])) === undefined
+      // ) {
+      //   return {
+      //     message: "wrong username or oldType fields or user doesn't exists",
+      //   };
+      // }
       const sql = "DELETE FROM USER where email=? and type=?";
-      let result = await this.dao.run(sql, [username, type]);
+      let result = await this.dao.run(sql, [
+        username.replace(`${type}.ezwh`, "ezwh"),
+        type,
+      ]);
       return result;
     } catch {
       return false;
