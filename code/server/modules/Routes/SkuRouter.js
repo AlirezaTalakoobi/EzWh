@@ -47,11 +47,11 @@ router.post(
   "/sku/",
   [
     check("description").isString().isLength({ min: 1, max: 32 }),
-    check("weight").isNumeric(),
-    check("volume").isNumeric(),
-    check("notes").isString(),
-    check("price").isNumeric(),
-    check("availableQuantity").isNumeric(),
+    check("weight").isNumeric({min:0}),
+    check("volume").isNumeric({min:0}),
+    check("notes").notEmpty().isString(),
+    check("price").isNumeric({min:0}),
+    check("availableQuantity").isNumeric({min:0}),
   ],
   (req, res, next) => {
     console.log(req.body);
@@ -78,11 +78,11 @@ router.put(
   "/sku/:id",
   [
     param("id").isString().isLength({ min: 1, max: 32 }).not().optional(),
-    check("newWeight").isNumeric().optional(),
-    check("newVolume").isNumeric().optional(),
+    check("newWeight").isNumeric({min:0}).optional(),
+    check("newVolume").isNumeric({min:0}).optional(),
     check("newNotes").isString().optional(),
-    check("newPrice").isNumeric().optional(),
-    check("newAvailableQuantity").isNumeric().optional(),
+    check("newPrice").isNumeric({min:0}).optional(),
+    check("newAvailableQuantity").isNumeric({min:0}).optional(),
   ],
   (req, res, next) => {
     const errors = validationResult(req);
