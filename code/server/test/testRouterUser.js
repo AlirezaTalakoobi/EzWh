@@ -206,8 +206,8 @@ describe("create setup users", () => {
     "Davide",
     "Andriano",
     "user1@ezwh.com",
-    "testpassword",
-    "customer"
+    "customer",
+    "testpassword"
   );
 
   newUser(
@@ -215,33 +215,33 @@ describe("create setup users", () => {
     "Pouya",
     "Hakimifard",
     "qualityEmployee@ezwh.com",
-    "testpassword",
-    "qualityEmployee"
+    "qualityEmployee",
+    "testpassword"
   );
-  newUser(200, "Giulio", "Sunder", "clerk1@ezwh.com", "testpassword", "clerk");
+  newUser(200, "Giulio", "Sunder", "clerk1@ezwh.com", "clerk", "testpassword");
   newUser(
     200,
     "Alireza",
     "Talakoobi",
     "deliveryEmployee@ezwh.com",
-    "testpassword",
-    "deliveryEmployee"
+    "deliveryEmployee",
+    "testpassword"
   );
   newUser(
     200,
     "Luca",
     "Ardito",
     "supplier@ezwh.com",
-    "testpassword",
-    "supplier"
+    "supplier",
+    "testpassword"
   );
   newUser(
     200,
     "Maurizio",
     "Morisio",
     "manager@ezwh.com",
-    "testpassword",
-    "manager"
+    "manager",
+    "testpassword"
   );
 });
 

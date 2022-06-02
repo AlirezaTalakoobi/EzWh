@@ -1,0 +1,1098 @@
+Server listening at http://localhost:3001
+
+
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+  test create pos api
+    ✔ creating pos (54ms)
+
+  test get item api
+    ✔ creating pos
+    ✔ get pos
+    ✔ get pos
+
+  test delete item by id api
+    ✔ creating pos
+    ✔ delete items
+
+  test SKU apis
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  availableQuantity: 50,
+  price: 10.99
+}
+    ✔ adding a new SKU
+    1) Updating SKU By ID
+    2) Updating SKU By ID
+    ✔ getting sku from the system
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  availableQuantity: 50,
+  price: 10.99
+}
+    3) getting sku from the system By ID
+    ✔ Deleting item
+
+  test TD apis
+    4) getting TD from the system
+    5) getting TD from the system By ID
+    ✔ adding a new TD
+    6) Updating TD By ID
+    ✔ Deleting TD
+
+  test create Item api
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+    ✔ creating Items (109ms)
+
+  test get item api
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+    ✔ creating Items (114ms)
+    ✔ get items
+    ✔ get items
+
+  test get item by id api
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+    ✔ creating Items (110ms)
+    ✔ get items
+    ✔ get items
+
+  test modify item by id api
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+    ✔ creating Items (131ms)
+    ✔ get items
+    ✔ get items
+    ✔ get items
+
+  test delete item by id api
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+    ✔ creating Items (127ms)
+    ✔ get items
+
+  test new internal order
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ creating a new internal order (87ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ creating a new internal order (77ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ creating a new internal order: quantity too high (79ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ creating a new internal order: wrong unit price (80ms)
+
+  get internal orders
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ retrieving all internal orders (95ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ retrieving all internal orders issued (95ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ retrieving all internal orders accepted (104ms)
+
+  change state of internal orders
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ change state of internal orders (102ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+200
+200
+[
+  {
+    RFID: '01234567890123456789012345678901',
+    skuID: 105,
+    description: 'ordering a batch of nukeproof scout',
+    price: 2750
+  },
+  {
+    RFID: '98765432109876543210987654321098',
+    skuID: 106,
+    description: 'ordering a batch of canyon stoic',
+    price: 1700
+  }
+]
+    ✔ change state of internal order to completed and add sku items (100ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+200
+200
+    ✔ change state of internal order to completed and add sku items (109ms)
+
+  delete internal order by id
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ delete internal order by id (88ms)
+
+  test new restock order api
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail MTB',
+  price: 1700,
+  availableQuantity: 5
+}
+{
+  id: 19,
+  issueDate: '2021/11/29 09:33',
+  state: 'ISSUED',
+  products: [
+    {
+      SKUId: 111,
+      description: 'ordering a batch of nukeproof scout',
+      price: 2500,
+      qty: 3
+    },
+    {
+      SKUId: 112,
+      description: 'ordering a batch of canyon stoic',
+      price: 1500,
+      qty: 4
+    }
+  ],
+  skuItems: [],
+  supplierId: 71
+}
+{
+  id: 19,
+  issueDate: '2021/11/29 09:33',
+  state: 'ISSUED',
+  products: [
+    {
+      SKUId: 111,
+      description: 'ordering a batch of nukeproof scout',
+      price: 2500,
+      qty: 3
+    },
+    {
+      SKUId: 112,
+      description: 'ordering a batch of canyon stoic',
+      price: 1500,
+      qty: 4
+    }
+  ],
+  skuItems: [],
+  supplierId: 71
+}
+    ✔ creating new order (93ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail MTB',
+  price: 1700,
+  availableQuantity: 5
+}
+    ✔ creating new order invalid format (85ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail MTB',
+  price: 1700,
+  availableQuantity: 5
+}
+    ✔ creating new order wrong price different (89ms)
+
+  test get restock orders
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail MTB',
+  price: 1700,
+  availableQuantity: 5
+}
+    ✔ getting all restock orders (132ms)
+
+  modify state of restock order
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail MTB',
+  price: 1700,
+  availableQuantity: 5
+}
+    ✔ changing state of restock order (105ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail MTB',
+  price: 1700,
+  availableQuantity: 5
+}
+    ✔ changing state of restock order to an invalid state (90ms)
+
+  add sku items to a restock order
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail MTB',
+  price: 1700,
+  availableQuantity: 5
+}
+    ✔ adding sku items to a restock order in DELIVERED state (98ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail MTB',
+  price: 1700,
+  availableQuantity: 5
+}
+    ✔ adding sku items to a restock order NOT in DELIVERED state (91ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail MTB',
+  price: 1700,
+  availableQuantity: 5
+}
+    ✔ adding sku items to a restock order NOT in DELIVERED state (87ms)
+
+  add transport note to restock order
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail MTB',
+  price: 1700,
+  availableQuantity: 5
+}
+    ✔ adding transport note to restock order (98ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail MTB',
+  price: 1700,
+  availableQuantity: 5
+}
+    ✔ adding transport note to restock order (107ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail MTB',
+  price: 1700,
+  availableQuantity: 5
+}
+    ✔ adding transport note to restock order not delivered (89ms)
+
+  delete a restock order with given id
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail MTB',
+  price: 1700,
+  availableQuantity: 5
+}
+    ✔ deleting a restock order (90ms)
+
+  test new return order
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ creating a new return order (126ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ creating a new return order (103ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ Trying to create a new return order with wrong data (108ms)
+
+  get return orders
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ getting all return order (132ms)
+
+  delete a return order by id
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ deleting a return order (108ms)
+{
+  description: 'Nukeproof Scout',
+  weight: 13000,
+  volume: 15000,
+  notes: 'Good quality hardtail MTB',
+  price: 2750,
+  availableQuantity: 10
+}
+{
+  description: 'Canyon Stoic',
+  weight: 15000,
+  volume: 18000,
+  notes: 'Good quality enduro hardtail',
+  price: 1700,
+  availableQuantity: 3
+}
+    ✔ deleting a return order (117ms)
+
+  test user api
+    ✔ Deleting data
+    ✔ adding new users (69ms)
+    ✔ adding new users
+    ✔ adding new users (67ms)
+    ✔ adding new users
+    ✔ adding new users
+
+  test newuser api
+    ✔ Deleting data
+    ✔ adding new users (70ms)
+    ✔ getting users data from the system
+
+  test getUsers api
+    ✔ Deleting data
+    ✔ getting users data from the system (71ms)
+
+  test getSuppliers api
+    ✔ Deleting data
+    ✔ adding new users (92ms)
+    ✔ getting suppliers from the system
+    ✔ Deleting data
+    ✔ adding new users (71ms)
+    ✔ getting suppliers from the system
+
+  test managerSession api
+    ✔ Deleting data
+    ✔ adding new users (72ms)
+    ✔ manager sessions
+true
+    ✔ manager sessions (69ms)
+    ✔ manager sessions
+false
+    ✔ manager sessions (69ms)
+
+  test customerSession api
+    ✔ Deleting data
+    ✔ adding new users (70ms)
+    ✔ customer sessions
+true
+    ✔ customer sessions (67ms)
+    ✔ customer sessions
+false
+    ✔ customer sessions (69ms)
+
+  test supplierSession api
+    ✔ Deleting data
+    ✔ adding new users (69ms)
+    ✔ supplier sessions
+true
+    ✔ supplier sessions (79ms)
+    ✔ supplier sessions
+false
+    ✔ supplier sessions (67ms)
+
+  test clerkSession api
+    ✔ Deleting data
+    ✔ adding new users (75ms)
+    ✔ clerk sessions
+true
+    ✔ clerk sessions (68ms)
+    ✔ clerk sessions
+false
+    ✔ clerk sessions (68ms)
+
+  test qualityEmployeeSession api
+    ✔ Deleting data
+    ✔ adding new users (71ms)
+    ✔ qualityEmployee sessions
+true
+    ✔ qualityEmployee sessions (70ms)
+    ✔ qualityEmployee sessions
+false
+    ✔ qualityEmployee sessions (68ms)
+
+  test deliveryEmployeeSession api
+    ✔ Deleting data
+    ✔ adding new users (69ms)
+    ✔ deliveryEmployee sessions
+true
+    ✔ deliveryEmployee sessions (71ms)
+    ✔ deliveryEmployee sessions
+false
+    ✔ deliveryEmployee sessions (69ms)
+
+  test edit user api
+    ✔ Deleting data
+    ✔ adding new users (69ms)
+    ✔ edit users
+    ✔ edit users
+    ✔ edit users
+
+  test delete user api
+    ✔ Deleting data
+    ✔ adding new users (69ms)
+    ✔ delete user sessions
+    ✔ delete user sessions
+    ✔ delete user sessions
+    ✔ Deleting data
+
+  create setup users
+    ✔ Deleting data
+    7) adding new users
+    8) adding new users
+    9) adding new users
+    10) adding new users
+    11) adding new users
+    12) adding new users
+
+  test insert item api
+    ✔ Deleting data
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+{
+  RFID: '12345678909876543212345678909876',
+  SKUId: 149,
+  DateOfStock: '2020/11/03'
+}
+    ✔ adding new items
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+{
+  RFID: '12345678909876543212345678909876',
+  SKUId: 888888,
+  DateOfStock: '2020/11/03'
+}
+    ✔ adding new items
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+{
+  RFID: '12345678909876543212345678909876',
+  SKUId: 151,
+  DateOfStock: '2020/11/03'
+}
+    ✔ adding new items
+
+  test get items api
+    ✔ Deleting data
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+{
+  RFID: '12345678909876543212345678909876',
+  SKUId: 152,
+  DateOfStock: '2020/11/03'
+}
+    ✔ adding new items
+    ✔ getting items from the system
+
+  test get item api
+    ✔ Deleting data
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+{
+  RFID: '12345678909876543212345678909876',
+  SKUId: 153,
+  DateOfStock: '2020/11/03'
+}
+    ✔ adding new items
+    ✔ getting items by id from the system
+    ✔ getting items by rfid from the system
+    ✔ getting items by rfid from the system
+
+  test edit item api
+    ✔ Deleting data
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+{
+  RFID: '12345678909876543212345678909876',
+  SKUId: 154,
+  DateOfStock: '2020/11/03'
+}
+    ✔ adding new items
+    ✔ edit items
+    ✔ edit items
+    ✔ edit items
+    ✔ edit items
+
+  test delete item api
+    ✔ Deleting data
+    ✔ Deleting data
+
+  test create  test api
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+    ✔ creating Test result (58ms)
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+    ✔ creating Test result (39ms)
+
+  test get test api
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+    ✔ creating Test result
+    ✔ get items
+    ✔ get items
+
+  test get test by id api
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+    ✔ creating Test result
+    ✔ get test
+    ✔ get test
+    ✔ get test
+
+  test modify test by id api
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+    ✔ creating Test result
+    ✔ mosify items
+
+  test delete item by id api
+{
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  price: 10.99,
+  availableQuantity: 50
+}
+    ✔ creating Test result
+404
+    ✔ delete items
+
+
+  152 passing (22s)
+  12 failing
+
+  1) test SKU apis
+       Updating SKU By ID:
+
+      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
+      + expected - actual
+
+      -404
+      +200
+      
+      at /Users/davideandriano/Desktop/EzWh/code/server/test/TestSKURouter.js:190:41
+      at processTicksAndRejections (node:internal/process/task_queues:96:5)
+
+  2) test SKU apis
+       Updating SKU By ID:
+
+      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
+      + expected - actual
+
+      -404
+      +200
+      
+      at /Users/davideandriano/Desktop/EzWh/code/server/test/TestSKURouter.js:165:41
+      at processTicksAndRejections (node:internal/process/task_queues:96:5)
+
+  3) test SKU apis
+       getting sku from the system By ID:
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Desktop/EzWh/code/server/test/TestSKURouter.js)
+      at listOnTimeout (node:internal/timers:559:17)
+      at processTimers (node:internal/timers:502:7)
+
+  4) test TD apis
+       getting TD from the system:
+     TypeError: Cannot read properties of undefined (reading 'Name')
+      at /Users/davideandriano/Desktop/EzWh/code/server/test/TestTDRouter.js:62:42
+      at processTicksAndRejections (node:internal/process/task_queues:96:5)
+
+  5) test TD apis
+       getting TD from the system By ID:
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Desktop/EzWh/code/server/test/TestTDRouter.js)
+      at listOnTimeout (node:internal/timers:559:17)
+      at processTimers (node:internal/timers:502:7)
+
+  6) test TD apis
+       Updating TD By ID:
+
+      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
+      + expected - actual
+
+      -404
+      +200
+      
+      at /Users/davideandriano/Desktop/EzWh/code/server/test/TestTDRouter.js:143:41
+      at processTicksAndRejections (node:internal/process/task_queues:96:5)
+
+  7) create setup users
+       adding new users:
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Desktop/EzWh/code/server/test/testRouterUser.js)
+      at listOnTimeout (node:internal/timers:559:17)
+      at processTimers (node:internal/timers:502:7)
+
+  8) create setup users
+       adding new users:
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Desktop/EzWh/code/server/test/testRouterUser.js)
+      at listOnTimeout (node:internal/timers:559:17)
+      at processTimers (node:internal/timers:502:7)
+
+  9) create setup users
+       adding new users:
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Desktop/EzWh/code/server/test/testRouterUser.js)
+      at listOnTimeout (node:internal/timers:559:17)
+      at processTimers (node:internal/timers:502:7)
+
+  10) create setup users
+       adding new users:
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Desktop/EzWh/code/server/test/testRouterUser.js)
+      at listOnTimeout (node:internal/timers:559:17)
+      at processTimers (node:internal/timers:502:7)
+
+  11) create setup users
+       adding new users:
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Desktop/EzWh/code/server/test/testRouterUser.js)
+      at listOnTimeout (node:internal/timers:559:17)
+      at processTimers (node:internal/timers:502:7)
+
+  12) create setup users
+       adding new users:
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Desktop/EzWh/code/server/test/testRouterUser.js)
+      at listOnTimeout (node:internal/timers:559:17)
+      at processTimers (node:internal/timers:502:7)
+
+
+
