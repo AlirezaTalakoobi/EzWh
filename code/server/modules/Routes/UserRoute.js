@@ -51,7 +51,7 @@ router.post(
     } else if (user.message) {
       return res.status(409).json(user.message);
     } else {
-      return res.status(200).json(user);
+      return res.status(201).json(user);
     }
   }
 );
@@ -261,9 +261,10 @@ router.post(
   async (req, res) => {
     const user = await uc.getUser(req.body.username, req.body.password);
 
-    if (user === undefined) {
-      return res.status(404).json({ message: "User not existing" });
-    } else if (user.message) {
+    // if (user === undefined) {
+    //   return res.status(404).json({ message: "User not existing" });
+    // } else
+    if (user.message) {
       return res.status(401).json(user.message);
     } else {
       return res.status(200).json(user);

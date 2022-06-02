@@ -111,16 +111,16 @@ class UserController {
   };
   deleteUser = async (username, type) => {
     try {
-      if (
-        (await this.dao.get("Select * from USER where email=? and type=?", [
-          username,
-          type,
-        ])) === undefined
-      ) {
-        return {
-          message: "wrong username or oldType fields or user doesn't exists",
-        };
-      }
+      // if (
+      //   (await this.dao.get("Select * from USER where email=? and type=?", [
+      //     username,
+      //     type,
+      //   ])) === undefined
+      // ) {
+      //   return {
+      //     message: "wrong username or oldType fields or user doesn't exists",
+      //   };
+      // }
       const sql = "DELETE FROM USER where email=? and type=?";
       let result = await this.dao.run(sql, [username, type]);
       return result;
