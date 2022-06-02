@@ -122,7 +122,10 @@ class UserController {
       //   };
       // }
       const sql = "DELETE FROM USER where email=? and type=?";
-      let result = await this.dao.run(sql, [username, type]);
+      let result = await this.dao.run(sql, [
+        username.replace(`${type}.ezwh`, "ezwh"),
+        type,
+      ]);
       return result;
     } catch {
       return false;
