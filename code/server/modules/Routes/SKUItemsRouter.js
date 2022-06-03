@@ -105,7 +105,7 @@ router.get(
 router.put(
   "/skuitems/:rfid",
   (req, res, next) => {
-    if (req.body.DateOfStock) {
+    if (req.body.newDateOfStock) {
       req.body.newDateOfStock = req.body.newDateOfStock.replaceAll("/", "-");
     }
     next();
@@ -126,8 +126,8 @@ router.put(
     next();
   },
   async (req, res) => {
-    if (req.body.DateOfStock) {
-      req.body.DateOfStock = req.body.newDateOfStock.replaceAll("-", "/");
+    if (req.body.newDateOfStock) {
+      req.body.newDateOfStock = req.body.newDateOfStock.replaceAll("-", "/");
     }
 
     const response = await sic.editRFID(

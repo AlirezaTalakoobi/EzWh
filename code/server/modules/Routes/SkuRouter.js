@@ -7,7 +7,6 @@ const DAO = require("../DB/DAO");
 const dao = new DAO();
 const su = new SKUController(dao);
 const { check, param, validationResult } = require("express-validator");
-const { init } = require("express/lib/application");
 
 router.get("/skus", async (req, res) => {
   const skus = await su.getsku();
@@ -47,11 +46,11 @@ router.post(
   "/sku/",
   [
     check("description").isString().not().isEmpty(),
-    check("weight").isInt({min:0}),
-    check("volume").isInt({min:0}),
+    check("weight").isInt({ min: 0 }),
+    check("volume").isInt({ min: 0 }),
     check("notes").notEmpty().isString(),
-    check("price").isFloat({min:0}),
-    check("availableQuantity").isInt({min:0}),
+    check("price").isFloat({ min: 0 }),
+    check("availableQuantity").isInt({ min: 0 }),
   ],
   (req, res, next) => {
     console.log(req.body);
@@ -75,18 +74,12 @@ router.post(
 router.put(
   "/sku/:id",
   [
-<<<<<<< HEAD
-    param("id").isInt({min:0}),
-    check("newWeight").isInt({min:0}).optional(),
-    check("newVolume").isInt({min:0}).optional(),
-=======
-    param("id").isNumeric().notEmpty(),
-    check("newWeight").isNumeric({min:0}).optional(),
-    check("newVolume").isNumeric({min:0}).optional(),
->>>>>>> c1fd36f244620c9aa8ad84bd406fff196470d14f
+    param("id").isInt({ min: 0 }).not().optional(),
+    check("newWeight").isInt({ min: 0 }).optional(),
+    check("newVolume").isInt({ min: 0 }).optional(),
     check("newNotes").isString().optional(),
-    check("newPrice").isFloat({min:0}).optional(),
-    check("newAvailableQuantity").isInt({min:0}).optional(),
+    check("newPrice").isFloat({ min: 0 }).optional(),
+    check("newAvailableQuantity").isInt({ min: 0 }).optional(),
   ],
   (req, res, next) => {
     const errors = validationResult(req);
@@ -97,7 +90,7 @@ router.put(
   },
   async (req, res) => {
     const sku = await su.editsku(req.body, req.params.id);
-    console.log(sku.message)
+    console.log(sku.message);
     if (sku.message) {
       return res.status(404).json(sku.message);
     } else if (sku) {
@@ -114,13 +107,13 @@ router.put(
 router.put(
   "/sku/:id/position",
   [
-<<<<<<< HEAD
-    param("id").isInt({min:0}),
-    check("position").isString().not().optional(),
-=======
-    param("id").isNumeric().notEmpty().not().optional(),
-    check("position").isString().isLength({min:12, max:12}).notEmpty().not().optional(),
->>>>>>> c1fd36f244620c9aa8ad84bd406fff196470d14f
+    param("id").isInt({ min: 0 }).notEmpty().not().optional(),
+    check("position")
+      .isString()
+      .isLength({ min: 12, max: 12 })
+      .notEmpty()
+      .not()
+      .optional(),
   ],
   (req, res, next) => {
     const errors = validationResult(req);
@@ -131,10 +124,10 @@ router.put(
   },
   async (req, res) => {
     const sku = await su.editskuPosition(req.body.position, req.params.id);
-    console.log(sku)
+    console.log(sku);
     if (sku.message) {
       return res.status(404).json(sku.message);
-    }  else if (sku === 2) {
+    } else if (sku === 2) {
       return res.status(422).json({ message: "Unprocessable Entity" });
     } else if (sku === 3) {
       return res.status(500).json({ message: "Internal Server Error" });
@@ -169,12 +162,12 @@ router.delete(
     //   return res.status(200).json({message:"Seccess"});
     // }
 
-    if (sku == 1) {
+    if (sku === 1) {
       return res.status(404).json({ message: "No SKU associated to id" });
-    } else if (sku == false) {
+    } else if (sku === false) {
       res.status(500).json("Internal Server Error");
     } else {
-      return res.status(204).json({ message: "Seccess" });
+      return res.status(204).json({ message: "Success" });
     }
   },
   su.deleteSKU
