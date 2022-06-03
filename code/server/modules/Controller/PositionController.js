@@ -1,5 +1,6 @@
 "use strict";
-const { body, param, validationResult } = require("express-validator");
+const { body, param, validationResult, check } = require("express-validator");
+const { db } = require("../DB/DAO");
 
 class PositionController {
   constructor(dao) {
@@ -72,7 +73,7 @@ class PositionController {
       }
 
       const sql =
-        "UPDATE POSITION SET aisleID = ?, ROW = ?, COL = ?, MAXWEIGHT = ?, MAXVOLUME = ?, OCCUPIEDWEIGHT = ?, OCCUPIEDVOLUME = ?  WHERE ID = ? ";
+        "UPDATE POSITION SET aisleID = ?, row = ?, col = ?, maxWeight = ?, maxVolume = ?, occupiedWeight = ?, occupiedVolume = ?  WHERE ID = ? ";
       const args = [
         newAisleID,
         newRow,
@@ -98,10 +99,31 @@ class PositionController {
       if (check1.length === 0) {
         return 404;
       }
-      const sql = "UPDATE POSITION SET ID = ? WHERE ID = ? ";
-      const args = [newPositionID, positionID];
-      let result = await this.dao.run(sql, args);
-      return 200;
+      const check2 = await this.dao.get("SELECT * FROM POSITION WHERE ID=?", [
+        newPositionID,
+      ]);
+      if (check2 !== undefined) {
+        await this.dao.run("DELETE FROM POSITION WHERE ID=?", [positionID]);
+        await this.dao.run(
+          "UPDATE POSITION SET aisleID=?,row=?,col=?,maxWeight=maxWeight+?, maxVolume=maxVolume+?, occupiedWeight=occupiedWeight+?, occupiedVolume=occupiedVolume+? WHERE ID=?",
+          [
+            check2.aisleID,
+            check2.row,
+            check2.col,
+            check2.maxWeight,
+            check2.maxVolume,
+            check2.occupiedWeight,
+            check2.occupiedVolume,
+            newPositionID,
+          ]
+        );
+        return 200;
+      } else {
+        const sql = "UPDATE POSITION SET ID = ? WHERE ID = ? ";
+        const args = [newPositionID, positionID];
+        let result = await this.dao.run(sql, args);
+        return 200;
+      }
     } catch (err) {
       return 503;
     }
