@@ -75,7 +75,7 @@ router.post(
 router.put(
   "/sku/:id",
   [
-    param("id").isString().isLength({ min: 1, max: 32 }).not().optional(),
+    param("id").isNumeric().notEmpty(),
     check("newWeight").isNumeric({min:0}).optional(),
     check("newVolume").isNumeric({min:0}).optional(),
     check("newNotes").isString().optional(),
@@ -108,8 +108,8 @@ router.put(
 router.put(
   "/sku/:id/position",
   [
-    param("id").isNumeric().not().optional(),
-    check("position").isString().not().optional(),
+    param("id").isNumeric().notEmpty().not().optional(),
+    check("position").isString().isLength({min:12, max:12}).notEmpty().not().optional(),
   ],
   (req, res, next) => {
     const errors = validationResult(req);
@@ -119,16 +119,16 @@ router.put(
     next();
   },
   async (req, res) => {
-    const sku = await su.editsku(req.body.position, req.params.id);
-
+    const sku = await su.editskuPosition(req.body.position, req.params.id);
+    console.log(sku)
     if (sku.message) {
       return res.status(404).json(sku.message);
-    } else if (sku) {
-      return res.status(200).json({ message: "Success" });
-    } else if (sku == 2) {
+    }  else if (sku === 2) {
       return res.status(422).json({ message: "Unprocessable Entity" });
-    } else if (sku == 3) {
+    } else if (sku === 3) {
       return res.status(500).json({ message: "Internal Server Error" });
+    } else if (sku) {
+      return res.status(200).end();
     }
   },
   su.editskuPosition

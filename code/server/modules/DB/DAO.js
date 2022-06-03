@@ -7,6 +7,7 @@ class DAO {
     this.db = new sqlite.Database("EZWH.db", (err) => {
       if (err) throw err;
     });
+    this.db.run("PRAGMA foreign_keys = ON");
   }
 
   run(sql, params = []) {

@@ -82,8 +82,8 @@ router.post(
     check("products").notEmpty().isArray(),
     check("products.*.SKUId").notEmpty().isNumeric(),
     check("products.*.description").notEmpty().isString(),
-    check("products.*.price").notEmpty().isNumeric(),
-    check("products.*.qty").notEmpty().isNumeric(),
+    check("products.*.price").notEmpty().isNumeric({min: 0}),
+    check("products.*.qty").notEmpty().isNumeric({min: 0}),
   ],
   (req, res, next) => {
     const errors = validationResult(req);
