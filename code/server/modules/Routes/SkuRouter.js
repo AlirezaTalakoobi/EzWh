@@ -46,7 +46,7 @@ router.get(
 router.post(
   "/sku/",
   [
-    check("description").isString().isLength({ min: 1, max: 32 }),
+    check("description").isInt({min:1}),
     check("weight").isInt({min:0}),
     check("volume").isInt({min:0}),
     check("notes").notEmpty().isString(),
@@ -75,7 +75,7 @@ router.post(
 router.put(
   "/sku/:id",
   [
-    param("id").isString().isLength({ min: 1, max: 32 }).not().optional(),
+    param("id").isInt({min:1}),
     check("newWeight").isInt({min:0}).optional(),
     check("newVolume").isInt({min:0}).optional(),
     check("newNotes").isString().optional(),
@@ -91,7 +91,7 @@ router.put(
   },
   async (req, res) => {
     const sku = await su.editsku(req.body, req.params.id);
-
+    console.log(sku.message)
     if (sku.message) {
       return res.status(404).json(sku.message);
     } else if (sku) {
@@ -108,7 +108,7 @@ router.put(
 router.put(
   "/sku/:id/position",
   [
-    param("id").isNumeric().not().optional(),
+    param("id").isNumeric().not().isEmpty(),
     check("position").isString().not().optional(),
   ],
   (req, res, next) => {
@@ -135,7 +135,7 @@ router.put(
 );
 router.delete(
   "/skus/:id",
-  [param("id").isNumeric().not().optional()],
+  [param("id").isNumeric().not().isEmpty()],
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
