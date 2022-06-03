@@ -18,7 +18,7 @@ async (req,res) => {
       return res.status(500).send("500 Internal Server Error");
   }
 }, td.TestDescriptor);
-router.get("/testdescriptors/:id",[param("id").isNumeric().not().optional()],
+router.get("/testdescriptors/:id",[param("id").isInt({min:1}).not().isEmpty()],
 (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -69,7 +69,7 @@ router.post("/testdescriptor",[
       return res.status(503).json("generic error")
     }if(Test){
       
-      return res.status(200).json({message: "Created"});
+      return res.status(201).json({message: "Created"});
     }
   }, td.newTestDescriptor);
 router.put("/testdescriptor/:id", [
