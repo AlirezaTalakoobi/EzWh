@@ -26,6 +26,7 @@ router.get(
     } else if (result["ans" === 500]) {
       return res.status(500).send("500 Internal Server Error");
     }
+    console.log(result["result"]);
     return res.status(200).json(result["result"]);
   }
 );

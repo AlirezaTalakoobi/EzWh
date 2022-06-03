@@ -28,25 +28,21 @@ The pattern used for our project is a Three-Tier layered MVC pattern. The applic
 
 # Low level design
 
-<for each package, report class diagram>
-
-![image](/src/Main.jpg)  
+![image](/src/Main.jpg)
 
 The class diagram implements a facade structural pattern, which is the EZWHSystem class, for interfacing with all the classes of the model.
 
 # Verification traceability matrix
 
-\<for each functional requirement from the requirement document, list which classes concur to implement it>
-
 | Function | EZWHSystem | TestDescriptor | Position | RestockOrder | InternalOrder | TestResult | ReturnOrder | SKUItem | SKU | Item | User |
-| :--------: | :-----: | :------------: | :-------: | :-----: | :------------: | :-------: | :-------: | :-: | :-: | :-: | :-: |
-| FR1 | × |  |  |  |  |  |  |  |  |  | × |
-| FR2 | × | × | × |  |  |  |  | × | × | × |  |
-| FR3 | × |  | × | × | × |  |  |  | × |  |  |
-| FR4 | × |  |  |  | × |  |  |  |  |  | × |
-| FR5 | × |  |  | × |  |  | × |  |  |  |  |
-| FR6 | × |  |  |  | × |  |  |  |  |  |  |
-| FR7 | × |  |  |  |  |  |  |  |  | × |  |
+| :------: | :--------: | :------------: | :------: | :----------: | :-----------: | :--------: | :---------: | :-----: | :-: | :--: | :--: |
+|   FR1    |     ×      |                |          |              |               |            |             |         |     |      |  ×   |
+|   FR2    |     ×      |       ×        |    ×     |              |               |            |             |    ×    |  ×  |  ×   |      |
+|   FR3    |     ×      |                |    ×     |      ×       |       ×       |            |             |         |  ×  |      |      |
+|   FR4    |     ×      |                |          |              |       ×       |            |             |         |     |      |  ×   |
+|   FR5    |     ×      |                |          |      ×       |               |            |      ×      |         |     |      |      |
+|   FR6    |     ×      |                |          |              |       ×       |            |             |         |     |      |      |
+|   FR7    |     ×      |                |          |              |               |            |             |         |     |  ×   |      |
 
 # Verification sequence diagrams
 
@@ -73,4 +69,4 @@ The class diagram implements a facade structural pattern, which is the EZWHSyste
 ##Scenario 11.1  
 ![image](/src/SequenceDiagrams/UC_11-1.png)  
 ##Scenario 12.1  
-![image](/src/SequenceDiagrams/12.jpg)  
+![image](/src/SequenceDiagrams/12.jpg)
