@@ -191,11 +191,10 @@ router.put(
     );
     if (ans === 404) {
       return res.status(404).send("404 NOT FOUND");
-    } else if (ans === 201) {
-      return res.send(200).send("200 OK");
-    } else {
+    } else if (ans === 500) {
       return res.status(503).send("503 Service Unavailable");
     }
+    return res.send(200).send("200 OK");
   }
 );
 
