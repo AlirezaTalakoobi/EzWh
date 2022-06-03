@@ -49,7 +49,7 @@ class TDController {
     
     if (Object.keys(param).length === 0) {
       console.log(param)
-      return { error: "validation of id failed" }//res.status(422).json({ error: "validation of id failed" });
+      return { message: "validation of id failed" }//res.status(422).json({ error: "validation of id failed" });
     }
 
 
@@ -62,14 +62,17 @@ class TDController {
       if (result.length === 0) {
         return 1 //res.status(404).json("no SKU associated to id");
       }
+      console.log(result);
+      return result
+      
+      // result.map((Test) => ({
+      //     Id: Test.ID,
+      //     Name: Test.name,
+      //     proceduredescription: Test.procedureDescription,
+      //     idSKU: Test.skuID
 
-      return result.map((Test) => ({
-          Id: Test.ID,
-          Name: Test.name,
-          proceduredescription: Test.procedureDescription,
-          idSKU: Test.skuID
-
-        }))
+      //   }))
+        
       
     }
     
