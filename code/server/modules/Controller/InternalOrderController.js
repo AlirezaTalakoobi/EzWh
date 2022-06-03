@@ -304,6 +304,7 @@ class InternalOrderController {
       // }
 
       const sql = "DELETE FROM INTERNAL_ORDER WHERE ID = ?";
+      const sql3 = "UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = ?";
       const idSql = "SELECT ID FROM INTERNAL_ORDER WHERE ID = ?";
       const idRes = await this.dao.get(idSql, [id]);
 
@@ -312,6 +313,7 @@ class InternalOrderController {
       }
 
       await this.dao.run(sql, [id]);
+      await this.dao.run(sql3, [0, "INTERNAL_ORDER"]);
 
       return id;
     } catch {

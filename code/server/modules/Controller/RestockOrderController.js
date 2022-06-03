@@ -352,6 +352,7 @@ class RestockOrderController {
       // }
 
       const sql = "DELETE FROM RESTOCK_ORDER WHERE ID = ?";
+      const sql3 = "UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = ?";
       const idSql = "SELECT ID FROM RESTOCK_ORDER WHERE ID = ?";
       const idRes = await this.dao.get(idSql, [id]);
 
@@ -360,6 +361,7 @@ class RestockOrderController {
       }
 
       await this.dao.run(sql, [id]);
+      await this.dao.run(sql3, [0, "RESTOCK_ORDER"]);
 
       return id;
     } catch {

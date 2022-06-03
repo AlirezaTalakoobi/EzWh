@@ -75,9 +75,15 @@ router.post(
 router.put(
   "/sku/:id",
   [
+<<<<<<< HEAD
     param("id").isInt({min:0}),
     check("newWeight").isInt({min:0}).optional(),
     check("newVolume").isInt({min:0}).optional(),
+=======
+    param("id").isNumeric().notEmpty(),
+    check("newWeight").isNumeric({min:0}).optional(),
+    check("newVolume").isNumeric({min:0}).optional(),
+>>>>>>> c1fd36f244620c9aa8ad84bd406fff196470d14f
     check("newNotes").isString().optional(),
     check("newPrice").isFloat({min:0}).optional(),
     check("newAvailableQuantity").isInt({min:0}).optional(),
@@ -108,8 +114,13 @@ router.put(
 router.put(
   "/sku/:id/position",
   [
+<<<<<<< HEAD
     param("id").isInt({min:0}),
     check("position").isString().not().optional(),
+=======
+    param("id").isNumeric().notEmpty().not().optional(),
+    check("position").isString().isLength({min:12, max:12}).notEmpty().not().optional(),
+>>>>>>> c1fd36f244620c9aa8ad84bd406fff196470d14f
   ],
   (req, res, next) => {
     const errors = validationResult(req);
@@ -119,16 +130,16 @@ router.put(
     next();
   },
   async (req, res) => {
-    const sku = await su.editsku(req.body.position, req.params.id);
-
+    const sku = await su.editskuPosition(req.body.position, req.params.id);
+    console.log(sku)
     if (sku.message) {
       return res.status(404).json(sku.message);
-    } else if (sku) {
-      return res.status(200).json({ message: "Success" });
-    } else if (sku == 2) {
+    }  else if (sku === 2) {
       return res.status(422).json({ message: "Unprocessable Entity" });
-    } else if (sku == 3) {
+    } else if (sku === 3) {
       return res.status(500).json({ message: "Internal Server Error" });
+    } else if (sku) {
+      return res.status(200).end();
     }
   },
   su.editskuPosition
