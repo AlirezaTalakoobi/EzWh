@@ -97,10 +97,10 @@ router.put(
   body("newCol").isString(),
   body("newCol").isLength({ min: 4 }),
   body("newCol").isLength({ max: 4 }),
-  body("newMaxWeight").isInt(),
-  body("newMaxVolume").isInt(),
-  body("newOccupiedWeight").isInt(),
-  body("newOccupiedVolume").isInt(),
+  body("newMaxWeight").isInt({ min: 0 }),
+  body("newMaxVolume").isInt({ min: 0 }),
+  body("newOccupiedWeight").isInt({ min: 0 }),
+  body("newOccupiedVolume").isInt({ min: 0 }),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -146,11 +146,10 @@ router.put(
     );
     if (ans === 404) {
       return res.status(404).send("404 NOT FOUND");
-    } else if (ans === 201) {
-      return res.send(200).send("200 OK");
-    } else {
+    } else if (ans === 500) {
       return res.status(503).send("503 Service Unavailable");
     }
+    return res.send(200).send("200 OK");
   }
 );
 

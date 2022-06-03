@@ -72,7 +72,7 @@ class PositionController {
       }
 
       const sql =
-        "UPDATE POSITION SET aisleID = ?, ROW = ?, COL = ?, MAXWEIGHT = ?, MAXVOLUME = ?, OCCUPIEDWEIGHT = ?, OCCUPIEDVOLUME = ?  WHERE ID = ? ";
+        "UPDATE POSITION SET aisleID = ?, row = ?, col = ?, maxWeight = ?, maxVolume = ?, occupiedWeight = ?, occupiedVolume = ?  WHERE ID = ? ";
       const args = [
         newAisleID,
         newRow,
