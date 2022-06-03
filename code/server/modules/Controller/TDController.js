@@ -46,11 +46,11 @@ class TDController {
   //}
   
   getTestDescriptionById = async (param) => {
-    
-    if (Object.keys(param).length === 0) {
-      console.log(param)
-      return { message: "validation of id failed" }//res.status(422).json({ error: "validation of id failed" });
-    }
+    // console.log(param)
+    // if (Object.keys(param).length === 0) {
+      
+    //   return { message: "validation of id failed" }//res.status(422).json({ error: "validation of id failed" });
+    // }
 
 
     try {

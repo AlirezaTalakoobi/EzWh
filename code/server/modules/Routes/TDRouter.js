@@ -31,11 +31,12 @@ router.get("/testdescriptors/:id",[param("id").isInt({min:1}).not().isEmpty()],
  
   const Test = await td.getTestDescriptionById(params);
   
-  if (Test.message) {
-    return res.status(422).json(Test.message);
+  // if (Object.keys(params).length === 0) {
+  //   return res.status(422).json ("(validation of request body failed")  //res.status(422).json({ error: "(validation of request body failed" });
+  // }
   
     
-  } else if (Test == 1) {
+   if (Test == 1) {
     
     res.status(404).json("no Test associated to id");
   }else if(Test == 2){
