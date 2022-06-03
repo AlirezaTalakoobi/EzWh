@@ -47,11 +47,11 @@ router.post(
   "/sku/",
   [
     check("description").isString().isLength({ min: 1, max: 32 }),
-    check("weight").isNumeric({min:0}),
-    check("volume").isNumeric({min:0}),
+    check("weight").isInt({min:0}),
+    check("volume").isInt({min:0}),
     check("notes").notEmpty().isString(),
-    check("price").isNumeric({min:0}),
-    check("availableQuantity").isNumeric({min:0}),
+    check("price").isFloat({min:0}),
+    check("availableQuantity").isInt({min:0}),
   ],
   (req, res, next) => {
     console.log(req.body);
@@ -76,11 +76,11 @@ router.put(
   "/sku/:id",
   [
     param("id").isString().isLength({ min: 1, max: 32 }).not().optional(),
-    check("newWeight").isNumeric({min:0}).optional(),
-    check("newVolume").isNumeric({min:0}).optional(),
+    check("newWeight").isInt({min:0}).optional(),
+    check("newVolume").isInt({min:0}).optional(),
     check("newNotes").isString().optional(),
-    check("newPrice").isNumeric({min:0}).optional(),
-    check("newAvailableQuantity").isNumeric({min:0}).optional(),
+    check("newPrice").isFloat({min:0}).optional(),
+    check("newAvailableQuantity").isInt({min:0}).optional(),
   ],
   (req, res, next) => {
     const errors = validationResult(req);
@@ -99,7 +99,7 @@ router.put(
     } else if (sku == 2) {
       return res.status(422).json({ message: "Not enough space" });
     } else if (sku == 3) {
-      return res.status(500).json({ message: "Internal Server Error" });
+      return res.status(503).json({ message: "Internal Server Error" });
     }
   },
   su.editsku
