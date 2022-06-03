@@ -46,7 +46,7 @@ router.get(
 router.post(
   "/sku/",
   [
-    check("description").isInt({min:1}),
+    check("description").isString().not().isEmpty(),
     check("weight").isInt({min:0}),
     check("volume").isInt({min:0}),
     check("notes").notEmpty().isString(),
@@ -75,7 +75,7 @@ router.post(
 router.put(
   "/sku/:id",
   [
-    param("id").isInt({min:1}),
+    param("id").isInt({min:0}),
     check("newWeight").isInt({min:0}).optional(),
     check("newVolume").isInt({min:0}).optional(),
     check("newNotes").isString().optional(),
@@ -108,7 +108,7 @@ router.put(
 router.put(
   "/sku/:id/position",
   [
-    param("id").isNumeric().not().isEmpty(),
+    param("id").isInt({min:0}),
     check("position").isString().not().optional(),
   ],
   (req, res, next) => {
