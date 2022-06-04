@@ -81,18 +81,18 @@ class TDController {
     }
   };
 
-  newTestDescriptor = (name,procedureDescription,idSKU) => {
-    //console.log(req.body);
+  newTestDescriptor = async(name,procedureDescription,idSKU) => {
+    console.log(idSKU);
     const sql =
       "INSERT INTO TEST_DESCRIPTOR(name,procedureDescription,skuID) VALUES (?,?,?)";
-    //returns this.dao.run(sql)
+    
+const sql2= "select ID from SKU where ID=?"
+const id=await this.dao.all(sql2,idSKU)
+console.log(id);
+if(id.length==0){
+  return {message:"validation of request body failed"}
+}else{
 
-
-    // const result = this.dao.get("Select * from SKUItems where rfid=?");
-    // if (result.length != 0) {
-    //   return res.status(422).json("Unprocessable Entity");
-    // } else {
-    //let data = Body;
     try {
       let result = this.dao.run(sql, [name,procedureDescription,idSKU])
       return result
@@ -104,7 +104,7 @@ class TDController {
       // .then(res.status(201).json("Success"))
       // .catch(res.status(503).json("generic error"));
     //}
-   
+  }
   };
   
 

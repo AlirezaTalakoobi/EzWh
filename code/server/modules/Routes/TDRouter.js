@@ -60,9 +60,9 @@ router.post("/testdescriptor",[
   },async(req, res) => {
     let  data = req.body;
     const Test = await td.newTestDescriptor(data.name,data.procedureDescription,data.idSKU);
-    if (Object.keys(data).length === 0) {
-      return res.status(422).json ("(validation of request body failed")  //res.status(422).json({ error: "(validation of request body failed" });
-    }
+    // if (Object.keys(data).length === 0) {
+    //   return res.status(422).json ("(validation of request body failed")  //res.status(422).json({ error: "(validation of request body failed" });
+    // }
     if ( Test.message) {
       return res.status(422).json(Test.message);
       
