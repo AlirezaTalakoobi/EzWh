@@ -16,9 +16,9 @@ class TDController {
       const sql = "SELECT * FROM TEST_DESCRIPTOR"
       let result = await this.dao.all(sql,[])
       result =result.map((Test) => ({
-        Id: Test.ID,
-        Name: Test.name,
-        proceduredescription: Test.procedureDescription,
+        id: Test.ID,
+        name: Test.name,
+        procedureDescription: Test.procedureDescription,
         idSKU: Test.skuID
   
       }
@@ -57,13 +57,21 @@ class TDController {
       const sql =
         "SELECT ID,name,procedureDescription,skuID FROM TEST_DESCRIPTOR WHERE ID=?";
       //console.log(req.params.id);
-      const result = await this.dao.all(sql, [param]);
+      const result = await this.dao.get(sql, [param]);
       
       if (result.length === 0) {
         return 1 //res.status(404).json("no SKU associated to id");
       }
+
+      const ret= {
+
+        id:result.ID,
+        name:result.name,
+        procedureDescription:result.procedureDescription,
+        idSKU:result.skuID
+      }
       console.log(result);
-      return result
+      return ret
       
       // result.map((Test) => ({
       //     Id: Test.ID,
@@ -89,8 +97,8 @@ class TDController {
 const sql2= "select ID from SKU where ID=?"
 const id=await this.dao.all(sql2,idSKU)
 console.log(id);
-if(id.length==0){
-  return {message:"validation of request body failed"}
+if(id.length==0 ){
+  return {message:"no sku associated idSKU"}
 }else{
 
     try {
@@ -148,7 +156,9 @@ if(id.length==0){
     if(await this.dao.get('Select * from TEST_DESCRIPTOR where ID=?', [[ID]])!==undefined){
       try {
         const sql = "DELETE FROM TEST_DESCRIPTOR where ID=?";
+        const sql2 = "UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = ?";
         let result = await this.dao.run(sql, [ID]);
+        await this.dao.run(sql2, [0, "TEST_DESCRIPTOR"]);
         return result//res.status(204).end();
       } catch {
         return 2//res.status(503).json("Internal Server Error");

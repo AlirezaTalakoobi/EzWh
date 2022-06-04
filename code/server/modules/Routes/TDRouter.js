@@ -30,7 +30,7 @@ router.get("/testdescriptors/:id",[param("id").isInt({min:1}).not().isEmpty()],
   const params =req.params.id
  
   const Test = await td.getTestDescriptionById(params);
-  
+  console.log(Test);
   // if (Object.keys(params).length === 0) {
   //   return res.status(422).json ("(validation of request body failed")  //res.status(422).json({ error: "(validation of request body failed" });
   // }
@@ -47,9 +47,9 @@ router.get("/testdescriptors/:id",[param("id").isInt({min:1}).not().isEmpty()],
   }
 },td.getTestDescriptionById);
 router.post("/testdescriptor",[
-    check("name").isString().isLength({ min: 1, max: 32 }),
-    check("procedureDescription").isString(),
-    check("idSKU").isNumeric()
+    check("name").isString().isLength({ min: 1 }),
+    check("procedureDescription").isString({ min: 1}),
+    check("idSKU").isInt({min:0}).not().isEmpty()
   ],
   (req, res, next) => {
     const errors = validationResult(req);
@@ -64,7 +64,7 @@ router.post("/testdescriptor",[
     //   return res.status(422).json ("(validation of request body failed")  //res.status(422).json({ error: "(validation of request body failed" });
     // }
     if ( Test.message) {
-      return res.status(422).json(Test.message);
+      return res.status(404).json(Test.message);
       
     } else if(Test == 2 ){
       return res.status(503).json("generic error")
