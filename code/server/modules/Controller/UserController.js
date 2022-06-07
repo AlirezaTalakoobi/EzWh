@@ -122,10 +122,12 @@ class UserController {
       //   };
       // }
       const sql = "DELETE FROM USER where email=? and type=?";
+      const sql2 = "UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = ?";
       let result = await this.dao.run(sql, [
         username.replace(`${type}.ezwh`, "ezwh"),
         type,
       ]);
+      await this.dao.run(sql2, [0, "USER"]);
       return result;
     } catch {
       return false;

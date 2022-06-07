@@ -21,9 +21,10 @@ class InternalOrderController {
       let sku = await this.dao.get(skuSql, [product.SKUId]);
       if (
         sku === undefined ||
-        sku.price !== product.price ||
+        //sku.price !== product.price ||
         product.qty > sku.availableQuantity
       ) {
+        console.log("COULDN'T CREATE ORDER")
         return false;
       }
     }
@@ -36,11 +37,11 @@ class InternalOrderController {
       max: p.qty,
       current: 0,
     }));
-    const itemSql = "SELECT RFID FROM SKU_ITEM WHERE RFID = ?";
+    //const itemSql = "SELECT RFID FROM SKU_ITEM WHERE RFID = ?";
     for (let skuItem of skuItems) {
-      let sku = skus.find((s) => s.skuID === skuItem.SkuId);
-      let rfid = await this.dao.get(itemSql, [skuItem.RFID]);
-      if (sku === undefined || rfid === undefined || sku.current >= sku.max) {
+      let sku = skus.find((s) => s.skuID === skuItem.SkuID);
+      //let rfid = await this.dao.get(itemSql, [skuItem.RFID]);
+      if (sku === undefined || sku.current >= sku.max) {// || rfid === undefined) {
         return false;
       }
       sku.current += 1;
@@ -63,13 +64,18 @@ class InternalOrderController {
   };
 
   addSkuItemsToInternalOrder = async (internalOrderID, products) => {
+    const checkSkuItemSql = "SELECT RFID FROM SKU_ITEM WHERE RFID = ?";
+    const newSkuItemSql = "INSERT INTO SKU_ITEM (RFID, available, dateOfStock, skuID, internalOrderID) VALUES (?,?,?,?,?)";
+    const updateSkuItemSql = "UPDATE SKU_ITEM SET internalOrderID = ? WHERE RFID = ?";
+
+    let rfid;
     for (let product of products) {
-      let itemInInternalOrderSql =
-        "UPDATE SKU_ITEM SET internalOrderID = ? WHERE RFID = ?";
-      await this.dao.run(itemInInternalOrderSql, [
-        internalOrderID,
-        product.RFID,
-      ]);
+      rfid = this.dao.get(checkSkuItemSql, [product.RFID]);
+      if(rfid === undefined){
+        await this.dao.run(newSkuItemSql, [product.RFID, 0, dayjs().format("YYYY/MM/DD"), product.SkuID, internalOrderID]);
+      } else {
+        await this.dao.run(updateSkuItemSql, [internalOrderID, product.RFID]);
+      }
     }
   };
 

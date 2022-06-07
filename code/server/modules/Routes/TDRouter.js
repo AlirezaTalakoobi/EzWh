@@ -82,7 +82,7 @@ router.put("/testdescriptor/:id", [
   (req, res, next) => {
     console.log(req.body);
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    if (!errors.isEmpty() || Object.keys(req.body).length === 0) {
       return res.status(422).json({ errors: errors.array() });
     }
     next();

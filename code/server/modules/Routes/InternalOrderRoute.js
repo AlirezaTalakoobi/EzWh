@@ -67,7 +67,7 @@ router.get("/internalOrdersAccepted", async (req, res) => {
   return res.status(200).json(orders);
 });
 
-router.post("/internalOrder", 
+router.post("/internalOrders", 
     [
         check("issueDate").notEmpty().custom(d => dayjs(d)),
         check("customerId").notEmpty().isNumeric(),
@@ -100,7 +100,7 @@ router.post("/internalOrder",
 );
 
 router.put(
-  "/internalOrder/:id",
+  "/internalOrders/:id",
   [
     param("id").notEmpty().isNumeric(),
     check("newState")
@@ -108,7 +108,7 @@ router.put(
       .isString()
       .isIn(["ISSUED", "ACCEPTED", "REFUSED", "CANCELED", "COMPLETED"]),
     check("products").optional().isArray(),
-    check("products.*.SkuId").isNumeric(),
+    check("products.*.SkuID").isNumeric(),
     check("products.*.RFID").isString().isLength({ min: 32, max: 32 }),
   ],
   (req, res, next) => {
