@@ -37,12 +37,12 @@ The class diagram implements a facade structural pattern, which is the EZWHSyste
 | Function | EZWHSystem | TestDescriptor | Position | RestockOrder | InternalOrder | TestResult | ReturnOrder | SKUItem | SKU | Item | User |
 | :------: | :--------: | :------------: | :------: | :----------: | :-----------: | :--------: | :---------: | :-----: | :-: | :--: | :--: |
 |   FR1    |     ×      |                |          |              |               |            |             |         |     |      |  ×   |
-|   FR2    |     ×      |       ×        |    ×     |              |               |            |             |    ×    |  ×  |  ×   |      |
-|   FR3    |     ×      |                |    ×     |      ×       |       ×       |            |             |         |  ×  |      |      |
-|   FR4    |     ×      |                |          |              |       ×       |            |             |         |     |      |  ×   |
-|   FR5    |     ×      |                |          |      ×       |               |            |      ×      |         |     |      |      |
-|   FR6    |     ×      |                |          |              |       ×       |            |             |         |     |      |      |
-|   FR7    |     ×      |                |          |              |               |            |             |         |     |  ×   |      |
+|   FR2    |     ×      |                |    ×     |              |               |            |             |         |  ×  |      |      |
+|   FR3    |     ×      |       x        |    ×     |              |               |     x      |             |         |     |      |      |
+|   FR4    |     ×      |                |          |              |               |            |             |         |     |      |  ×   |
+|   FR5    |     ×      |                |          |      ×       |               |     x      |      x      |    x    |  x  |  x   |      |
+|   FR6    |     ×      |                |          |              |       ×       |            |             |    x    |  x  |      |      |
+|   FR7    |     ×      |                |          |              |               |            |             |         |  x  |  ×   |  x   |
 
 # Verification sequence diagrams
 
