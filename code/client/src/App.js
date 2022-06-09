@@ -829,8 +829,8 @@ function App() {
               DateOfStock: null,
             };
             await API.addSKUItem(SKUItem);
-            RF = zeroPad(RF * 1 + 1, 32);
-            skuItms.push({ SKUId: SKUItem.SKUId, rfid: SKUItem.RFID });
+            RF = zeroPad(RF*1 +1,32);
+            skuItms.push({SKUId:SKUItem.SKUId,itemId:product.itemId,rfid: SKUItem.RFID});
           }
         }
         setNewRFID(RF);
@@ -1161,27 +1161,25 @@ function App() {
             }}
           />
 
-          <Route
+        {/*<Route
             path="/register"
             exact
             render={() => (
               <>
                 {loggedIn ? (
                   <>
-                    <Redirect to="/home" />
-                  </>
-                ) : (
-                  <>
-                    <NewUserForm
-                      className="below-nav main-content"
-                      addUser={addUser}
-                      manager={false}
-                    />
-                  </>
-                )}
-              </>
-            )}
-          />
+                    {loggedIn ? (
+                      <>
+                        <Redirect to="/home" />
+                      </>
+                      ):(  
+                          <>
+                            <NewUserForm className="below-nav main-content" addUser={addUser} manager={false}/>
+                          </>
+                        )}
+                    </>)}
+                      
+                      />*/}
 
           <Route
             path="/showItems"
@@ -1552,12 +1550,7 @@ function App() {
                       <>
                         {userdata.id && userdata.type === "M" ? (
                           <>
-                            <NewRestockOrder
-                              className="below-nav main-content"
-                              addRO={addRO}
-                              skus={skus}
-                              suppliers={suppliers}
-                            />
+                            <NewRestockOrder className="below-nav main-content" addRO={addRO} skus={skus} suppliers={suppliers} items={items}/>
                           </>
                         ) : (
                           <>

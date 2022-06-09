@@ -8,39 +8,80 @@ async function logIn(credentials, type) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(credentials),
-      });
-      break;
-    case "M":
-      response = await fetch("/api/managerSessions", {
-        method: "POST",
+        body: JSON.stringify(newPosition),
+      })
+        .then((response) => {
+          if (response.ok) {
+            resolve(true);
+          } else {
+            response
+              .json()
+              .then((obj) => {
+                reject(obj);
+              }) // error msg in the response body
+              .catch((err) => {
+                reject({
+                  errors: [
+                    { param: "Application", msg: "Cannot parse server response" },
+                  ],
+                });
+              }); // something else
+          }
+        })
+        .catch((err) => {
+          reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] });
+        }); // connection errors
+    });
+  }
+
+  const getPositions = async () => {
+    // call: GET /api/positions
+    const response = await fetch("/api/positions");
+    const positions = await response.json();
+    if (response.ok) {
+      return positions;
+    }
+  };
+
+  function editPositionBarcode(oldCode,newCode) {
+    // call: PUT /api/position
+    return new Promise((resolve, reject) => {
+      fetch("/api/position/"+oldCode+"/changeID", {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(credentials),
-      });
-      break;
-    case "S":
-      response = await fetch("/api/supplierSessions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
-      break;
-    case "K":
-      response = await fetch("/api/clerkSessions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
-      break;
-    case "Q":
-      response = await fetch("/api/qualityEmployeeSessions", {
-        method: "POST",
+        body: JSON.stringify({newPositionID:newCode}),
+      })
+        .then((response) => {
+          if (response.ok) {
+            resolve(true);
+          } else {
+            response
+              .json()
+              .then((obj) => {
+                reject(obj);
+              }) // error msg in the response body
+              .catch((err) => {
+                reject({
+                  errors: [
+                    { param: "Application", msg: "Cannot parse server response" },
+                  ],
+                });
+              }); // something else
+          }
+        })
+        .catch((err) => {
+          reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] });
+        }); // connection errors
+    });
+  }
+
+  function editPosition(newPosition) {
+    // call: PUT /api/position
+    return new Promise((resolve, reject) => {
+      fetch("/api/position/"+newPosition.positionID, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
