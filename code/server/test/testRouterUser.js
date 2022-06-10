@@ -214,7 +214,7 @@ describe("create setup users", () => {
     200,
     "Pouya",
     "Hakimifard",
-    "qualityEmployee@ezwh.com",
+    "qualityEmployee1@ezwh.com",
     "testpassword",
     "qualityEmployee"
   );
@@ -223,7 +223,7 @@ describe("create setup users", () => {
     200,
     "Alireza",
     "Talakoobi",
-    "deliveryEmployee@ezwh.com",
+    "deliveryEmployee1@ezwh.com",
     "testpassword",
     "deliveryEmployee"
   );
@@ -231,7 +231,7 @@ describe("create setup users", () => {
     200,
     "Luca",
     "Ardito",
-    "supplier@ezwh.com",
+    "supplier1@ezwh.com",
     "testpassword",
     "supplier"
   );
@@ -239,7 +239,7 @@ describe("create setup users", () => {
     200,
     "Maurizio",
     "Morisio",
-    "manager@ezwh.com",
+    "manager1@ezwh.com",
     "testpassword",
     "manager"
   );

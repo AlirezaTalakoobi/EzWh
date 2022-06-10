@@ -9,13 +9,18 @@ class ReturnOrderController {
 
 
   validateSkuItemsInReturnOrder = async (skuItems, restockOrderId) => {
-    const sql = "SELECT RFID FROM SKU_ITEM WHERE restockOrderID = ? AND RFID = ?";
-    const sql2 = "SELECT IRO.description, IRO.price FROM ITEM I, ITEM_IN_RESTOCK_ORDER IRO WHERE I.skuID = ? AND I.ID = IRO.itemID AND IRO.restockOrderID = ?";
+    //const sql = "SELECT RFID FROM SKU_ITEM WHERE restockOrderID = ? AND RFID = ?";
+    //const sql2 = "SELECT IRO.description, IRO.price FROM ITEM I, ITEM_IN_RESTOCK_ORDER IRO WHERE I.skuID = ? AND I.ID = IRO.itemID AND IRO.restockOrderID = ?";
+   
+    const sql1 = "SELECT RFID FROM SKU_ITEM WHERE RFID = ?";
+    const sql2 = "SELECT ID FROM RESTOCK_ORDER WHERE ID = ?";
 
     for(let skuItem of skuItems){
-      const result = await this.dao.get(sql, [restockOrderId, skuItem.RFID]);
-      const result2 = await this.dao.get(sql2, [skuItem.SKUId, restockOrderId])
-      if(result === undefined || result2 === undefined || result2.description !== skuItem.description || result2.price !== skuItem.price){
+      //const result = await this.dao.get(sql, [restockOrderId, skuItem.RFID]);
+      //const result2 = await this.dao.get(sql2, [skuItem.SKUId, restockOrderId])
+      const result1 = await this.dao.get(sql1, [skuItem.RFID]);
+      const result2 = await this.dao.get(sql2, [restockOrderId]);
+      if(result1 === undefined || result2 === undefined) { //|| result2 === undefined || result2.description !== skuItem.description || result2.price !== skuItem.price){
         return false;
       }
     }    

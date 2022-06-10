@@ -7,7 +7,6 @@ const DAO = require("../DB/DAO");
 const dao = new DAO();
 const su = new SKUController(dao);
 const { check, param, validationResult } = require("express-validator");
-const { init } = require("express/lib/application");
 
 router.get("/skus", async (req, res) => {
   const skus = await su.getsku();
@@ -46,12 +45,12 @@ router.get(
 router.post(
   "/sku/",
   [
-    check("description").isString().isLength({ min: 1, max: 32 }),
-    check("weight").isNumeric(),
-    check("volume").isNumeric(),
-    check("notes").isString(),
-    check("price").isNumeric(),
-    check("availableQuantity").isNumeric(),
+    check("description").isString().not().isEmpty(),
+    check("weight").isInt({ min: 0 }),
+    check("volume").isInt({ min: 0 }),
+    check("notes").notEmpty().isString(),
+    check("price").isFloat({ min: 0 }),
+    check("availableQuantity").isInt({ min: 0 }),
   ],
   (req, res, next) => {
     console.log(req.body);
@@ -67,9 +66,7 @@ router.post(
     if (sku.message) {
       return res.status(503).json(sku.message);
     } else {
-      //console.log(result);
-
-      return res.status(200).json(sku);
+      return res.status(201).json(sku);
     }
   },
   su.newSKU
@@ -77,12 +74,12 @@ router.post(
 router.put(
   "/sku/:id",
   [
-    param("id").isString().isLength({ min: 1, max: 32 }).not().optional(),
-    check("newWeight").isNumeric().optional(),
-    check("newVolume").isNumeric().optional(),
+    param("id").isInt({ min: 0 }).not().optional(),
+    check("newWeight").isInt({ min: 0 }).optional(),
+    check("newVolume").isInt({ min: 0 }).optional(),
     check("newNotes").isString().optional(),
-    check("newPrice").isNumeric().optional(),
-    check("newAvailableQuantity").isNumeric().optional(),
+    check("newPrice").isFloat({ min: 0 }).optional(),
+    check("newAvailableQuantity").isInt({ min: 0 }).optional(),
   ],
   (req, res, next) => {
     const errors = validationResult(req);
@@ -93,7 +90,7 @@ router.put(
   },
   async (req, res) => {
     const sku = await su.editsku(req.body, req.params.id);
-
+    console.log(sku.message);
     if (sku.message) {
       return res.status(404).json(sku.message);
     } else if (sku) {
@@ -101,7 +98,7 @@ router.put(
     } else if (sku == 2) {
       return res.status(422).json({ message: "Not enough space" });
     } else if (sku == 3) {
-      return res.status(500).json({ message: "Internal Server Error" });
+      return res.status(503).json({ message: "Internal Server Error" });
     }
   },
   su.editsku
@@ -110,8 +107,13 @@ router.put(
 router.put(
   "/sku/:id/position",
   [
-    param("id").isNumeric().not().optional(),
-    check("position").isString().not().optional(),
+    param("id").isInt({ min: 0 }).notEmpty().not().optional(),
+    check("position")
+      .isString()
+      .isLength({ min: 12, max: 12 })
+      .notEmpty()
+      .not()
+      .optional(),
   ],
   (req, res, next) => {
     const errors = validationResult(req);
@@ -121,23 +123,23 @@ router.put(
     next();
   },
   async (req, res) => {
-    const sku = await su.editsku(req.body.position, req.params.id);
-
+    const sku = await su.editskuPosition(req.body.position, req.params.id);
+    console.log(sku);
     if (sku.message) {
       return res.status(404).json(sku.message);
-    } else if (sku) {
-      return res.status(200).json({ message: "Success" });
-    } else if (sku == 2) {
+    } else if (sku === 2) {
       return res.status(422).json({ message: "Unprocessable Entity" });
-    } else if (sku == 3) {
+    } else if (sku === 3) {
       return res.status(500).json({ message: "Internal Server Error" });
+    } else if (sku) {
+      return res.status(200).end();
     }
   },
   su.editskuPosition
 );
 router.delete(
   "/skus/:id",
-  [param("id").isNumeric().not().optional()],
+  [param("id").isNumeric().not().isEmpty()],
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -160,40 +162,33 @@ router.delete(
     //   return res.status(200).json({message:"Seccess"});
     // }
 
-    if (sku == 1) {
+    if (sku === 1) {
       return res.status(404).json({ message: "No SKU associated to id" });
-    } else if (sku == false) {
+    } else if (sku === false) {
       res.status(500).json("Internal Server Error");
     } else {
-      return res.status(204).json({ message: "Seccess" });
+      return res.status(204).json({ message: "Success" });
     }
   },
   su.deleteSKU
 );
 
-router.delete("/deleteAllSku",
-async (req,res) => {
+router.delete("/deleteAllSku", async (req, res) => {
   let ans = await su.deleteAll();
-  if(ans){
+  if (ans) {
     return res.status(204).send("204 No Content");
-  }
-  else{
-      return res.status(503).send("503 Service Unavailable")
+  } else {
+    return res.status(503).send("503 Service Unavailable");
   }
 });
 
-
-router.delete(
-  "/skus",
-  async (req, res) => {
-    const result = await su.deleteAllSKU();
-    if (result == 1) {
-      return res.status(500).json("Internal Server Error");
-    } else {
-      return res.status(204).json({ message: "All skus deleted" });
-    }
+router.delete("/skus", async (req, res) => {
+  const result = await su.deleteAllSKU();
+  if (result == 1) {
+    return res.status(500).json("Internal Server Error");
+  } else {
+    return res.status(204).json({ message: "All skus deleted" });
   }
-);
-
+});
 
 module.exports = router;

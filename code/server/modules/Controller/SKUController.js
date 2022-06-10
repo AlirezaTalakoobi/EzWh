@@ -12,7 +12,7 @@ class SKUController {
       const sql = "SELECT * FROM SKU";
       const result = await this.dao.all(sql);
       let skus = result.map((sku) => ({
-        SKUId: sku.ID,
+        id: sku.ID,
         description: sku.description,
         weight: sku.weight,
         volume: sku.volume,
@@ -49,7 +49,7 @@ class SKUController {
       );
 
       let skus = result.map((item) => ({
-        SKUId: item.ID,
+        id: item.ID,
         description: item.description,
         weight: item.weight,
         volume: item.volume,
@@ -166,8 +166,7 @@ class SKUController {
 
   editskuPosition = async (position, ID) => {
     try {
-      let data = req.body;
-
+      
       const sqlP = "select ID from POSITION where ID = ?";
       let resultp = await this.dao.get(sqlP, [position]);
       if (resultp === undefined) {
@@ -178,7 +177,7 @@ class SKUController {
       let resultS = await this.dao.get(sqlS, [ID]);
 
       if (resultS.ID === undefined) {
-        return res.status(404).json("Item not exists");
+        return { message: "SKU Not Found" };
       }
       const sql = "update SKU set positionID=? where ID=?";
       const weight = await this.dao.get(
@@ -199,22 +198,23 @@ class SKUController {
         "UPDATE POSITION SET occupiedWeight=?, occupiedVolume=? WHERE ID=?",
         [0, 0, resultS.positionID.toString()]
       );
+      console.log(resultS.positionID + ": " + position)
       const sqlposition =
         "update POSITION set occupiedWeight=?, occupiedVolume=? where ID=?";
       if (weight.W < resultp.maxWeigth && volume.V < resultp.maxVolume) {
         let Pupdate = await this.dao.run(sqlposition, [
           weight.W,
           volume.V,
-          data.positionID,
+          position,
         ]);
         return Pupdate; //res.status(200);
       } else {
         let oldposition = await this.dao.run(sqlposition, [
           old_position.weight,
           old_position.volume,
-          resultS.positionID,
+          resultS.positionID.toString(),
         ]);
-        return oldposition;
+        return 2;
       }
     } catch {
       return 3; //res.status(500).json("Internal Server Error");
@@ -230,7 +230,9 @@ class SKUController {
         return { message: "No SKU associated to id" }; //res.status(404).json("validation of id failed");
       } else {
         const sql = "DELETE FROM SKU where ID=?";
+        const sql2 = "UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = ?";
         let result = await this.dao.run(sql, [param]);
+        await this.dao.run(sql2, [0, "SKU"]);
         return result; //res.status(204).json(result);
       }
     } catch {

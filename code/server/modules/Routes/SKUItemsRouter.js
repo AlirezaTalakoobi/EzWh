@@ -9,19 +9,24 @@ const { check, param, validationResult } = require("express-validator");
 
 router.post(
   "/skuitem",
+  (req, res, next) => {
+    if (req.body.DateOfStock) {
+      req.body.DateOfStock = req.body.DateOfStock.replaceAll("/", "-");
+    }
+    next();
+  },
   [
     check("RFID").isString().isLength({ min: 32, max: 32 }),
     check("SKUId").isNumeric(),
-    //check("DateOfStock").optional().toDate(),
-    check("DateOfStock").optional().isDate(),
+    check("DateOfStock").optional().isISO8601(),
   ],
   (req, res, next) => {
+    if (req.body.DateOfStock) {
+      req.body.DateOfStock = req.body.DateOfStock.replaceAll("-", "/");
+    }
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
-      return res
-        .status(422)
-        .json({ error: "Validation Failed " + errors.array() });
+      return res.status(422).json(errors.array());
     }
     next();
   },
@@ -39,7 +44,7 @@ router.post(
     } else if (response.skuid) {
       return res.status(404).json(response.skuid);
     } else {
-      return res.status(200).json(response);
+      return res.status(201).json(response);
     }
   }
 );
@@ -99,10 +104,17 @@ router.get(
 );
 router.put(
   "/skuitems/:rfid",
+  (req, res, next) => {
+    if (req.body.newDateOfStock) {
+      req.body.newDateOfStock = req.body.newDateOfStock.replaceAll("/", "-");
+    }
+    next();
+  },
   [
     param("rfid").isString().isLength({ min: 32, max: 32 }).not().optional(),
-    check("newRFID").optional().isString().isLength({ max: 32 }),
+    check("newRFID").optional().isString().isLength({ min: 32, max: 32 }),
     check("newAvailable").isNumeric({ min: 1 }).optional(),
+    check("newDateOfStock").optional().isISO8601(),
   ],
   (req, res, next) => {
     const errors = validationResult(req);
@@ -114,6 +126,10 @@ router.put(
     next();
   },
   async (req, res) => {
+    if (req.body.newDateOfStock) {
+      req.body.newDateOfStock = req.body.newDateOfStock.replaceAll("-", "/");
+    }
+
     const response = await sic.editRFID(
       req.params.rfid,
       req.body.newRFID,
@@ -142,7 +158,7 @@ router.delete(
   async (req, res) => {
     const result = await sic.deleteItem(req.params.rfid);
     if (result === false) {
-      return res.status(500).json({ message: "generic error" });
+      return res.status(503).json({ message: "generic error" });
     } else if (result.message) {
       return res.status(404).json(result.message);
     } else {
@@ -159,17 +175,13 @@ router.delete("/deleteAllSKUItems", async (req, res) => {
   res.status(httpStatusCode).end();
 });
 
-
-router.delete(
-  "/skuitems",
-  async (req, res) => {
-    const result = await sic.deleteAll();
-    if (result === false) {
-      return res.status(500).json({ message: "generic error" });
-    } else {
-      return res.status(204).end();
-    }
+router.delete("/skuitems", async (req, res) => {
+  const result = await sic.deleteAll();
+  if (result === false) {
+    return res.status(500).json({ message: "generic error" });
+  } else {
+    return res.status(204).end();
   }
-);
+});
 
 module.exports = router;

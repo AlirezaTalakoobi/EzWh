@@ -6,8 +6,6 @@ Version: 1.0
 
 # Contents
 
-- [Dependency graph](#dependency graph)
-
 - [Integration and API Test Report](#integration-and-api-test-report)
 - [Contents](#contents)
 - [Dependency graph](#dependency-graph)
@@ -118,40 +116,38 @@ We have used a bottom up starting by unit tests, of which there is one for each 
 
 # Coverage of Scenarios and FR
 
-| Scenario ID | Functional Requirements covered        | Mocha Test(s)                                       |
-| ----------- | -------------------------------------- | --------------------------------------------------- |
-| 1.1         | FR 2.1                                 | 'new sku'                                           |
-| 1.2         | FR 2.1                                 | 'UpdateTDPositionByID'                              |
-| 1.3         | FR 2.1                                 | 'UpdateTDByID'                                      |
-| 2.1         | FR 3.1.1                               | '**adding a new Position**'                         |
-| 2.2         | FR 3.1.1                               | '**modify Position ID** '                           |
-| 2.3         | FR 3.1.1, FR 3.1.4                     | '**put new position data to the database**'         |
-| 2.4         | FR 3.1.1, FR 3.1.4                     | '**put new position data to the database**'         |
-| 2.5         | FR 3.1.2                               | '**Deleting a specific position from positions** '  |
-| 3.1         | FR 5                                   | ' **adding a new Restock Order**'                   |
-| 3.2         | FR 5                                   | ' **adding a new Restock Order**                    |
-| 4.1         | FR 1.1                                 | 'test newuser'                                      |
-| 4.2         | FR 1.5                                 | 'test edit user'                                    |
-| 4.2         | FR 1.2                                 | 'test delete user'                                  |
-| 5.1.1       | FR 5.12                                | '**updating a status of restock Order**'            |
-|             | FR 7                                   | '**adding a new item**'                             |
-| 5.2         | FR 5.12                                | '**updating a status of restock Order**'            |
-| 5.3         | FR 3.1.4                               | '**put new position data to the database**'         |
-|             | FR 5.12                                | '**updating a status of restock Order**'            |
-| 6           | FR 5.9                                 | '**adding a new return order** '                    |
-|             | FR 8.2                                 | '**modifying a test result**'                       |
-| 9.1         | FR 6.1, FR 6.2, FR 6.3, FR 6.4, FR 6.5 | '**creating new internal order**'                   |
-| 9.3         | FR 6.6                                 | '**deleting internal order data from the system**'  |
-| 10.1        | FR 6.7, FR 6.8                         | '**modifying internal order data from the system**' |
-| 11.1        | FR 7                                   | 'create item'                                       |
-| 11.2        | FR 7                                   | 'modify item by id '                                |
-| 12.1        | FR 3.2                                 | 'newTD'                                             |
-| 12.2        | FR 3.2.2                               | 'UpdateTDByID'                                      |
-| 12.3        | FR 3.2.3                               | 'delete TD'                                         |
+| Scenario ID | Functional Requirements covered        | Mocha Test(s)                                                   |
+| ----------- | -------------------------------------- | --------------------------------------------------------------- |
+| 1.1         | FR 2.1                                 | 'new sku'                                                       |
+| 1.2         | FR 2.1                                 | 'UpdateTDPositionByID'                                          |
+| 1.3         | FR 2.1                                 | 'UpdateTDByID'                                                  |
+| 2.1         | FR 3.1.1                               | 'insert position'                                               |
+| 2.2         | FR 3.1.1                               | 'update position byID '                                         |
+| 2.3         | FR 3.1.1, FR 3.1.4                     | 'insert position'                                               |
+| 2.4         | FR 3.1.1, FR 3.1.4                     | 'modify position'                                               |
+| 2.5         | FR 3.1.2                               | 'Delete position '                                              |
+| 3.1         | FR 5                                   | ' creating new order'                                           |
+| 3.2         | FR 5                                   | ' creating new order                                            |
+| 4.1         | FR 1.1                                 | 'test newuser'                                                  |
+| 4.2         | FR 1.5                                 | 'test edit user'                                                |
+| 4.2         | FR 1.2                                 | 'test delete user'                                              |
+| 5.1.1       | FR 5.12                                | 'changing state of restock order'                               |
+|             | FR 7                                   | 'create item'                                                   |
+| 5.2         | FR 5.12                                | 'changing state of restock order                                |
+| 5.3         | FR 3.1.4                               | 'put new position data to the database'                         |
+|             | FR 5.12                                | 'changing state of restock order '                              |
+| 6           | FR 5.9                                 | 'creating a new return order '                                  |
+|             | FR 8.2                                 | 'modify a test result'                                          |
+| 9.1         | FR 6.1, FR 6.2, FR 6.3, FR 6.4, FR 6.5 | 'creating a new internal order'                                 |
+| 9.3         | FR 6.6                                 | 'delete internal order by ID'                                   |
+| 10.1        | FR 6.7, FR 6.8                         | 'change state of internal order to completed and add sku items' |
+| 11.1        | FR 7                                   | 'create item'                                                   |
+| 11.2        | FR 7                                   | 'modify item by id '                                            |
+| 12.1        | FR 3.2                                 | 'newTD'                                                         |
+| 12.2        | FR 3.2.2                               | 'UpdateTDByID'                                                  |
+| 12.3        | FR 3.2.3                               | 'delete TD'                                                     |
 
 # Coverage of Non Functional Requirements
-
-<Report in the following table the coverage of the Non Functional Requirements of the application - only those that can be tested with automated testing frameworks.>
 
 ###
 

@@ -16,6 +16,7 @@ router.get("/restockOrders", async (req, res) =>  {
   if(orders === -1){
     return res.status(404).json({error: "No Orders Found"});
   }
+  console.log(JSON.stringify(orders))
   return res.status(200).json(orders);
 });
 
@@ -82,8 +83,8 @@ router.post(
     check("products").notEmpty().isArray(),
     check("products.*.SKUId").notEmpty().isNumeric(),
     check("products.*.description").notEmpty().isString(),
-    check("products.*.price").notEmpty().isNumeric(),
-    check("products.*.qty").notEmpty().isNumeric(),
+    check("products.*.price").notEmpty().isNumeric({min: 0}),
+    check("products.*.qty").notEmpty().isNumeric({min: 0}),
   ],
   (req, res, next) => {
     const errors = validationResult(req);

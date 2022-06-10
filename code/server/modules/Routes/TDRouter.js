@@ -18,7 +18,7 @@ async (req,res) => {
       return res.status(500).send("500 Internal Server Error");
   }
 }, td.TestDescriptor);
-router.get("/testdescriptors/:id",[param("id").isNumeric().not().optional()],
+router.get("/testdescriptors/:id",[param("id").isInt({min:1}).not().isEmpty()],
 (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -30,15 +30,16 @@ router.get("/testdescriptors/:id",[param("id").isNumeric().not().optional()],
   const params =req.params.id
  
   const Test = await td.getTestDescriptionById(params);
-  
-  if (Test.message) {
-    return res.status(422).json(Test.message);
+  console.log(Test);
+  // if (Object.keys(params).length === 0) {
+  //   return res.status(422).json ("(validation of request body failed")  //res.status(422).json({ error: "(validation of request body failed" });
+  // }
   
     
-  } else if (Test == 1) {
+   if (Test === 1) {
     
     res.status(404).json("no Test associated to id");
-  }else if(Test == 2){
+  }else if(Test === 2){
     res.status(500).json("generic error");
   }else if (Test){
     
@@ -46,9 +47,9 @@ router.get("/testdescriptors/:id",[param("id").isNumeric().not().optional()],
   }
 },td.getTestDescriptionById);
 router.post("/testdescriptor",[
-    check("name").isString().isLength({ min: 1, max: 32 }),
-    check("procedureDescription").isString(),
-    check("idSKU").isNumeric()
+    check("name").isString().isLength({ min: 1 }),
+    check("procedureDescription").isString({ min: 1}),
+    check("idSKU").isInt({min:0}).not().isEmpty()
   ],
   (req, res, next) => {
     const errors = validationResult(req);
@@ -59,27 +60,29 @@ router.post("/testdescriptor",[
   },async(req, res) => {
     let  data = req.body;
     const Test = await td.newTestDescriptor(data.name,data.procedureDescription,data.idSKU);
-    if (Object.keys(data).length === 0) {
-      return res.status(422).json ("(validation of request body failed")  //res.status(422).json({ error: "(validation of request body failed" });
-    }
+    // if (Object.keys(data).length === 0) {
+    //   return res.status(422).json ("(validation of request body failed")  //res.status(422).json({ error: "(validation of request body failed" });
+    // }
     if ( Test.message) {
-      return res.status(422).json(Test.message);
+      return res.status(404).json(Test.message);
       
     } else if(Test == 2 ){
       return res.status(503).json("generic error")
     }if(Test){
       
-      return res.status(200).json({message: "Created"});
+      return res.status(201).json({message: "Created"});
     }
   }, td.newTestDescriptor);
 router.put("/testdescriptor/:id", [
-    check("newName").isString().isLength({ min: 1, max: 32 }).optional(),
+    
+    check("newName").isString().isLength({ min: 1}).optional(),
     check("newProcedureDescription").isString().optional(),
     check("newIdSKU").isNumeric().optional()
   ],
   (req, res, next) => {
+    console.log(req.body);
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    if (!errors.isEmpty() || Object.keys(req.body).length === 0) {
       return res.status(422).json({ errors: errors.array() });
     }
     next();
@@ -91,9 +94,9 @@ router.put("/testdescriptor/:id", [
     if ( Test.message ) {
       res.status(422).json(Test.message);
       
-    } else if(Test == 2){
-      return res.status(404).json({error:"Test descriptor not existing"})
-    }else if(Test == 3){
+    } else if(Test === 2){
+      return res.status(404).json({error:"Test descriptor or SKU not existing"})
+    }else if(Test === 3){
       return res.status(500).json({message: "Internal Server Error"});
     }else {
       
@@ -104,7 +107,7 @@ router.delete("/testdescriptor/:id",  [param("id").isNumeric().not().optional()]
 (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(333).json({ errors: errors.array() });
+    return res.status(422).json({ errors: errors.array() });
   }
   next();
 },async (req, res) => {
@@ -112,7 +115,7 @@ router.delete("/testdescriptor/:id",  [param("id").isNumeric().not().optional()]
  
   const Test = await td.deleteTD(params);
   if(Test !== undefined) {
-    return res.status(200).json({message:"Seccess"})
+    return res.status(204).json({message:"Seccess"})
   } 
   // else if (Object.keys(params).length === 0) {
     

@@ -21,7 +21,7 @@ router.get("/returnOrders", async (req, res) =>  {
 });
 
 router.get(
-  "/returnOrder/:id",
+  "/returnOrders/:id",
   [param("id").notEmpty().isNumeric()],
   (req, res, next) => {
     const errors = validationResult(req);
@@ -63,12 +63,13 @@ router.post(
     next();
   },
   async (req, res) => {
+
     const orderId = await sic.createReturnOrder(req.body.returnDate, req.body.restockOrderId, req.body.products);
     if(!orderId){
       return res.status(503).json({error: "Service Unavailable"});
     }
     if(orderId === -1){
-      return res.status(422).json({error: "Wrong data"});
+      return res.status(404).json({error: "Restock order or sku item not found not found"});
     }
     return res.status(201).json({id: orderId});
   }
