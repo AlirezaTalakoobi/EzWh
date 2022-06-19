@@ -5,7 +5,6 @@ const { Result } = require("express-validator");
 class SKUController {
   constructor(dao) {
     this.dao = dao;
-    this.dao.run("Update sqlite_sequence set seq=0 where name=? ", ["SKU"]);
   }
 
   getsku = async () => {
@@ -30,6 +29,7 @@ class SKUController {
 
         sku.testDescriptors = testDescriptors.map((t) => t.ID);
       }
+      console.log(skus);
       return skus;
     } catch {
       return { message: "Internal error" };
@@ -74,19 +74,9 @@ class SKUController {
   newSKU = async (Body) => {
     const sql =
       "INSERT INTO SKU(description,weight,volume,notes,availableQuantity,price) VALUES (?,?,?,?,?,?)";
-    // if (Object.keys(Body).length === 0) {
-    //   return 1 ;
-    // }
-    // if (
-    //   this.dao.get("Select * from SKU where positionID=?", [
-    //     req.body.positionID,
-    //   ]) !== undefined
-    // ) {
-    //   return res.status(404);
-    // }
     let data = Body;
     try {
-      let result = this.dao.run(sql, [
+      let result = await this.dao.run(sql, [
         data.description,
         data.weight,
         data.volume,
@@ -94,11 +84,12 @@ class SKUController {
         data.availableQuantity,
         data.price,
       ]);
+      console.log(result);
+      console.log(await this.dao.get("Select * from SKU"));
       return result;
     } catch {
       return { message: "Service Unavailable" }; //res.status(503).json("Service Unavailable");
     }
-    //}
   };
   editsku = async (Body, ID) => {
     try {
@@ -223,18 +214,11 @@ class SKUController {
 
   deleteSKU = async (param) => {
     try {
-      if (
-        (await this.dao.get("Select * from SKU where ID=?", [param])) ===
-        undefined
-      ) {
-        return { message: "No SKU associated to id" }; //res.status(404).json("validation of id failed");
-      } else {
-        const sql = "DELETE FROM SKU where ID=?";
-        const sql2 = "UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = ?";
-        let result = await this.dao.run(sql, [param]);
-        await this.dao.run(sql2, [0, "SKU"]);
-        return result; //res.status(204).json(result);
-      }
+      const sql = "DELETE FROM SKU where ID=?";
+      const sql2 = "UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = ?";
+      let result = await this.dao.run(sql, [param]);
+      await this.dao.run(sql2, [0, "SKU"]);
+      return result; //res.status(204).json(result);
     } catch {
       return 1; //res.status(500).json("Internal Server Error");
     }
