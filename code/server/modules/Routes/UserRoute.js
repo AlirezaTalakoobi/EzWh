@@ -228,7 +228,6 @@ router.post(
   },
   async (req, res) => {
     const user = await uc.getUser(req.body.username, req.body.password);
-
     if (user === undefined) {
       return res.status(404).json({ message: "User not existing" });
     } else if (user.message) {
@@ -260,7 +259,6 @@ router.post(
   },
   async (req, res) => {
     const user = await uc.getUser(req.body.username, req.body.password);
-
     // if (user === undefined) {
     //   return res.status(404).json({ message: "User not existing" });
     // } else
@@ -307,7 +305,7 @@ router.put(
     );
 
     if (user === false) {
-      return res.status(500).json({ message: "generic error" });
+      return res.status(503).json({ message: "generic error" });
     } else if (user.message) {
       return res.status(404).json(user.message);
     } else {
@@ -341,10 +339,9 @@ router.delete(
   },
   async (req, res) => {
     const result = await uc.deleteUser(req.params.username, req.params.type);
+
     if (result === false) {
-      return res.status(500).json({ message: "generic error" });
-    } else if (result.message) {
-      return res.status(404).json(result.message);
+      return res.status(503).json({ message: "generic error" });
     } else {
       return res.status(204).end();
     }

@@ -35,14 +35,13 @@ describe("test SKU apis", () => {
     position: "800234523412",
   };
   //"testDescriptors" : [1,3,4]
-
   newSKU(201, item);
   UpdateTDPositionByID(200, 350, newitem);
   UpdateTDByID(200, 350, newitem);
   getTD(200, item);
   getskubyId(200, 350, item);
   deleteItem(204, 100);
-  // deleteItem(422);
+  // dele teItem(422);
 
   // });
 

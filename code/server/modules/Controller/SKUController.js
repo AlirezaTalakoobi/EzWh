@@ -5,6 +5,7 @@ const { Result } = require("express-validator");
 class SKUController {
   constructor(dao) {
     this.dao = dao;
+    this.dao.run("Update sqlite_sequence set seq=0 where name=? ", ["SKU"]);
   }
 
   getsku = async () => {
@@ -166,7 +167,6 @@ class SKUController {
 
   editskuPosition = async (position, ID) => {
     try {
-      
       const sqlP = "select ID from POSITION where ID = ?";
       let resultp = await this.dao.get(sqlP, [position]);
       if (resultp === undefined) {
@@ -198,7 +198,7 @@ class SKUController {
         "UPDATE POSITION SET occupiedWeight=?, occupiedVolume=? WHERE ID=?",
         [0, 0, resultS.positionID.toString()]
       );
-      console.log(resultS.positionID + ": " + position)
+      console.log(resultS.positionID + ": " + position);
       const sqlposition =
         "update POSITION set occupiedWeight=?, occupiedVolume=? where ID=?";
       if (weight.W < resultp.maxWeigth && volume.V < resultp.maxVolume) {
@@ -242,22 +242,20 @@ class SKUController {
 
   deleteAllSKU = async () => {
     try {
-        const sql = "DELETE FROM SKU";
-        let result = await this.dao.run(sql, []);
-        return result; //res.status(204).json(result);
+      const sql = "DELETE FROM SKU";
+      let result = await this.dao.run(sql, []);
+      return result; //res.status(204).json(result);
     } catch {
       return 1; //res.status(500).json("Internal Server Error");
     }
-  }
-  
+  };
+
   deleteAll = async () => {
-    
     const sql = "DELETE FROM SKU";
-    try{
-        let result = await this.dao.run(sql, []);
-        return true;
-    }
-    catch(err){
+    try {
+      let result = await this.dao.run(sql, []);
+      return true;
+    } catch (err) {
       return false;
     }
   };
