@@ -35,16 +35,24 @@ describe("test SKU apis", async () => {
     position: "800234523412",
   };
   //"testDescriptors" : [1,3,4]
+  deleteAllData(204);
   insertSKU(201, item);
-  UpdateTDPositionByID(200, 1, newitem, position);
+  UpdateTDPositionByID(200, 1, newitem);
   UpdateTDByID(200, 1, newitem);
   getTD(200, item);
   getskubyId(200, 1, item);
   deleteItem(204, 1);
   deleteItem(422);
-
+  deleteAllData(204);
   // });
-
+  function deleteAllData(expectedHTTPStatus) {
+    it("Deleting data", function (done) {
+      agent.delete("/api/skus").then(function (res) {
+        res.should.have.status(expectedHTTPStatus);
+        done();
+      });
+    });
+  }
   function getTD(expectedHTTPStatus, item) {
     it("getting sku from the system", (done) => {
       agent
@@ -82,7 +90,7 @@ describe("test SKU apis", async () => {
         .post("/api/sku/")
         .send(item)
         .then((res) => {
-          res.should.have.status(200);
+          res.should.have.status(201);
           agent
             .get("/api/skus/" + id)
             .then((r) => {

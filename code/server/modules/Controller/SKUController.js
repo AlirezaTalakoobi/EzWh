@@ -227,7 +227,9 @@ class SKUController {
   deleteAllSKU = async () => {
     try {
       const sql = "DELETE FROM SKU";
+      const sql2 = "UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = ?";
       let result = await this.dao.run(sql, []);
+      await this.dao.run(sql2, [0, "SKU"]);
       return result; //res.status(204).json(result);
     } catch {
       return 1; //res.status(500).json("Internal Server Error");
@@ -237,7 +239,9 @@ class SKUController {
   deleteAll = async () => {
     const sql = "DELETE FROM SKU";
     try {
+      const sql2 = "UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = ?";
       let result = await this.dao.run(sql, []);
+      await this.dao.run(sql2, [0, "SKU"]);
       return true;
     } catch (err) {
       return false;
