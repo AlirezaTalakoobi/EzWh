@@ -199,51 +199,51 @@ describe("test delete user api", () => {
   deleteAllData(204);
 });
 
-describe("create setup users", () => {
-  deleteAllData(204);
-  newUser(
-    200,
-    "Davide",
-    "Andriano",
-    "user1@ezwh.com",
-    "testpassword",
-    "customer"
-  );
+// describe("create setup users", () => {
+//   deleteAllData(204);
+//   newUser(
+//     200,
+//     "Davide",
+//     "Andriano",
+//     "user1@ezwh.com",
+//     "testpassword",
+//     "customer"
+//   );
 
-  newUser(
-    200,
-    "Pouya",
-    "Hakimifard",
-    "qualityEmployee1@ezwh.com",
-    "testpassword",
-    "qualityEmployee"
-  );
-  newUser(200, "Giulio", "Sunder", "clerk1@ezwh.com", "testpassword", "clerk");
-  newUser(
-    200,
-    "Alireza",
-    "Talakoobi",
-    "deliveryEmployee1@ezwh.com",
-    "testpassword",
-    "deliveryEmployee"
-  );
-  newUser(
-    200,
-    "Luca",
-    "Ardito",
-    "supplier1@ezwh.com",
-    "testpassword",
-    "supplier"
-  );
-  newUser(
-    200,
-    "Maurizio",
-    "Morisio",
-    "manager1@ezwh.com",
-    "testpassword",
-    "manager"
-  );
-});
+//   newUser(
+//     200,
+//     "Pouya",
+//     "Hakimifard",
+//     "qualityEmployee1@ezwh.com",
+//     "testpassword",
+//     "qualityEmployee"
+//   );
+//   newUser(200, "Giulio", "Sunder", "clerk1@ezwh.com", "testpassword", "clerk");
+//   newUser(
+//     200,
+//     "Alireza",
+//     "Talakoobi",
+//     "deliveryEmployee1@ezwh.com",
+//     "testpassword",
+//     "deliveryEmployee"
+//   );
+//   newUser(
+//     200,
+//     "Luca",
+//     "Ardito",
+//     "supplier1@ezwh.com",
+//     "testpassword",
+//     "supplier"
+//   );
+//   newUser(
+//     200,
+//     "Maurizio",
+//     "Morisio",
+//     "manager1@ezwh.com",
+//     "testpassword",
+//     "manager"
+//   );
+// });
 
 //functions
 function deleteAllData(expectedHTTPStatus) {
