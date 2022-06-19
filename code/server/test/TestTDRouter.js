@@ -6,7 +6,7 @@ chai.should();
 const app = require("../server");
 var agent = chai.request.agent(app);
 
-describe.only("test TD apis", () => {
+describe("test TD apis", () => {
   // beforeEach(async () => {
   //     await agent.delete('/api/allUsers');
   // })
@@ -34,9 +34,10 @@ describe.only("test TD apis", () => {
   newTD(201, item);
   getTD(200, item);
   getskuTDId(200, 1, item);
-  //   UpdateTDByID(200, 1, newitem);
+  UpdateTDByID(200, 1, newitem);
+  UpdateTDByID(404);
   //   // deleteItem(204,100);
-  //   deleteTD(200, 52);
+  deleteTD(204, 1);
 
   // });
   function deleteAllData(expectedHTTPStatus) {
@@ -117,17 +118,29 @@ describe.only("test TD apis", () => {
 
   function UpdateTDByID(expectedHTTPStatus, id, newitem) {
     it("Updating TD By ID", (done) => {
-      if (newitem !== undefined) {
+      if (newitem) {
         agent
-          .put("/api/testdescriptor/" + id)
-          .send(newitem)
-          .then((res) => {
-            res.should.have.status(200);
-
-            done();
+          .post("/api/sku")
+          .send({
+            description: "a new sku",
+            weight: 100,
+            volume: 50,
+            notes: "first SKU",
+            price: 10.99,
+            availableQuantity: 50,
           })
-          .catch((err) => {
-            done(err);
+          .then(function (res) {
+            agent
+              .put("/api/testdescriptor/" + id)
+              .send(newitem)
+              .then((res) => {
+                res.should.have.status(200);
+
+                done();
+              })
+              .catch((err) => {
+                done(err);
+              });
           });
       } else {
         agent
@@ -145,25 +158,12 @@ describe.only("test TD apis", () => {
 
   function deleteTD(expectedHTTPStatus, id) {
     it("Deleting TD", function (done) {
-      if (!id > 0) {
+      if (id) {
         agent
           .delete("/api/testdescriptor/" + id)
           .then((res) => {
             res.should.have.status(expectedHTTPStatus);
             done();
-          })
-          .catch((err) => {
-            done(err);
-          });
-      } else {
-        agent
-          .delete("/api/testdescriptor/" + id) //we are not sending any data
-          .then((res) => {
-            res.should.have.status(expectedHTTPStatus);
-            done();
-          })
-          .catch((err) => {
-            done(err);
           })
           .catch((err) => {
             done(err);
