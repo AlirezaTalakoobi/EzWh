@@ -148,17 +148,17 @@ function get_normal(expectedHTTPStatus) {
 describe("test get item by id api", () => {
   beforeEach(async () => {});
   createALL(201, 12, "a new item", 10.99, 0, 0);
-  get_id(200, 12);
+  get_id(200, 12,0);
   clearall();
-  get_id(404, 1);
+  get_id(404, 1,0);
 
   afterEach(async () => {});
 });
 
-function get_id(expectedHTTPStatus, id) {
+function get_id(expectedHTTPStatus, id,sid) {
   it("get items", function (done) {
     agent
-      .get("/api/items/" + id.toString())
+      .get("/api/items/" + id.toString() + "/" + sid.toString())
       .send()
       .then(function (res) {
         res.should.have.status(expectedHTTPStatus);
@@ -170,17 +170,17 @@ function get_id(expectedHTTPStatus, id) {
 describe("test modify item by id api", () => {
   beforeEach(async () => {});
   createALL(201, 12, "a new item", 10.99, 0, 0);
-  modify_item(200, 12, "new", 8);
-  modify_item(422, 12, "new", -10);
-  modify_item(404, 20, "new", 8);
+  modify_item(200, 12,0, "new", 8);
+  modify_item(422, 12,0, "new", -10);
+  modify_item(404, 20,0, "new", 8);
 
   afterEach(async () => {});
 });
 
-function modify_item(expectedHTTPStatus, id, desc, price) {
+function modify_item(expectedHTTPStatus, id, sid, desc, price) {
   it("get items", function (done) {
     agent
-      .put("/api/item/" + id.toString())
+      .put("/api/item/" + id.toString() + "/" + sid.toString())
       .send({
         newDescription: desc,
         newPrice: price,
@@ -196,16 +196,16 @@ function modify_item(expectedHTTPStatus, id, desc, price) {
 describe("test delete item by id api", () => {
   beforeEach(async () => {});
   createALL(201, 12, "a new item", 10.99, 0, 0);
-  delete_id(204, 12);
+  delete_id(204, 12,0);
   clearall();
 
   afterEach(async () => {});
 });
 
-function delete_id(expectedHTTPStatus, id) {
+function delete_id(expectedHTTPStatus, id,sid) {
   it("get items", function (done) {
     agent
-      .delete("/api/items/" + id.toString())
+      .delete("/api/items/" + id.toString() + "/" + sid.toString())
       .send()
       .then(function (res) {
         res.should.have.status(expectedHTTPStatus);
