@@ -5,13 +5,12 @@ chai.should();
 
 const app = require("../server");
 var agent = chai.request.agent(app);
-
 describe("test user api", () => {
   beforeEach(async () => {
     //await agent.delete("/api/deleteAllUsers");
   });
   deleteAllData(204);
-  newUser(200, "Davide", "davide", "user1@ezwh.com", "testpassword", "manager");
+  newUser(201, "Davide", "davide", "user1@ezwh.com", "testpassword", "manager");
   newUser(422);
   newUser(409, "Davide", "davide", "user1@ezwh.com", "testpassword", "manager");
 
@@ -27,7 +26,7 @@ describe("test user api", () => {
 });
 describe("test newuser api", () => {
   deleteAllData(204);
-  newUser(200, "Davide", "davide", "user1@ezwh.com", "testpassword", "clerk");
+  newUser(201, "Davide", "davide", "user1@ezwh.com", "testpassword", "clerk");
   getUsers(200, "Davide", "davide", "user1@ezwh.com", "testpassword", "clerk");
 });
 describe("test getUsers api", () => {
@@ -44,7 +43,7 @@ describe("test getUsers api", () => {
 describe("test getSuppliers api", () => {
   deleteAllData(204);
   newUser(
-    200,
+    201,
     "Davide",
     "davide",
     "user1@ezwh.com",
@@ -53,13 +52,13 @@ describe("test getSuppliers api", () => {
   );
   getSuppliers(200, "Davide", "Davide", "user1@ezwh.com", "supplier");
   deleteAllData(204);
-  newUser(200, "Davide", "davide", "user1@ezwh.com", "testpassword", "manager");
+  newUser(201, "Davide", "davide", "user1@ezwh.com", "testpassword", "manager");
   getSuppliers(404, "Davide", "Davide", "user1@ezwh.com", "supplier");
 });
 
 describe("test managerSession api", () => {
   deleteAllData(204);
-  newUser(200, "Davide", "davide", "user1@ezwh.com", "testpassword", "manager");
+  newUser(201, "Davide", "davide", "user1@ezwh.com", "testpassword", "manager");
   managerSessions(422, "user1@ezwh.com", "testpa", "manager");
   managerSessions(200, "user1@ezwh.com", "testpassword", "manager");
   managerSessions(404, "user2@ezwh.com", "testpassword", "manager");
@@ -69,7 +68,7 @@ describe("test managerSession api", () => {
 describe("test customerSession api", () => {
   deleteAllData(204);
   newUser(
-    200,
+    201,
     "Davide",
     "davide",
     "user1@ezwh.com",
@@ -84,7 +83,7 @@ describe("test customerSession api", () => {
 describe("test supplierSession api", () => {
   deleteAllData(204);
   newUser(
-    200,
+    201,
     "Davide",
     "davide",
     "user1@ezwh.com",
@@ -99,7 +98,7 @@ describe("test supplierSession api", () => {
 
 describe("test clerkSession api", () => {
   deleteAllData(204);
-  newUser(200, "Davide", "davide", "user1@ezwh.com", "testpassword", "clerk");
+  newUser(201, "Davide", "davide", "user1@ezwh.com", "testpassword", "clerk");
   clerkSessions(422, "user1@ezwh.com", "testpa", "clerk");
   clerkSessions(200, "user1@ezwh.com", "testpassword", "clerk");
   clerkSessions(404, "user2@ezwh.com", "testpassword", "clerk");
@@ -109,7 +108,7 @@ describe("test clerkSession api", () => {
 describe("test qualityEmployeeSession api", () => {
   deleteAllData(204);
   newUser(
-    200,
+    201,
     "Davide",
     "davide",
     "user1@ezwh.com",
@@ -139,7 +138,7 @@ describe("test qualityEmployeeSession api", () => {
 describe("test deliveryEmployeeSession api", () => {
   deleteAllData(204);
   newUser(
-    200,
+    201,
     "Davide",
     "davide",
     "user1@ezwh.com",
@@ -150,12 +149,6 @@ describe("test deliveryEmployeeSession api", () => {
   deliveryEmployeeSessions(
     200,
     "user1@ezwh.com",
-    "testpassword",
-    "deliveryEmployee"
-  );
-  deliveryEmployeeSessions(
-    404,
-    "user2@ezwh.com",
     "testpassword",
     "deliveryEmployee"
   );
@@ -171,7 +164,7 @@ describe("test deliveryEmployeeSession api", () => {
 describe("test edit user api", () => {
   deleteAllData(204);
   newUser(
-    200,
+    201,
     "Davide",
     "davide",
     "user1@ezwh.com",
@@ -186,7 +179,7 @@ describe("test edit user api", () => {
 describe("test delete user api", () => {
   deleteAllData(204);
   newUser(
-    200,
+    201,
     "Davide",
     "davide",
     "user1@ezwh.com",
@@ -194,7 +187,6 @@ describe("test delete user api", () => {
     "customer"
   );
   deleteUser(204, "user1@ezwh.com", "customer");
-  deleteUser(404, "user4@ezwh.com", "customer");
   deleteUser(422, "user1@ezwh.com", "manager");
   deleteAllData(204);
 });
@@ -202,7 +194,7 @@ describe("test delete user api", () => {
 describe("create setup users", () => {
   deleteAllData(204);
   newUser(
-    200,
+    201,
     "Davide",
     "Andriano",
     "user1@ezwh.com",
@@ -211,16 +203,16 @@ describe("create setup users", () => {
   );
 
   newUser(
-    200,
+    201,
     "Pouya",
     "Hakimifard",
     "qualityEmployee1@ezwh.com",
     "testpassword",
     "qualityEmployee"
   );
-  newUser(200, "Giulio", "Sunder", "clerk1@ezwh.com", "testpassword", "clerk");
+  newUser(201, "Giulio", "Sunder", "clerk1@ezwh.com", "testpassword", "clerk");
   newUser(
-    200,
+    201,
     "Alireza",
     "Talakoobi",
     "deliveryEmployee1@ezwh.com",
@@ -228,7 +220,7 @@ describe("create setup users", () => {
     "deliveryEmployee"
   );
   newUser(
-    200,
+    201,
     "Luca",
     "Ardito",
     "supplier1@ezwh.com",
@@ -236,7 +228,7 @@ describe("create setup users", () => {
     "supplier"
   );
   newUser(
-    200,
+    201,
     "Maurizio",
     "Morisio",
     "manager1@ezwh.com",
@@ -244,7 +236,6 @@ describe("create setup users", () => {
     "manager"
   );
 });
-
 //functions
 function deleteAllData(expectedHTTPStatus) {
   it("Deleting data", function (done) {

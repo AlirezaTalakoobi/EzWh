@@ -6,7 +6,7 @@ chai.should();
 const app = require("../server");
 var agent = chai.request.agent(app);
 
-describe("test SKU apis", () => {
+describe("test SKU apis", async () => {
   // beforeEach(async () => {
   //     await agent.delete('/api/allUsers');
   // })
@@ -35,23 +35,31 @@ describe("test SKU apis", () => {
     position: "800234523412",
   };
   //"testDescriptors" : [1,3,4]
-
-  newSKU(201, item);
-  UpdateTDPositionByID(200, 350, newitem);
-  UpdateTDByID(200, 350, newitem);
+  deleteAllData(204);
+  insertSKU(201, item);
+  UpdateTDPositionByID(200, 1, newitem);
+  UpdateTDByID(200, 1, newitem);
   getTD(200, item);
-  getskubyId(200, 350, item);
-  deleteItem(204, 100);
-  // deleteItem(422);
-
+  getskubyId(200, 1, item);
+  deleteItem(204, 1);
+  deleteItem(422);
+  deleteAllData(204);
   // });
-
+  function deleteAllData(expectedHTTPStatus) {
+    it("Deleting data", function (done) {
+      agent.delete("/api/skus").then(function (res) {
+        res.should.have.status(expectedHTTPStatus);
+        done();
+      });
+    });
+  }
   function getTD(expectedHTTPStatus, item) {
     it("getting sku from the system", (done) => {
       agent
         .get("/api/skus/")
         .then((r) => {
-          if (r.status !== 404) {
+          if (r.status === 200) {
+            console.log(r.body);
             r.should.have.status(expectedHTTPStatus);
             // r.body[0]["id"].should.equal(id);
             r.body[0]["description"].should.equal(item.description);
@@ -82,7 +90,7 @@ describe("test SKU apis", () => {
         .post("/api/sku/")
         .send(item)
         .then((res) => {
-          res.should.have.status(200);
+          res.should.have.status(201);
           agent
             .get("/api/skus/" + id)
             .then((r) => {
@@ -114,7 +122,7 @@ describe("test SKU apis", () => {
     });
   }
 
-  function newSKU(expectedHTTPStatus, item) {
+  function insertSKU(expectedHTTPStatus, item) {
     it("adding a new SKU", (done) => {
       if (item !== undefined) {
         agent
@@ -200,7 +208,7 @@ describe("test SKU apis", () => {
 
   function deleteItem(expectedHTTPStatus, id) {
     it("Deleting item", function (done) {
-      if (!id > 0) {
+      if (id > 0) {
         agent
           .delete("/api/skus/" + id)
           .then((res) => {
