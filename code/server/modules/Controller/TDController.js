@@ -1,8 +1,5 @@
 "use strict";
 
-const { promise, reject } = require("bcrypt/promises");
-const { body } = require("express-validator");
-
 class TDController {
   constructor(dao) {
     this.dao = dao;
@@ -98,8 +95,6 @@ class TDController {
   };
 
   editTDbyid = async (Body, ID) => {
-    console.log(Body);
-
     const test = await this.dao.get(
       "Select * from TEST_DESCRIPTOR where ID=?",
       [ID]

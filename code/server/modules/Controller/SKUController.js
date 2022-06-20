@@ -29,7 +29,6 @@ class SKUController {
 
         sku.testDescriptors = testDescriptors.map((t) => t.ID);
       }
-      console.log(skus);
       return skus;
     } catch {
       return { message: "Internal error" };
@@ -84,8 +83,6 @@ class SKUController {
         data.availableQuantity,
         data.price,
       ]);
-      console.log(result);
-      console.log(await this.dao.get("Select * from SKU"));
       return result;
     } catch {
       return { message: "Service Unavailable" }; //res.status(503).json("Service Unavailable");
@@ -189,7 +186,6 @@ class SKUController {
         "UPDATE POSITION SET occupiedWeight=?, occupiedVolume=? WHERE ID=?",
         [0, 0, resultS.positionID.toString()]
       );
-      console.log(resultS.positionID + ": " + position);
       const sqlposition =
         "update POSITION set occupiedWeight=?, occupiedVolume=? where ID=?";
       if (weight.W < resultp.maxWeigth && volume.V < resultp.maxVolume) {

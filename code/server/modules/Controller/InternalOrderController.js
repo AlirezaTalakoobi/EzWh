@@ -24,7 +24,7 @@ class InternalOrderController {
         //sku.price !== product.price ||
         product.qty > sku.availableQuantity
       ) {
-        console.log("COULDN'T CREATE ORDER")
+        console.log("COULDN'T CREATE ORDER");
         return false;
       }
     }
@@ -41,7 +41,8 @@ class InternalOrderController {
     for (let skuItem of skuItems) {
       let sku = skus.find((s) => s.skuID === skuItem.SkuID);
       //let rfid = await this.dao.get(itemSql, [skuItem.RFID]);
-      if (sku === undefined || sku.current >= sku.max) {// || rfid === undefined) {
+      if (sku === undefined || sku.current >= sku.max) {
+        // || rfid === undefined) {
         return false;
       }
       sku.current += 1;
@@ -65,14 +66,22 @@ class InternalOrderController {
 
   addSkuItemsToInternalOrder = async (internalOrderID, products) => {
     const checkSkuItemSql = "SELECT RFID FROM SKU_ITEM WHERE RFID = ?";
-    const newSkuItemSql = "INSERT INTO SKU_ITEM (RFID, available, dateOfStock, skuID, internalOrderID) VALUES (?,?,?,?,?)";
-    const updateSkuItemSql = "UPDATE SKU_ITEM SET internalOrderID = ? WHERE RFID = ?";
+    const newSkuItemSql =
+      "INSERT INTO SKU_ITEM (RFID, available, dateOfStock, skuID, internalOrderID) VALUES (?,?,?,?,?)";
+    const updateSkuItemSql =
+      "UPDATE SKU_ITEM SET internalOrderID = ? WHERE RFID = ?";
 
     let rfid;
     for (let product of products) {
       rfid = this.dao.get(checkSkuItemSql, [product.RFID]);
-      if(rfid === undefined){
-        await this.dao.run(newSkuItemSql, [product.RFID, 0, dayjs().format("YYYY/MM/DD"), product.SkuID, internalOrderID]);
+      if (rfid === undefined) {
+        await this.dao.run(newSkuItemSql, [
+          product.RFID,
+          0,
+          dayjs().format("YYYY/MM/DD"),
+          product.SkuID,
+          internalOrderID,
+        ]);
       } else {
         await this.dao.run(updateSkuItemSql, [internalOrderID, product.RFID]);
       }
@@ -101,7 +110,6 @@ class InternalOrderController {
     const skuItemsSql =
       "SELECT RFID, SI.skuID, SIO.description, SIO.price FROM SKU_ITEM SI, SKU_IN_INTERNAL_ORDER SIO WHERE SIO.skuID = SI.skuID AND SIO.internalOrderID = SI.internalOrderID AND SI.internalOrderID = ?";
     const skuItems = await this.dao.all(skuItemsSql, [id]);
-    console.log(skuItems);
     return skuItems.map((skuItem) => ({
       SKUId: skuItem.skuID,
       description: skuItem.description,
@@ -238,7 +246,6 @@ class InternalOrderController {
 
   createInternalOrder = async (issueDate, customerId, products) => {
     try {
-
       if (!(await this.validateProductsInInternalOrder(products))) {
         return -1;
       }
@@ -250,7 +257,6 @@ class InternalOrderController {
       if (customer === undefined) {
         return -2;
       }
-
 
       const sql =
         "INSERT INTO INTERNAL_ORDER (issueDate, state, customerID) VALUES (?,?,?)";

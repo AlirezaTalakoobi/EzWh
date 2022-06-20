@@ -110,7 +110,6 @@ class ItemController {
 
   deleteItem = async (id, sid) => {
     try {
-      console.log(id, sid);
       const sql = "DELETE FROM ITEM WHERE ID = ? AND supplierID=?";
       const args = [id, sid];
       let result = await this.dao.run(sql, args);
