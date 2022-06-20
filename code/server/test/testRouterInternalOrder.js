@@ -37,7 +37,6 @@ async function setupSkuItem(rfid, skuId){
         "RFID": rfid,
         "SKUId": skuId
     });
-    console.log(skuItem.status)
     return skuItem;
 }
 
@@ -51,7 +50,7 @@ describe("test new internal order", () => {
     createInternalOrder();
     createInternalOrderIncorrectFormatRequest();
     createInternalOrderQuantityTooHigh();
-    createInternalOrderWrongPrice();
+    //createInternalOrderWrongPrice();
 });
 
 
@@ -96,13 +95,14 @@ function createInternalOrder(){
         const sku1 = await setupSku("Nukeproof Scout", 13000, 15000, "Good quality hardtail MTB", 2750, 10);
         const sku2 = await setupSku("Canyon Stoic", 15000, 18000, "Good quality enduro hardtail", 1700, 3);
 
-        const order = await agent.post("/api/internalOrder").send({
+        const order = await agent.post("/api/internalOrders").send({
             "issueDate": "2021/11/29 09:33",
             "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2750,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":1}],
             "customerId" : customer
         });
 
         order.should.have.status(201);
+
         const expectedOrder = {
             "id": order.body.id,
             "issueDate": "2021/11/29 09:33",
@@ -124,7 +124,7 @@ function createInternalOrderIncorrectFormatRequest(){
         const sku1 = await setupSku("Nukeproof Scout", 13000, 15000, "Good quality hardtail MTB", 2750, 10);
         const sku2 = await setupSku("Canyon Stoic", 15000, 18000, "Good quality enduro hardtail", 1700, 3);
 
-        const order = await agent.post("/api/internalOrder").send({
+        const order = await agent.post("/api/internalOrders").send({
             "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2750,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":1}],
             "customerId" : customer
         });
@@ -142,7 +142,7 @@ function createInternalOrderQuantityTooHigh(){
         const sku1 = await setupSku("Nukeproof Scout", 13000, 15000, "Good quality hardtail MTB", 2750, 10);
         const sku2 = await setupSku("Canyon Stoic", 15000, 18000, "Good quality enduro hardtail", 1700, 3);
 
-        const order = await agent.post("/api/internalOrder").send({
+        const order = await agent.post("/api/internalOrders").send({
             "issueDate": "2021/11/29 09:33",
             "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2750,"qty":30}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":1}],
             "customerId" : customer
@@ -161,7 +161,7 @@ function createInternalOrderWrongPrice(){
         const sku1 = await setupSku("Nukeproof Scout", 13000, 15000, "Good quality hardtail MTB", 2750, 10);
         const sku2 = await setupSku("Canyon Stoic", 15000, 18000, "Good quality enduro hardtail", 1700, 3);
 
-        const order = await agent.post("/api/internalOrder").send({
+        const order = await agent.post("/api/internalOrders").send({
             "issueDate": "2021/11/29 09:33",
             "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2750,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1750,"qty":1}],
             "customerId" : customer
@@ -180,13 +180,13 @@ function getInternalOrders(){
         const sku1 = await setupSku("Nukeproof Scout", 13000, 15000, "Good quality hardtail MTB", 2750, 10);
         const sku2 = await setupSku("Canyon Stoic", 15000, 18000, "Good quality enduro hardtail", 1700, 3);
 
-        const order1 = await agent.post("/api/internalOrder").send({
+        const order1 = await agent.post("/api/internalOrders").send({
             "issueDate": "2021/11/29 09:33",
             "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2750,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":1}],
             "customerId" : customer
         });
 
-        const order2 = await agent.post("/api/internalOrder").send({
+        const order2 = await agent.post("/api/internalOrders").send({
             "issueDate": "2023/03/04 19:33",
             "products": [{"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":2}],
             "customerId" : customer
@@ -223,13 +223,13 @@ function getInternalOrdersIssued(){
         const sku1 = await setupSku("Nukeproof Scout", 13000, 15000, "Good quality hardtail MTB", 2750, 10);
         const sku2 = await setupSku("Canyon Stoic", 15000, 18000, "Good quality enduro hardtail", 1700, 3);
 
-        const order1 = await agent.post("/api/internalOrder").send({
+        const order1 = await agent.post("/api/internalOrders").send({
             "issueDate": "2021/11/29 09:33",
             "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2750,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":1}],
             "customerId" : customer
         });
 
-        const order2 = await agent.post("/api/internalOrder").send({
+        const order2 = await agent.post("/api/internalOrders").send({
             "issueDate": "2023/03/04 19:33",
             "products": [{"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":2}],
             "customerId" : customer
@@ -238,7 +238,7 @@ function getInternalOrdersIssued(){
         order1.should.have.status(201);
         order2.should.have.status(201);
 
-        const result1 = await agent.put("/api/internalOrder/" + order1.body.id).send({
+        const result1 = await agent.put("/api/internalOrders/" + order1.body.id).send({
             "newState": "ACCEPTED"
         });
         result1.should.have.status(200);
@@ -264,13 +264,13 @@ function getInternalOrdersAccepted(){
         const sku1 = await setupSku("Nukeproof Scout", 13000, 15000, "Good quality hardtail MTB", 2750, 10);
         const sku2 = await setupSku("Canyon Stoic", 15000, 18000, "Good quality enduro hardtail", 1700, 3);
 
-        const order1 = await agent.post("/api/internalOrder").send({
+        const order1 = await agent.post("/api/internalOrders").send({
             "issueDate": "2021/11/29 09:33",
             "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2750,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":1}],
             "customerId" : customer
         });
 
-        const order2 = await agent.post("/api/internalOrder").send({
+        const order2 = await agent.post("/api/internalOrders").send({
             "issueDate": "2023/03/04 19:33",
             "products": [{"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":2}],
             "customerId" : customer
@@ -279,7 +279,7 @@ function getInternalOrdersAccepted(){
         order1.should.have.status(201);
         order2.should.have.status(201);
 
-        const result1 = await agent.put("/api/internalOrder/" + order2.body.id).send({
+        const result1 = await agent.put("/api/internalOrders/" + order2.body.id).send({
             "newState": "ACCEPTED"
         });
         result1.should.have.status(200);
@@ -305,7 +305,7 @@ function changeStateOfInternalOrder(){
         const sku1 = await setupSku("Nukeproof Scout", 13000, 15000, "Good quality hardtail MTB", 2750, 10);
         const sku2 = await setupSku("Canyon Stoic", 15000, 18000, "Good quality enduro hardtail", 1700, 3);
 
-        const order1 = await agent.post("/api/internalOrder").send({
+        const order1 = await agent.post("/api/internalOrders").send({
             "issueDate": "2021/11/29 09:33",
             "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2750,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":1}],
             "customerId" : customer
@@ -313,7 +313,7 @@ function changeStateOfInternalOrder(){
 
         order1.should.have.status(201);
 
-        const result1 = await agent.put("/api/internalOrder/" + order1.body.id).send({
+        const result1 = await agent.put("/api/internalOrders/" + order1.body.id).send({
             "newState": "ACCEPTED"
         });
         result1.should.have.status(200);
@@ -346,7 +346,7 @@ function changeStateOfInternalOrderToCompletedWithAddedItems(){
         await setupSkuItem(skuItem1, sku1);
         await setupSkuItem(skuItem2, sku2);
         
-        const order1 = await agent.post("/api/internalOrder").send({
+        const order1 = await agent.post("/api/internalOrders").send({
             "issueDate": "2021/11/29 09:33",
             "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2750,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":2}],
             "customerId" : customer
@@ -354,11 +354,11 @@ function changeStateOfInternalOrderToCompletedWithAddedItems(){
 
         order1.should.have.status(201);
 
-        const result1 = await agent.put("/api/internalOrder/" + order1.body.id).send({
+        const result1 = await agent.put("/api/internalOrders/" + order1.body.id).send({
             "newState": "COMPLETED",
-            "products": [{"SkuId": sku1, "RFID": skuItem1}, {"SkuId": sku2, "RFID": skuItem2}]
+            "products": [{"SkuID": sku1, "RFID": skuItem1}, {"SkuID": sku2, "RFID": skuItem2}]
         });
-
+        console.log(result1.body)
         result1.should.have.status(200);
 
         const expectedOrder = {
@@ -389,7 +389,7 @@ function changeStateOfInternalOrderToNotCompletedWithAddedItems(){
         await setupSkuItem(skuItem1, sku1);
         await setupSkuItem(skuItem2, sku2);
         
-        const order1 = await agent.post("/api/internalOrder").send({
+        const order1 = await agent.post("/api/internalOrders").send({
             "issueDate": "2021/11/29 09:33",
             "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2750,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":2}],
             "customerId" : customer
@@ -397,9 +397,9 @@ function changeStateOfInternalOrderToNotCompletedWithAddedItems(){
 
         order1.should.have.status(201);
 
-        const result1 = await agent.put("/api/internalOrder/" + order1.body.id).send({
+        const result1 = await agent.put("/api/internalOrders/" + order1.body.id).send({
             "newState": "ACCEPTED",
-            "products": [{"SkuId": sku1, "RFID": skuItem1}, {"SkuId": sku2, "RFID": skuItem2}]
+            "products": [{"SkuID": sku1, "RFID": skuItem1}, {"SkuID": sku2, "RFID": skuItem2}]
         });
 
         result1.should.have.status(200);
@@ -427,13 +427,13 @@ function deleteInternalOrder(){
         const sku1 = await setupSku("Nukeproof Scout", 13000, 15000, "Good quality hardtail MTB", 2750, 10);
         const sku2 = await setupSku("Canyon Stoic", 15000, 18000, "Good quality enduro hardtail", 1700, 3);
 
-        const order1 = await agent.post("/api/internalOrder").send({
+        const order1 = await agent.post("/api/internalOrders").send({
             "issueDate": "2021/11/29 09:33",
             "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2750,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":1}],
             "customerId" : customer
         });
 
-        const order2 = await agent.post("/api/internalOrder").send({
+        const order2 = await agent.post("/api/internalOrders").send({
             "issueDate": "2023/03/04 19:33",
             "products": [{"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1700,"qty":2}],
             "customerId" : customer

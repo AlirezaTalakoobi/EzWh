@@ -2,7 +2,7 @@ Server listening at http://localhost:3001
 
 
   test create pos api
-    ✔ creating pos (75ms)
+    ✔ creating pos (47ms)
 
   test get item api
     ✔ creating pos
@@ -161,7 +161,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    8) creating a new internal order
+    ✔ creating a new internal order (136ms)
 { id: 1 }
 {
   ID: 1,
@@ -184,7 +184,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    9) creating a new internal order
+    ✔ creating a new internal order (93ms)
 { id: 1 }
 {
   ID: 1,
@@ -207,30 +207,8 @@ undefined
   price: 2750,
   positionID: null
 }
-    10) creating a new internal order: quantity too high
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    11) creating a new internal order: wrong unit price
+COULDN'T CREATE ORDER
+    ✔ creating a new internal order: quantity too high (96ms)
 
   get internal orders
 { id: 1 }
@@ -255,7 +233,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    12) retrieving all internal orders
+    ✔ retrieving all internal orders (134ms)
 { id: 1 }
 {
   ID: 1,
@@ -278,7 +256,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    13) retrieving all internal orders issued
+    ✔ retrieving all internal orders issued (135ms)
 { id: 1 }
 {
   ID: 1,
@@ -301,7 +279,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    14) retrieving all internal orders accepted
+    ✔ retrieving all internal orders accepted (130ms)
 
   change state of internal orders
 { id: 1 }
@@ -326,7 +304,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    15) change state of internal orders
+    ✔ change state of internal orders (122ms)
 { id: 1 }
 {
   ID: 1,
@@ -349,9 +327,22 @@ undefined
   price: 2750,
   positionID: null
 }
-201
-201
-    16) change state of internal order to completed and add sku items
+9
+[
+  {
+    RFID: '01234567890123456789012345678901',
+    skuID: 1,
+    description: 'ordering a batch of nukeproof scout',
+    price: 2750
+  },
+  {
+    RFID: '98765432109876543210987654321098',
+    skuID: 2,
+    description: 'ordering a batch of canyon stoic',
+    price: 1700
+  }
+]
+    ✔ change state of internal order to completed and add sku items (148ms)
 { id: 1 }
 {
   ID: 1,
@@ -374,9 +365,7 @@ undefined
   price: 2750,
   positionID: null
 }
-201
-201
-    17) change state of internal order to completed and add sku items
+    ✔ change state of internal order to completed and add sku items (137ms)
 
   delete internal order by id
 { id: 1 }
@@ -401,7 +390,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    18) delete internal order by id
+    ✔ delete internal order by id (144ms)
 
   test new restock order api
 { id: 1 }
@@ -426,7 +415,53 @@ undefined
   price: 2750,
   positionID: null
 }
-    19) creating new order
+{
+  id: 1,
+  issueDate: '2021/11/29 09:33',
+  state: 'ISSUED',
+  products: [
+    {
+      SKUId: 1,
+      itemId: 51,
+      description: 'ordering a batch of nukeproof scout',
+      price: 2500,
+      qty: 3
+    },
+    {
+      SKUId: 2,
+      itemId: 61,
+      description: 'ordering a batch of canyon stoic',
+      price: 1500,
+      qty: 4
+    }
+  ],
+  skuItems: [],
+  supplierId: 16
+}
+{
+  id: 1,
+  issueDate: '2021/11/29 09:33',
+  state: 'ISSUED',
+  products: [
+    {
+      SKUId: 1,
+      itemId: 51,
+      description: 'ordering a batch of nukeproof scout',
+      price: 2500,
+      qty: 3
+    },
+    {
+      SKUId: 2,
+      itemId: 61,
+      description: 'ordering a batch of canyon stoic',
+      price: 1500,
+      qty: 4
+    }
+  ],
+  skuItems: [],
+  supplierId: 16
+}
+    ✔ creating new order (146ms)
 { id: 1 }
 {
   ID: 1,
@@ -449,7 +484,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    ✔ creating new order invalid format (109ms)
+    ✔ creating new order invalid format (107ms)
 { id: 1 }
 {
   ID: 1,
@@ -472,7 +507,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    ✔ creating new order wrong price different (107ms)
+    ✔ creating new order with incorrect item-supplier correspondence (173ms)
 
   test get restock orders
 { id: 1 }
@@ -497,7 +532,8 @@ undefined
   price: 2750,
   positionID: null
 }
-    20) getting all restock orders
+[{"id":2,"issueDate":"2022/09/05 06:53","state":"ISSUED","products":[{"SKUId":1,"itemId":51,"description":"ordering a batch of nukeproof scout","price":2500,"qty":3},{"SKUId":2,"itemId":61,"description":"ordering a batch of canyon stoic","price":1500,"qty":4}],"skuItems":[],"supplierId":20},{"id":3,"issueDate":"2020/05/05 19:27","state":"ISSUED","products":[{"SKUId":1,"itemId":51,"description":"ordering a batch of nukeproof scout","price":2500,"qty":10}],"skuItems":[],"supplierId":20}]
+    ✔ getting all restock orders (134ms)
 
   modify state of restock order
 { id: 1 }
@@ -522,7 +558,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    21) changing state of restock order
+    ✔ changing state of restock order (135ms)
 { id: 1 }
 {
   ID: 1,
@@ -545,7 +581,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    22) changing state of restock order to an invalid state
+    ✔ changing state of restock order to an invalid state (140ms)
 
   add sku items to a restock order
 { id: 1 }
@@ -570,7 +606,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    23) adding sku items to a restock order in DELIVERED state
+    ✔ adding sku items to a restock order in DELIVERED state (168ms)
 { id: 1 }
 {
   ID: 1,
@@ -593,7 +629,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    24) adding sku items to a restock order NOT in DELIVERED state
+    ✔ adding sku items to a restock order NOT in DELIVERED state (132ms)
 { id: 1 }
 {
   ID: 1,
@@ -616,7 +652,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    25) adding sku items to a restock order NOT in DELIVERED state
+    ✔ adding sku items to a restock order NOT in DELIVERED state (129ms)
 
   add transport note to restock order
 { id: 1 }
@@ -641,7 +677,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    26) adding transport note to restock order
+    ✔ adding transport note to restock order (143ms)
 { id: 1 }
 {
   ID: 1,
@@ -664,7 +700,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    27) adding transport note to restock order
+    ✔ adding transport note to restock order with incorrect format (131ms)
 { id: 1 }
 {
   ID: 1,
@@ -687,7 +723,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    28) adding transport note to restock order not delivered
+    ✔ adding transport note to restock order not delivery (135ms)
 
   delete a restock order with given id
 { id: 1 }
@@ -712,7 +748,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    29) deleting a restock order
+    ✔ deleting a restock order (139ms)
 
   test new return order
 { id: 1 }
@@ -737,7 +773,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    30) creating a new return order
+    8) creating a new return order
 { id: 1 }
 {
   ID: 1,
@@ -760,7 +796,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    31) creating a new return order
+    9) creating a new return order
 { id: 1 }
 {
   ID: 1,
@@ -783,7 +819,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    32) Trying to create a new return order with wrong data
+    10) Trying to create a new return order with wrong data
 
   get return orders
 { id: 1 }
@@ -808,7 +844,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    33) getting all return order
+    11) getting all return order
 
   delete a return order by id
 { id: 1 }
@@ -833,7 +869,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    34) deleting a return order
+    12) deleting a return order
 { id: 1 }
 {
   ID: 1,
@@ -856,114 +892,114 @@ undefined
   price: 2750,
   positionID: null
 }
-    35) deleting a return order
+    13) deleting a return order
 
   test user api
     ✔ Deleting data
-    ✔ adding new users (84ms)
-    ✔ adding new users
     ✔ adding new users (74ms)
+    ✔ adding new users
+    ✔ adding new users (59ms)
     ✔ adding new users
     ✔ adding new users
 
   test newuser api
     ✔ Deleting data
-    ✔ adding new users (81ms)
+    ✔ adding new users (72ms)
     ✔ getting users data from the system
 
   test getUsers api
     ✔ Deleting data
-    ✔ getting users data from the system (164ms)
+    ✔ getting users data from the system (77ms)
 
   test getSuppliers api
     ✔ Deleting data
-    ✔ adding new users (81ms)
+    ✔ adding new users (94ms)
     ✔ getting suppliers from the system
     ✔ Deleting data
-    ✔ adding new users (77ms)
+    ✔ adding new users (68ms)
     ✔ getting suppliers from the system
 
   test managerSession api
     ✔ Deleting data
-    ✔ adding new users (76ms)
+    ✔ adding new users (69ms)
     ✔ manager sessions
 true
-    ✔ manager sessions (77ms)
+    ✔ manager sessions (78ms)
     ✔ manager sessions
 false
-    ✔ manager sessions (74ms)
+    ✔ manager sessions (66ms)
 
   test customerSession api
     ✔ Deleting data
-    ✔ adding new users (84ms)
+    ✔ adding new users (86ms)
     ✔ customer sessions
 true
-    ✔ customer sessions (84ms)
+    ✔ customer sessions (80ms)
     ✔ customer sessions
 false
-    ✔ customer sessions (69ms)
+    ✔ customer sessions (81ms)
 
   test supplierSession api
     ✔ Deleting data
     ✔ adding new users (89ms)
     ✔ supplier sessions
 true
-    ✔ supplier sessions (246ms)
+    ✔ supplier sessions (79ms)
     ✔ supplier sessions
 false
-    ✔ supplier sessions (158ms)
+    ✔ supplier sessions (82ms)
 
   test clerkSession api
     ✔ Deleting data
     ✔ adding new users (90ms)
     ✔ clerk sessions
 true
-    ✔ clerk sessions (92ms)
+    ✔ clerk sessions (80ms)
     ✔ clerk sessions
 false
-    ✔ clerk sessions (77ms)
+    ✔ clerk sessions (67ms)
 
   test qualityEmployeeSession api
     ✔ Deleting data
-    ✔ adding new users (84ms)
+    ✔ adding new users (89ms)
     ✔ qualityEmployee sessions
 true
-    ✔ qualityEmployee sessions (93ms)
+    ✔ qualityEmployee sessions (79ms)
     ✔ qualityEmployee sessions
 false
-    ✔ qualityEmployee sessions (85ms)
+    ✔ qualityEmployee sessions (81ms)
 
   test deliveryEmployeeSession api
     ✔ Deleting data
-    ✔ adding new users (82ms)
+    ✔ adding new users (89ms)
     ✔ deliveryEmployee sessions
 true
-    ✔ deliveryEmployee sessions (81ms)
+    ✔ deliveryEmployee sessions (79ms)
 false
-    ✔ deliveryEmployee sessions (83ms)
+    ✔ deliveryEmployee sessions (67ms)
 
   test edit user api
     ✔ Deleting data
-    ✔ adding new users (85ms)
+    ✔ adding new users (89ms)
     ✔ edit users
     ✔ edit users
     ✔ edit users
 
   test delete user api
     ✔ Deleting data
-    ✔ adding new users (87ms)
+    ✔ adding new users (72ms)
     ✔ delete user sessions
     ✔ delete user sessions
     ✔ Deleting data
 
   create setup users
     ✔ Deleting data
-    ✔ adding new users (85ms)
-    ✔ adding new users (80ms)
-    ✔ adding new users (90ms)
-    ✔ adding new users (80ms)
-    ✔ adding new users (125ms)
-    ✔ adding new users (77ms)
+    ✔ adding new users (71ms)
+    ✔ adding new users (71ms)
+    ✔ adding new users (69ms)
+    ✔ adding new users (71ms)
+    ✔ adding new users (65ms)
+    ✔ adding new users (67ms)
 
   test insert item api
     ✔ Deleting data
@@ -1069,7 +1105,7 @@ false
   price: 2750,
   positionID: null
 }
-    36) delete item
+    14) delete item
 { id: 10 }
 {
   ID: 1,
@@ -1133,7 +1169,7 @@ false
   }
 ]
 1
-    ✔ creating Test result
+    ✔ creating Test result (59ms)
 { id: 1 }
 {
   ID: 1,
@@ -1159,7 +1195,7 @@ false
   }
 ]
 1
-    ✔ creating Test result
+    ✔ creating Test result (68ms)
 
   test get test api
 { id: 1 }
@@ -1187,7 +1223,7 @@ false
   }
 ]
 1
-    ✔ creating Test result
+    ✔ creating Test result (71ms)
     ✔ get items
     ✔ get items
 
@@ -1217,7 +1253,7 @@ false
   }
 ]
 1
-    ✔ creating Test result
+    ✔ creating Test result (60ms)
     ✔ get test
     ✔ get test
     ✔ get test
@@ -1248,7 +1284,7 @@ false
   }
 ]
 1
-    ✔ creating Test result (149ms)
+    ✔ creating Test result (63ms)
     ✔ modify items
 
   test delete item by id api
@@ -1277,334 +1313,57 @@ false
   }
 ]
 1
-    ✔ creating Test result (85ms)
+    ✔ creating Test result (71ms)
 404
     ✔ delete items
 
 
-  133 passing (24s)
-  36 failing
+  154 passing (24s)
+  14 failing
 
   1) test create Item api
        creating Items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testItemRouter.js)
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
       at listOnTimeout (node:internal/timers:559:17)
       at processTimers (node:internal/timers:502:7)
 
   2) test get item api
        creating Items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testItemRouter.js)
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
       at listOnTimeout (node:internal/timers:559:17)
       at processTimers (node:internal/timers:502:7)
 
   3) test get item by id api
        creating Items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testItemRouter.js)
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
       at listOnTimeout (node:internal/timers:559:17)
       at processTimers (node:internal/timers:502:7)
 
   4) test get item by id api
        get items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testItemRouter.js)
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
       at listOnTimeout (node:internal/timers:559:17)
       at processTimers (node:internal/timers:502:7)
 
   5) test modify item by id api
        creating Items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testItemRouter.js)
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
       at listOnTimeout (node:internal/timers:559:17)
       at processTimers (node:internal/timers:502:7)
 
   6) test modify item by id api
        get items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testItemRouter.js)
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
       at listOnTimeout (node:internal/timers:559:17)
       at processTimers (node:internal/timers:502:7)
 
   7) test delete item by id api
        creating Items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testItemRouter.js)
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
       at listOnTimeout (node:internal/timers:559:17)
       at processTimers (node:internal/timers:502:7)
 
-  8) test new internal order
-       creating a new internal order:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 404
-      + expected - actual
-
-      -404
-      +201
-      
-      at Context.<anonymous> (test/testRouterInternalOrder.js:105:27)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  9) test new internal order
-       creating a new internal order:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at Context.<anonymous> (test/testRouterInternalOrder.js:132:27)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  10) test new internal order
-       creating a new internal order: quantity too high:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at Context.<anonymous> (test/testRouterInternalOrder.js:151:27)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  11) test new internal order
-       creating a new internal order: wrong unit price:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at Context.<anonymous> (test/testRouterInternalOrder.js:170:27)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  12) get internal orders
-       retrieving all internal orders:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 404
-      + expected - actual
-
-      -404
-      +201
-      
-      at Context.<anonymous> (test/testRouterInternalOrder.js:195:28)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  13) get internal orders
-       retrieving all internal orders issued:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 404
-      + expected - actual
-
-      -404
-      +201
-      
-      at Context.<anonymous> (test/testRouterInternalOrder.js:238:28)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  14) get internal orders
-       retrieving all internal orders accepted:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 404
-      + expected - actual
-
-      -404
-      +201
-      
-      at Context.<anonymous> (test/testRouterInternalOrder.js:279:28)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  15) change state of internal orders
-       change state of internal orders:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 404
-      + expected - actual
-
-      -404
-      +201
-      
-      at Context.<anonymous> (test/testRouterInternalOrder.js:314:28)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  16) change state of internal orders
-       change state of internal order to completed and add sku items:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 404
-      + expected - actual
-
-      -404
-      +201
-      
-      at Context.<anonymous> (test/testRouterInternalOrder.js:355:28)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  17) change state of internal orders
-       change state of internal order to completed and add sku items:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 404
-      + expected - actual
-
-      -404
-      +201
-      
-      at Context.<anonymous> (test/testRouterInternalOrder.js:398:28)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  18) delete internal order by id
-       delete internal order by id:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 404
-      + expected - actual
-
-      -404
-      +201
-      
-      at Context.<anonymous> (test/testRouterInternalOrder.js:442:28)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  19) test new restock order api
-       creating new order:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterRestockOrder.js:131:27)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  20) test get restock orders
-       getting all restock orders:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterRestockOrder.js:296:28)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  21) modify state of restock order
-       changing state of restock order:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterRestockOrder.js:366:28)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  22) modify state of restock order
-       changing state of restock order to an invalid state:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterRestockOrder.js:431:28)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  23) add sku items to a restock order
-       adding sku items to a restock order in DELIVERED state:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterRestockOrder.js:486:28)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  24) add sku items to a restock order
-       adding sku items to a restock order NOT in DELIVERED state:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterRestockOrder.js:558:28)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  25) add sku items to a restock order
-       adding sku items to a restock order NOT in DELIVERED state:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterRestockOrder.js:629:28)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  26) add transport note to restock order
-       adding transport note to restock order:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterRestockOrder.js:687:28)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  27) add transport note to restock order
-       adding transport note to restock order:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterRestockOrder.js:763:28)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  28) add transport note to restock order
-       adding transport note to restock order not delivered:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterRestockOrder.js:838:28)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  29) delete a restock order with given id
-       deleting a restock order:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterRestockOrder.js:909:28)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  30) test new return order
+  8) test new return order
        creating a new return order:
 
       AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
@@ -1617,7 +1376,7 @@ false
       at runMicrotasks (<anonymous>)
       at processTicksAndRejections (node:internal/process/task_queues:96:5)
 
-  31) test new return order
+  9) test new return order
        creating a new return order:
 
       AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
@@ -1630,7 +1389,7 @@ false
       at runMicrotasks (<anonymous>)
       at processTicksAndRejections (node:internal/process/task_queues:96:5)
 
-  32) test new return order
+  10) test new return order
        Trying to create a new return order with wrong data:
 
       AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
@@ -1643,7 +1402,7 @@ false
       at runMicrotasks (<anonymous>)
       at processTicksAndRejections (node:internal/process/task_queues:96:5)
 
-  33) get return orders
+  11) get return orders
        getting all return order:
 
       AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
@@ -1656,7 +1415,7 @@ false
       at runMicrotasks (<anonymous>)
       at processTicksAndRejections (node:internal/process/task_queues:96:5)
 
-  34) delete a return order by id
+  12) delete a return order by id
        deleting a return order:
 
       AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
@@ -1669,7 +1428,7 @@ false
       at runMicrotasks (<anonymous>)
       at processTicksAndRejections (node:internal/process/task_queues:96:5)
 
-  35) delete a return order by id
+  13) delete a return order by id
        deleting a return order:
 
       AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
@@ -1682,9 +1441,9 @@ false
       at runMicrotasks (<anonymous>)
       at processTicksAndRejections (node:internal/process/task_queues:96:5)
 
-  36) test delete item api
+  14) test delete item api
        delete item:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testSKUItemsRouter.js)
+     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testSKUItemsRouter.js)
       at listOnTimeout (node:internal/timers:559:17)
       at processTimers (node:internal/timers:502:7)
 

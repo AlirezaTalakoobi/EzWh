@@ -238,6 +238,7 @@ class InternalOrderController {
 
   createInternalOrder = async (issueDate, customerId, products) => {
     try {
+
       if (!(await this.validateProductsInInternalOrder(products))) {
         return -1;
       }
@@ -249,6 +250,7 @@ class InternalOrderController {
       if (customer === undefined) {
         return -2;
       }
+
 
       const sql =
         "INSERT INTO INTERNAL_ORDER (issueDate, state, customerID) VALUES (?,?,?)";
