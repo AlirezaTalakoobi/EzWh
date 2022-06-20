@@ -1,5 +1,7 @@
 # Integration and API Test Report
 
+Authors: Andriano Davide, Hakimifard Pouya, Sunder Giulio, Talakoobi Alireza
+
 Date: 25-05-22
 
 Version: 1.1
