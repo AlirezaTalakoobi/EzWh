@@ -108,9 +108,9 @@ class ReturnOrderController {
 
   createReturnOrder = async (returnDate, restockOrderId, products) => {
     try {
-      // if (!await this.validateSkuItemsInReturnOrder(products, restockOrderId)) {
-      //   return -1;
-      // }
+      if (!await this.validateSkuItemsInReturnOrder(products, restockOrderId)) {
+        return -1;
+      }
 
       const sql = "INSERT INTO RETURN_ORDER (returnDate, restockOrderID) VALUES (?,?)";
 

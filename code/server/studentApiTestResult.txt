@@ -2,7 +2,7 @@ Server listening at http://localhost:3001
 
 
   test create pos api
-    ✔ creating pos (47ms)
+    ✔ creating pos (72ms)
 
   test get item api
     ✔ creating pos
@@ -161,7 +161,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    ✔ creating a new internal order (136ms)
+    ✔ creating a new internal order (166ms)
 { id: 1 }
 {
   ID: 1,
@@ -184,7 +184,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    ✔ creating a new internal order (93ms)
+    ✔ creating a new internal order (141ms)
 { id: 1 }
 {
   ID: 1,
@@ -208,7 +208,7 @@ undefined
   positionID: null
 }
 COULDN'T CREATE ORDER
-    ✔ creating a new internal order: quantity too high (96ms)
+    ✔ creating a new internal order: quantity too high (145ms)
 
   get internal orders
 { id: 1 }
@@ -233,7 +233,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ retrieving all internal orders (134ms)
+    ✔ retrieving all internal orders (170ms)
 { id: 1 }
 {
   ID: 1,
@@ -256,7 +256,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ retrieving all internal orders issued (135ms)
+    ✔ retrieving all internal orders issued (182ms)
 { id: 1 }
 {
   ID: 1,
@@ -279,7 +279,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ retrieving all internal orders accepted (130ms)
+    ✔ retrieving all internal orders accepted (185ms)
 
   change state of internal orders
 { id: 1 }
@@ -304,7 +304,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ change state of internal orders (122ms)
+    ✔ change state of internal orders (175ms)
 { id: 1 }
 {
   ID: 1,
@@ -342,7 +342,7 @@ COULDN'T CREATE ORDER
     price: 1700
   }
 ]
-    ✔ change state of internal order to completed and add sku items (148ms)
+    ✔ change state of internal order to completed and add sku items (198ms)
 { id: 1 }
 {
   ID: 1,
@@ -365,7 +365,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ change state of internal order to completed and add sku items (137ms)
+    ✔ change state of internal order to completed and add sku items (195ms)
 
   delete internal order by id
 { id: 1 }
@@ -390,7 +390,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ delete internal order by id (144ms)
+    ✔ delete internal order by id (192ms)
 
   test new restock order api
 { id: 1 }
@@ -461,7 +461,7 @@ COULDN'T CREATE ORDER
   skuItems: [],
   supplierId: 16
 }
-    ✔ creating new order (146ms)
+    ✔ creating new order (182ms)
 { id: 1 }
 {
   ID: 1,
@@ -484,7 +484,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ creating new order invalid format (107ms)
+    ✔ creating new order invalid format (160ms)
 { id: 1 }
 {
   ID: 1,
@@ -507,7 +507,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ creating new order with incorrect item-supplier correspondence (173ms)
+    ✔ creating new order with incorrect item-supplier correspondence (267ms)
 
   test get restock orders
 { id: 1 }
@@ -533,7 +533,7 @@ COULDN'T CREATE ORDER
   positionID: null
 }
 [{"id":2,"issueDate":"2022/09/05 06:53","state":"ISSUED","products":[{"SKUId":1,"itemId":51,"description":"ordering a batch of nukeproof scout","price":2500,"qty":3},{"SKUId":2,"itemId":61,"description":"ordering a batch of canyon stoic","price":1500,"qty":4}],"skuItems":[],"supplierId":20},{"id":3,"issueDate":"2020/05/05 19:27","state":"ISSUED","products":[{"SKUId":1,"itemId":51,"description":"ordering a batch of nukeproof scout","price":2500,"qty":10}],"skuItems":[],"supplierId":20}]
-    ✔ getting all restock orders (134ms)
+    ✔ getting all restock orders (187ms)
 
   modify state of restock order
 { id: 1 }
@@ -558,7 +558,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ changing state of restock order (135ms)
+    ✔ changing state of restock order (183ms)
 { id: 1 }
 {
   ID: 1,
@@ -581,7 +581,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ changing state of restock order to an invalid state (140ms)
+    ✔ changing state of restock order to an invalid state (175ms)
 
   add sku items to a restock order
 { id: 1 }
@@ -606,7 +606,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ adding sku items to a restock order in DELIVERED state (168ms)
+    ✔ adding sku items to a restock order in DELIVERED state (201ms)
 { id: 1 }
 {
   ID: 1,
@@ -629,7 +629,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ adding sku items to a restock order NOT in DELIVERED state (132ms)
+    ✔ adding sku items to a restock order NOT in DELIVERED state (177ms)
 { id: 1 }
 {
   ID: 1,
@@ -652,7 +652,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ adding sku items to a restock order NOT in DELIVERED state (129ms)
+    ✔ adding sku items to a restock order NOT in DELIVERED state (171ms)
 
   add transport note to restock order
 { id: 1 }
@@ -677,7 +677,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ adding transport note to restock order (143ms)
+    ✔ adding transport note to restock order (187ms)
 { id: 1 }
 {
   ID: 1,
@@ -700,7 +700,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ adding transport note to restock order with incorrect format (131ms)
+    ✔ adding transport note to restock order with incorrect format (185ms)
 { id: 1 }
 {
   ID: 1,
@@ -723,7 +723,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ adding transport note to restock order not delivery (135ms)
+    ✔ adding transport note to restock order not delivery (194ms)
 
   delete a restock order with given id
 { id: 1 }
@@ -748,7 +748,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ deleting a restock order (139ms)
+    ✔ deleting a restock order (178ms)
 
   test new return order
 { id: 1 }
@@ -773,7 +773,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    8) creating a new return order
+    ✔ creating a new return order (218ms)
 { id: 1 }
 {
   ID: 1,
@@ -796,7 +796,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    9) creating a new return order
+    ✔ creating a new return order with incorrect format (191ms)
 { id: 1 }
 {
   ID: 1,
@@ -819,7 +819,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    10) Trying to create a new return order with wrong data
+    ✔ Trying to create a new return order with wrong data (195ms)
 
   get return orders
 { id: 1 }
@@ -844,7 +844,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    11) getting all return order
+    ✔ getting all return order (219ms)
 
   delete a return order by id
 { id: 1 }
@@ -869,7 +869,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    12) deleting a return order
+    ✔ deleting a return order (214ms)
 { id: 1 }
 {
   ID: 1,
@@ -892,114 +892,114 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    13) deleting a return order
+    ✔ deleting a return order that is not found (214ms)
 
   test user api
     ✔ Deleting data
-    ✔ adding new users (74ms)
+    ✔ adding new users (119ms)
     ✔ adding new users
-    ✔ adding new users (59ms)
+    ✔ adding new users (109ms)
     ✔ adding new users
     ✔ adding new users
 
   test newuser api
     ✔ Deleting data
-    ✔ adding new users (72ms)
+    ✔ adding new users (118ms)
     ✔ getting users data from the system
 
   test getUsers api
     ✔ Deleting data
-    ✔ getting users data from the system (77ms)
+    ✔ getting users data from the system (122ms)
 
   test getSuppliers api
     ✔ Deleting data
-    ✔ adding new users (94ms)
+    ✔ adding new users (118ms)
     ✔ getting suppliers from the system
     ✔ Deleting data
-    ✔ adding new users (68ms)
+    ✔ adding new users (117ms)
     ✔ getting suppliers from the system
 
   test managerSession api
     ✔ Deleting data
-    ✔ adding new users (69ms)
+    ✔ adding new users (126ms)
     ✔ manager sessions
 true
-    ✔ manager sessions (78ms)
+    ✔ manager sessions (108ms)
     ✔ manager sessions
 false
-    ✔ manager sessions (66ms)
+    ✔ manager sessions (112ms)
 
   test customerSession api
     ✔ Deleting data
-    ✔ adding new users (86ms)
+    ✔ adding new users (120ms)
     ✔ customer sessions
 true
-    ✔ customer sessions (80ms)
+    ✔ customer sessions (108ms)
     ✔ customer sessions
 false
-    ✔ customer sessions (81ms)
+    ✔ customer sessions (107ms)
 
   test supplierSession api
     ✔ Deleting data
-    ✔ adding new users (89ms)
+    ✔ adding new users (117ms)
     ✔ supplier sessions
 true
-    ✔ supplier sessions (79ms)
+    ✔ supplier sessions (108ms)
     ✔ supplier sessions
 false
-    ✔ supplier sessions (82ms)
+    ✔ supplier sessions (107ms)
 
   test clerkSession api
     ✔ Deleting data
-    ✔ adding new users (90ms)
+    ✔ adding new users (117ms)
     ✔ clerk sessions
 true
-    ✔ clerk sessions (80ms)
+    ✔ clerk sessions (106ms)
     ✔ clerk sessions
 false
-    ✔ clerk sessions (67ms)
+    ✔ clerk sessions (106ms)
 
   test qualityEmployeeSession api
     ✔ Deleting data
-    ✔ adding new users (89ms)
+    ✔ adding new users (118ms)
     ✔ qualityEmployee sessions
 true
-    ✔ qualityEmployee sessions (79ms)
+    ✔ qualityEmployee sessions (108ms)
     ✔ qualityEmployee sessions
 false
-    ✔ qualityEmployee sessions (81ms)
+    ✔ qualityEmployee sessions (107ms)
 
   test deliveryEmployeeSession api
     ✔ Deleting data
-    ✔ adding new users (89ms)
+    ✔ adding new users (118ms)
     ✔ deliveryEmployee sessions
 true
-    ✔ deliveryEmployee sessions (79ms)
+    ✔ deliveryEmployee sessions (109ms)
 false
-    ✔ deliveryEmployee sessions (67ms)
+    ✔ deliveryEmployee sessions (109ms)
 
   test edit user api
     ✔ Deleting data
-    ✔ adding new users (89ms)
+    ✔ adding new users (116ms)
     ✔ edit users
     ✔ edit users
     ✔ edit users
 
   test delete user api
     ✔ Deleting data
-    ✔ adding new users (72ms)
+    ✔ adding new users (118ms)
     ✔ delete user sessions
     ✔ delete user sessions
     ✔ Deleting data
 
   create setup users
     ✔ Deleting data
-    ✔ adding new users (71ms)
-    ✔ adding new users (71ms)
-    ✔ adding new users (69ms)
-    ✔ adding new users (71ms)
-    ✔ adding new users (65ms)
-    ✔ adding new users (67ms)
+    ✔ adding new users (115ms)
+    ✔ adding new users (116ms)
+    ✔ adding new users (119ms)
+    ✔ adding new users (122ms)
+    ✔ adding new users (118ms)
+    ✔ adding new users (117ms)
 
   test insert item api
     ✔ Deleting data
@@ -1105,8 +1105,12 @@ false
   price: 2750,
   positionID: null
 }
-    14) delete item
+    8) delete item
+    ✔ delete item
+    ✔ delete item
 { id: 10 }
+{ id: 11 }
+{ id: 12 }
 {
   ID: 1,
   description: 'Nukeproof Scout',
@@ -1117,10 +1121,6 @@ false
   price: 2750,
   positionID: null
 }
-    ✔ delete item
-    ✔ delete item
-{ id: 11 }
-{ id: 12 }
 {
   ID: 1,
   description: 'Nukeproof Scout',
@@ -1169,7 +1169,7 @@ false
   }
 ]
 1
-    ✔ creating Test result (59ms)
+    ✔ creating Test result (54ms)
 { id: 1 }
 {
   ID: 1,
@@ -1195,7 +1195,7 @@ false
   }
 ]
 1
-    ✔ creating Test result (68ms)
+    ✔ creating Test result (64ms)
 
   test get test api
 { id: 1 }
@@ -1223,7 +1223,7 @@ false
   }
 ]
 1
-    ✔ creating Test result (71ms)
+    ✔ creating Test result (65ms)
     ✔ get items
     ✔ get items
 
@@ -1253,7 +1253,7 @@ false
   }
 ]
 1
-    ✔ creating Test result (60ms)
+    ✔ creating Test result (69ms)
     ✔ get test
     ✔ get test
     ✔ get test
@@ -1284,7 +1284,7 @@ false
   }
 ]
 1
-    ✔ creating Test result (63ms)
+    ✔ creating Test result (76ms)
     ✔ modify items
 
   test delete item by id api
@@ -1313,13 +1313,13 @@ false
   }
 ]
 1
-    ✔ creating Test result (71ms)
+    ✔ creating Test result (68ms)
 404
     ✔ delete items
 
 
-  154 passing (24s)
-  14 failing
+  160 passing (27s)
+  8 failing
 
   1) test create Item api
        creating Items:
@@ -1363,85 +1363,7 @@ false
       at listOnTimeout (node:internal/timers:559:17)
       at processTimers (node:internal/timers:502:7)
 
-  8) test new return order
-       creating a new return order:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterReturnOrder.js:117:27)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  9) test new return order
-       creating a new return order:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterReturnOrder.js:170:27)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  10) test new return order
-       Trying to create a new return order with wrong data:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterReturnOrder.js:211:27)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  11) get return orders
-       getting all return order:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterReturnOrder.js:253:27)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  12) delete a return order by id
-       deleting a return order:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterReturnOrder.js:315:27)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  13) delete a return order by id
-       deleting a return order:
-
-      AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at Context.<anonymous> (test/testRouterReturnOrder.js:362:27)
-      at runMicrotasks (<anonymous>)
-      at processTicksAndRejections (node:internal/process/task_queues:96:5)
-
-  14) test delete item api
+  8) test delete item api
        delete item:
      Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testSKUItemsRouter.js)
       at listOnTimeout (node:internal/timers:559:17)
