@@ -110,7 +110,7 @@ function createReturnOrder(){
 
         const order = await agent.post("/api/restockOrder").send({
             "issueDate": "2021/11/29 09:33",
-            "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1500,"qty":2}],
+            "products": [{"SKUId":sku1, "itemId": item1, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2, "itemId": item2, "description":"ordering a batch of canyon stoic","price":1500,"qty":2}],
             "supplierId" : supplier
         });
 
@@ -120,7 +120,7 @@ function createReturnOrder(){
             "newState": "DELIVERED"
         });
 
-        const skuItems = [{"SKUId":sku1, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2,"rfid":"12345678901234567890123456789017"}];
+        const skuItems = [{"SKUId":sku1, "itemId": item1, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2, "itemId": item2, "rfid":"12345678901234567890123456789017"}];
         
         await agent.put("/api/restockOrder/" + order.body.id + "/skuItems").send({
             "skuItems": skuItems
@@ -130,7 +130,7 @@ function createReturnOrder(){
 
         const retOrder = await agent.post("/api/returnOrder").send({
             "returnDate":"2021/11/29",
-            "products": [{"SKUId":sku1,"description":"ordering a batch of nukeproof scout","price":2500, "RFID":skuItems[0].rfid}, {"SKUId":sku2,"description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
+            "products": [{"SKUId":sku1, "itemId": item1, "description":"ordering a batch of nukeproof scout","price":2500, "RFID":skuItems[0].rfid}, {"SKUId":sku2, "itemId": item2, "description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
             "restockOrderId" : order.body.id
         });
 
@@ -138,12 +138,13 @@ function createReturnOrder(){
         const expectedOrder = {
             "id": retOrder.body.id,
             "returnDate": "2021/11/29",
-            "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2500,"RFID":skuItems[0].rfid},
-                        {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
+            "products": [{"SKUId":sku1, "itemId": item1, "description":"ordering a batch of nukeproof scout", "price": 2500,"RFID":skuItems[0].rfid},
+                        {"SKUId":sku2, "itemId": item2, "description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
             "restockOrderId" : order.body.id
         };
 
-        const result = await agent.get("/api/returnOrder/" + retOrder.body.id);
+        const result = await agent.get("/api/returnOrders/" + retOrder.body.id);
+
         result.should.have.status(200);
         expect(result.body).to.deep.equal(expectedOrder);
     });
@@ -152,7 +153,7 @@ function createReturnOrder(){
 
 
 function createReturnOrderIncorrectRequestFormat(){
-    it("creating a new return order", async function(){
+    it("creating a new return order with incorrect format", async function(){
         const supplier = await setupSupplier("Giulio", "Sunder", "gs@ezwh.com", "thisisasecurepassword");
         const sku1 = await setupSku("Nukeproof Scout", 13000, 15000, "Good quality hardtail MTB", 2750, 10);
         const sku2 = await setupSku("Canyon Stoic", 15000, 18000, "Good quality enduro hardtail", 1700, 3);
@@ -163,7 +164,7 @@ function createReturnOrderIncorrectRequestFormat(){
 
         const order = await agent.post("/api/restockOrder").send({
             "issueDate": "2021/11/29 09:33",
-            "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1500,"qty":2}],
+            "products": [{"SKUId":sku1, "itemId": item1, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2, "itemId": item2, "description":"ordering a batch of canyon stoic","price":1500,"qty":2}],
             "supplierId" : supplier
         });
 
@@ -173,7 +174,7 @@ function createReturnOrderIncorrectRequestFormat(){
             "newState": "DELIVERED"
         });
 
-        const skuItems = [{"SKUId":sku1, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2,"rfid":"12345678901234567890123456789017"}];
+        const skuItems = [{"SKUId":sku1, "itemId": item1, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2,"itemId": item2, "rfid":"12345678901234567890123456789017"}];
         
         await agent.put("/api/restockOrder/" + order.body.id + "/skuItems").send({
             "skuItems": skuItems
@@ -204,7 +205,7 @@ function createReturnOrderIncorrectWrongData(){
 
         const order = await agent.post("/api/restockOrder").send({
             "issueDate": "2021/11/29 09:33",
-            "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1500,"qty":2}],
+            "products": [{"SKUId":sku1, "itemId": item1, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2, "itemId": item2, "description":"ordering a batch of canyon stoic","price":1500,"qty":2}],
             "supplierId" : supplier
         });
 
@@ -214,7 +215,7 @@ function createReturnOrderIncorrectWrongData(){
             "newState": "DELIVERED"
         });
 
-        const skuItems = [{"SKUId":sku1, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2,"rfid":"12345678901234567890123456789017"}];
+        const skuItems = [{"SKUId":sku1, "itemId": item1, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2, "itemId": item2, "rfid":"12345678901234567890123456789017"}];
         
         await agent.put("/api/restockOrder/" + order.body.id + "/skuItems").send({
             "skuItems": skuItems
@@ -224,12 +225,12 @@ function createReturnOrderIncorrectWrongData(){
 
         const retOrder = await agent.post("/api/returnOrder").send({
             "returnDate": "2022/03/07",
-            "products": [{"SKUId":sku1,"description":"ordering a batch of nukeproof scout","price":2800, "RFID":skuItems[0].rfid}, {"SKUId":sku2,"description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
-            "restockOrderId" : order.body.id
+            "products": [{"SKUId":sku1, "itemId": item1, "description":"ordering a batch of nukeproof scout","price":2800, "RFID":skuItems[0].rfid}, {"SKUId":sku2, "itemId": item2, "description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
+            "restockOrderId" : order.body.id + 5
         });
         retOrder.should.have.status(422);
 
-        expect(retOrder.body.error).equal("Wrong data");
+        expect(retOrder.body.error).equal("Restock order or sku item not found");
     });
 }
 
@@ -246,7 +247,7 @@ function getReturnOrders(){
 
         const order = await agent.post("/api/restockOrder").send({
             "issueDate": "2021/11/29 09:33",
-            "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1500,"qty":2}],
+            "products": [{"SKUId":sku1, "itemId": item1, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2, "itemId": item2, "description":"ordering a batch of canyon stoic","price":1500,"qty":2}],
             "supplierId" : supplier
         });
 
@@ -256,7 +257,7 @@ function getReturnOrders(){
             "newState": "DELIVERED"
         });
 
-        const skuItems = [{"SKUId":sku1, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2,"rfid":"12345678901234567890123456789017"}];
+        const skuItems = [{"SKUId":sku1, "itemId": item1, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2, "itemId": item2, "rfid":"12345678901234567890123456789017"}];
         
         await agent.put("/api/restockOrder/" + order.body.id + "/skuItems").send({
             "skuItems": skuItems
@@ -266,13 +267,13 @@ function getReturnOrders(){
 
         const retOrder1 = await agent.post("/api/returnOrder").send({
             "returnDate":"2021/11/29",
-            "products": [{"SKUId":sku1,"description":"ordering a batch of nukeproof scout","price":2500, "RFID":skuItems[0].rfid}],
+            "products": [{"SKUId":sku1, "itemId": item1, "description":"ordering a batch of nukeproof scout","price":2500, "RFID":skuItems[0].rfid}],
             "restockOrderId" : order.body.id
         });
 
         const retOrder2 = await agent.post("/api/returnOrder").send({
             "returnDate":"1999/01/09",
-            "products": [{"SKUId":sku2,"description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
+            "products": [{"SKUId":sku2, "itemId": item2, "description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
             "restockOrderId" : order.body.id
         });
 
@@ -280,12 +281,12 @@ function getReturnOrders(){
         const expectedOrders = [{
             "id": retOrder1.body.id,
             "returnDate": "2021/11/29",
-            "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2500,"RFID":skuItems[0].rfid}],
+            "products": [{"SKUId":sku1, "itemId": item1, "description":"ordering a batch of nukeproof scout", "price": 2500,"RFID":skuItems[0].rfid}],
             "restockOrderId" : order.body.id
         }, {
             "id": retOrder2.body.id,
             "returnDate": "1999/01/09",
-            "products": [{"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
+            "products": [{"SKUId":sku2, "itemId": item2, "description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
             "restockOrderId" : order.body.id
         }];
 
@@ -308,7 +309,7 @@ function deleteReturnOrder(){
 
         const order = await agent.post("/api/restockOrder").send({
             "issueDate": "2021/11/29 09:33",
-            "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1500,"qty":2}],
+            "products": [{"SKUId":sku1, "itemId": item1, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2, "itemId": item2, "description":"ordering a batch of canyon stoic","price":1500,"qty":2}],
             "supplierId" : supplier
         });
 
@@ -318,7 +319,7 @@ function deleteReturnOrder(){
             "newState": "DELIVERED"
         });
 
-        const skuItems = [{"SKUId":sku1, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2,"rfid":"12345678901234567890123456789017"}];
+        const skuItems = [{"SKUId":sku1, "itemId": item1, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2, "itemId": item2, "rfid":"12345678901234567890123456789017"}];
         
         await agent.put("/api/restockOrder/" + order.body.id + "/skuItems").send({
             "skuItems": skuItems
@@ -328,14 +329,14 @@ function deleteReturnOrder(){
 
         const retOrder = await agent.post("/api/returnOrder").send({
             "returnDate":"2021/11/29",
-            "products": [{"SKUId":sku1,"description":"ordering a batch of nukeproof scout","price":2500, "RFID":skuItems[0].rfid}, {"SKUId":sku2,"description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
+            "products": [{"SKUId":sku1, "itemId": item1, "description":"ordering a batch of nukeproof scout","price":2500, "RFID":skuItems[0].rfid}, {"SKUId":sku2, "itemId": item2, "description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
             "restockOrderId" : order.body.id
         });
 
         const result1 = await agent.delete("/api/returnOrder/" + retOrder.body.id);
         result1.should.have.status(204);
 
-        const result = await agent.get("/api/returnOrder/" + retOrder.body.id);
+        const result = await agent.get("/api/returnOrders/" + retOrder.body.id);
         result.should.have.status(404);
 
         expect(result.body.error).equal("Order Not Found");
@@ -344,7 +345,7 @@ function deleteReturnOrder(){
 
 
 function deleteReturnOrderNotFound(){
-    it("deleting a return order", async function(){
+    it("deleting a return order that is not found", async function(){
         const supplier = await setupSupplier("Giulio", "Sunder", "gs@ezwh.com", "thisisasecurepassword");
         const sku1 = await setupSku("Nukeproof Scout", 13000, 15000, "Good quality hardtail MTB", 2750, 10);
         const sku2 = await setupSku("Canyon Stoic", 15000, 18000, "Good quality enduro hardtail", 1700, 3);
@@ -355,7 +356,7 @@ function deleteReturnOrderNotFound(){
 
         const order = await agent.post("/api/restockOrder").send({
             "issueDate": "2021/11/29 09:33",
-            "products": [{"SKUId":sku1, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2, "description":"ordering a batch of canyon stoic","price":1500,"qty":2}],
+            "products": [{"SKUId":sku1, "itemId": item1, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2, "itemId": item2, "description":"ordering a batch of canyon stoic","price":1500,"qty":2}],
             "supplierId" : supplier
         });
 
@@ -365,17 +366,17 @@ function deleteReturnOrderNotFound(){
             "newState": "DELIVERED"
         });
 
-        const skuItems = [{"SKUId":sku1, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2,"rfid":"12345678901234567890123456789017"}];
+        const skuItems = [{"SKUId":sku1, "itemId": item1, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2, "itemId": item2, "rfid":"12345678901234567890123456789017"}];
         
         await agent.put("/api/restockOrder/" + order.body.id + "/skuItems").send({
             "skuItems": skuItems
         });
 
-        const restock = await agent.get("/api/restockOrder/" + order.body.id);
+        const restock = await agent.get("/api/restockOrders/" + order.body.id);
 
         const retOrder = await agent.post("/api/returnOrder").send({
             "returnDate":"2021/11/29",
-            "products": [{"SKUId":sku1,"description":"ordering a batch of nukeproof scout","price":2500, "RFID":skuItems[0].rfid}, {"SKUId":sku2,"description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
+            "products": [{"SKUId":sku1, "itemId": item1, "description":"ordering a batch of nukeproof scout","price":2500, "RFID":skuItems[0].rfid}, {"SKUId":sku2, "itemId": item2, "description":"ordering a batch of canyon stoic","price":1500,"RFID":skuItems[1].rfid}],
             "restockOrderId" : order.body.id
         });
 
