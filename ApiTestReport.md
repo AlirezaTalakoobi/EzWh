@@ -142,7 +142,7 @@ We have used a bottom up starting by unit tests, of which there is one for each 
 | 9.3         | FR 6.6                                 | 'delete internal order by ID'                                   |
 | 10.1        | FR 6.7, FR 6.8                         | 'change state of internal order to completed and add sku items' |
 | 11.1        | FR 7                                   | 'create item'                                                   |
-| 11.2        | FR 7                                   | 'modify item by id '                                            |
+| 11.2        | FR 7                                   | 'modify item by id and supplier id'                             |
 | 12.1        | FR 3.2                                 | 'newTD'                                                         |
 | 12.2        | FR 3.2.2                               | 'UpdateTDByID'                                                  |
 | 12.3        | FR 3.2.3                               | 'delete TD'                                                     |
