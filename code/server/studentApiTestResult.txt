@@ -2,10 +2,10 @@ Server listening at http://localhost:3001
 
 
   test create pos api
-    ✔ creating pos (72ms)
+    ✔ creating pos (119ms)
 
   test get item api
-    ✔ creating pos
+    ✔ creating pos (87ms)
     ✔ get pos
     ✔ get pos
 
@@ -116,27 +116,149 @@ undefined
     ✔ Deleting TD
 
   test create Item api
-    1) creating Items
+{ id: 1 }
+{
+  ID: 1,
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  availableQuantity: 50,
+  price: 10.99,
+  positionID: null
+}
+[
+  {
+    id: 1,
+    description: 'a new sku',
+    weight: 100,
+    volume: 50,
+    notes: 'first SKU',
+    availableQuantity: 50,
+    price: 10.99,
+    positionID: null,
+    testDescriptors: []
+  }
+]
+    ✔ creating Items (240ms)
 
   test get item api
-    2) creating Items
+{ id: 1 }
+{
+  ID: 1,
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  availableQuantity: 50,
+  price: 10.99,
+  positionID: null
+}
+[
+  {
+    id: 1,
+    description: 'a new sku',
+    weight: 100,
+    volume: 50,
+    notes: 'first SKU',
+    availableQuantity: 50,
+    price: 10.99,
+    positionID: null,
+    testDescriptors: []
+  }
+]
+    ✔ creating Items (112ms)
     ✔ get items
     ✔ get items
 
-  test get item by id api
-    3) creating Items
-    4) get items
+  test get item by id api and supplier id
+{ id: 1 }
+{
+  ID: 1,
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  availableQuantity: 50,
+  price: 10.99,
+  positionID: null
+}
+[
+  {
+    id: 1,
+    description: 'a new sku',
+    weight: 100,
+    volume: 50,
+    notes: 'first SKU',
+    availableQuantity: 50,
+    price: 10.99,
+    positionID: null,
+    testDescriptors: []
+  }
+]
+    ✔ creating Items (97ms)
+    ✔ get items
     ✔ get items
 
-  test modify item by id api
-    5) creating Items
-    6) get items
+  test modify item by id api and supplierid
+{ id: 1 }
+{
+  ID: 1,
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  availableQuantity: 50,
+  price: 10.99,
+  positionID: null
+}
+[
+  {
+    id: 1,
+    description: 'a new sku',
+    weight: 100,
+    volume: 50,
+    notes: 'first SKU',
+    availableQuantity: 50,
+    price: 10.99,
+    positionID: null,
+    testDescriptors: []
+  }
+]
+    ✔ creating Items (95ms)
+    ✔ get items
     ✔ get items
     ✔ get items
 
-  test delete item by id api
-    7) creating Items
-    ✔ get items
+  test delete item by id api and supplier
+{ id: 1 }
+{
+  ID: 1,
+  description: 'a new sku',
+  weight: 100,
+  volume: 50,
+  notes: 'first SKU',
+  availableQuantity: 50,
+  price: 10.99,
+  positionID: null
+}
+[
+  {
+    id: 1,
+    description: 'a new sku',
+    weight: 100,
+    volume: 50,
+    notes: 'first SKU',
+    availableQuantity: 50,
+    price: 10.99,
+    positionID: null,
+    testDescriptors: []
+  }
+]
+    ✔ creating Items (133ms)
+12 1
+ciao
+    ✔ delete items
 
   test new internal order
 { id: 1 }
@@ -161,7 +283,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    ✔ creating a new internal order (166ms)
+    ✔ creating a new internal order (87ms)
 { id: 1 }
 {
   ID: 1,
@@ -184,7 +306,7 @@ undefined
   price: 2750,
   positionID: null
 }
-    ✔ creating a new internal order (141ms)
+    ✔ creating a new internal order (94ms)
 { id: 1 }
 {
   ID: 1,
@@ -208,7 +330,7 @@ undefined
   positionID: null
 }
 COULDN'T CREATE ORDER
-    ✔ creating a new internal order: quantity too high (145ms)
+    ✔ creating a new internal order: quantity too high (81ms)
 
   get internal orders
 { id: 1 }
@@ -233,7 +355,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ retrieving all internal orders (170ms)
+    ✔ retrieving all internal orders (102ms)
 { id: 1 }
 {
   ID: 1,
@@ -256,7 +378,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ retrieving all internal orders issued (182ms)
+    ✔ retrieving all internal orders issued (127ms)
 { id: 1 }
 {
   ID: 1,
@@ -279,7 +401,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ retrieving all internal orders accepted (185ms)
+    ✔ retrieving all internal orders accepted (98ms)
 
   change state of internal orders
 { id: 1 }
@@ -304,7 +426,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ change state of internal orders (175ms)
+    ✔ change state of internal orders (90ms)
 { id: 1 }
 {
   ID: 1,
@@ -342,7 +464,7 @@ COULDN'T CREATE ORDER
     price: 1700
   }
 ]
-    ✔ change state of internal order to completed and add sku items (198ms)
+    ✔ change state of internal order to completed and add sku items (103ms)
 { id: 1 }
 {
   ID: 1,
@@ -365,7 +487,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ change state of internal order to completed and add sku items (195ms)
+    ✔ change state of internal order to completed and add sku items (99ms)
 
   delete internal order by id
 { id: 1 }
@@ -390,7 +512,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ delete internal order by id (192ms)
+    ✔ delete internal order by id (99ms)
 
   test new restock order api
 { id: 1 }
@@ -436,7 +558,7 @@ COULDN'T CREATE ORDER
     }
   ],
   skuItems: [],
-  supplierId: 16
+  supplierId: 1
 }
 {
   id: 1,
@@ -459,9 +581,9 @@ COULDN'T CREATE ORDER
     }
   ],
   skuItems: [],
-  supplierId: 16
+  supplierId: 1
 }
-    ✔ creating new order (182ms)
+    ✔ creating new order (109ms)
 { id: 1 }
 {
   ID: 1,
@@ -484,7 +606,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ creating new order invalid format (160ms)
+    ✔ creating new order invalid format (93ms)
 { id: 1 }
 {
   ID: 1,
@@ -507,7 +629,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ creating new order with incorrect item-supplier correspondence (267ms)
+    ✔ creating new order with incorrect item-supplier correspondence (270ms)
 
   test get restock orders
 { id: 1 }
@@ -532,8 +654,8 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-[{"id":2,"issueDate":"2022/09/05 06:53","state":"ISSUED","products":[{"SKUId":1,"itemId":51,"description":"ordering a batch of nukeproof scout","price":2500,"qty":3},{"SKUId":2,"itemId":61,"description":"ordering a batch of canyon stoic","price":1500,"qty":4}],"skuItems":[],"supplierId":20},{"id":3,"issueDate":"2020/05/05 19:27","state":"ISSUED","products":[{"SKUId":1,"itemId":51,"description":"ordering a batch of nukeproof scout","price":2500,"qty":10}],"skuItems":[],"supplierId":20}]
-    ✔ getting all restock orders (187ms)
+[{"id":2,"issueDate":"2022/09/05 06:53","state":"ISSUED","products":[{"SKUId":1,"itemId":51,"description":"ordering a batch of nukeproof scout","price":2500,"qty":3},{"SKUId":2,"itemId":61,"description":"ordering a batch of canyon stoic","price":1500,"qty":4}],"skuItems":[],"supplierId":1},{"id":3,"issueDate":"2020/05/05 19:27","state":"ISSUED","products":[{"SKUId":1,"itemId":51,"description":"ordering a batch of nukeproof scout","price":2500,"qty":10}],"skuItems":[],"supplierId":1}]
+    ✔ getting all restock orders (103ms)
 
   modify state of restock order
 { id: 1 }
@@ -558,7 +680,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ changing state of restock order (183ms)
+    ✔ changing state of restock order (95ms)
 { id: 1 }
 {
   ID: 1,
@@ -581,7 +703,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ changing state of restock order to an invalid state (175ms)
+    ✔ changing state of restock order to an invalid state (98ms)
 
   add sku items to a restock order
 { id: 1 }
@@ -606,7 +728,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ adding sku items to a restock order in DELIVERED state (201ms)
+    ✔ adding sku items to a restock order in DELIVERED state (102ms)
 { id: 1 }
 {
   ID: 1,
@@ -629,7 +751,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ adding sku items to a restock order NOT in DELIVERED state (177ms)
+    ✔ adding sku items to a restock order NOT in DELIVERED state (111ms)
 { id: 1 }
 {
   ID: 1,
@@ -652,7 +774,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ adding sku items to a restock order NOT in DELIVERED state (171ms)
+    ✔ adding sku items to a restock order NOT in DELIVERED state (128ms)
 
   add transport note to restock order
 { id: 1 }
@@ -677,7 +799,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ adding transport note to restock order (187ms)
+    ✔ adding transport note to restock order (108ms)
 { id: 1 }
 {
   ID: 1,
@@ -700,7 +822,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ adding transport note to restock order with incorrect format (185ms)
+    ✔ adding transport note to restock order with incorrect format (109ms)
 { id: 1 }
 {
   ID: 1,
@@ -723,7 +845,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ adding transport note to restock order not delivery (194ms)
+    ✔ adding transport note to restock order not delivery (105ms)
 
   delete a restock order with given id
 { id: 1 }
@@ -748,7 +870,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ deleting a restock order (178ms)
+    ✔ deleting a restock order (95ms)
 
   test new return order
 { id: 1 }
@@ -773,7 +895,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ creating a new return order (218ms)
+    ✔ creating a new return order (118ms)
 { id: 1 }
 {
   ID: 1,
@@ -796,7 +918,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ creating a new return order with incorrect format (191ms)
+    ✔ creating a new return order with incorrect format (105ms)
 { id: 1 }
 {
   ID: 1,
@@ -819,7 +941,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ Trying to create a new return order with wrong data (195ms)
+    ✔ Trying to create a new return order with wrong data (120ms)
 
   get return orders
 { id: 1 }
@@ -844,7 +966,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ getting all return order (219ms)
+    ✔ getting all return order (123ms)
 
   delete a return order by id
 { id: 1 }
@@ -869,7 +991,7 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ deleting a return order (214ms)
+    ✔ deleting a return order (108ms)
 { id: 1 }
 {
   ID: 1,
@@ -892,114 +1014,114 @@ COULDN'T CREATE ORDER
   price: 2750,
   positionID: null
 }
-    ✔ deleting a return order that is not found (214ms)
+    ✔ deleting a return order that is not found (122ms)
 
   test user api
     ✔ Deleting data
-    ✔ adding new users (119ms)
+    ✔ adding new users (77ms)
     ✔ adding new users
-    ✔ adding new users (109ms)
+    ✔ adding new users (77ms)
     ✔ adding new users
     ✔ adding new users
 
   test newuser api
     ✔ Deleting data
-    ✔ adding new users (118ms)
+    ✔ adding new users (70ms)
     ✔ getting users data from the system
 
   test getUsers api
     ✔ Deleting data
-    ✔ getting users data from the system (122ms)
+    ✔ getting users data from the system (73ms)
 
   test getSuppliers api
     ✔ Deleting data
-    ✔ adding new users (118ms)
+    ✔ adding new users (73ms)
     ✔ getting suppliers from the system
     ✔ Deleting data
-    ✔ adding new users (117ms)
+    ✔ adding new users (71ms)
     ✔ getting suppliers from the system
 
   test managerSession api
     ✔ Deleting data
-    ✔ adding new users (126ms)
+    ✔ adding new users (74ms)
     ✔ manager sessions
 true
-    ✔ manager sessions (108ms)
+    ✔ manager sessions (75ms)
     ✔ manager sessions
 false
-    ✔ manager sessions (112ms)
+    ✔ manager sessions (67ms)
 
   test customerSession api
     ✔ Deleting data
-    ✔ adding new users (120ms)
+    ✔ adding new users (70ms)
     ✔ customer sessions
 true
-    ✔ customer sessions (108ms)
+    ✔ customer sessions (75ms)
     ✔ customer sessions
 false
-    ✔ customer sessions (107ms)
+    ✔ customer sessions (73ms)
 
   test supplierSession api
     ✔ Deleting data
-    ✔ adding new users (117ms)
+    ✔ adding new users (72ms)
     ✔ supplier sessions
 true
-    ✔ supplier sessions (108ms)
+    ✔ supplier sessions (69ms)
     ✔ supplier sessions
 false
-    ✔ supplier sessions (107ms)
+    ✔ supplier sessions (71ms)
 
   test clerkSession api
     ✔ Deleting data
-    ✔ adding new users (117ms)
+    ✔ adding new users (69ms)
     ✔ clerk sessions
 true
-    ✔ clerk sessions (106ms)
+    ✔ clerk sessions (68ms)
     ✔ clerk sessions
 false
-    ✔ clerk sessions (106ms)
+    ✔ clerk sessions (68ms)
 
   test qualityEmployeeSession api
     ✔ Deleting data
-    ✔ adding new users (118ms)
+    ✔ adding new users (69ms)
     ✔ qualityEmployee sessions
 true
-    ✔ qualityEmployee sessions (108ms)
+    ✔ qualityEmployee sessions (68ms)
     ✔ qualityEmployee sessions
 false
-    ✔ qualityEmployee sessions (107ms)
+    ✔ qualityEmployee sessions (75ms)
 
   test deliveryEmployeeSession api
     ✔ Deleting data
-    ✔ adding new users (118ms)
+    ✔ adding new users (75ms)
     ✔ deliveryEmployee sessions
 true
-    ✔ deliveryEmployee sessions (109ms)
+    ✔ deliveryEmployee sessions (68ms)
 false
-    ✔ deliveryEmployee sessions (109ms)
+    ✔ deliveryEmployee sessions (73ms)
 
   test edit user api
     ✔ Deleting data
-    ✔ adding new users (116ms)
+    ✔ adding new users (70ms)
     ✔ edit users
     ✔ edit users
     ✔ edit users
 
   test delete user api
     ✔ Deleting data
-    ✔ adding new users (118ms)
+    ✔ adding new users (71ms)
     ✔ delete user sessions
     ✔ delete user sessions
     ✔ Deleting data
 
   create setup users
     ✔ Deleting data
-    ✔ adding new users (115ms)
-    ✔ adding new users (116ms)
-    ✔ adding new users (119ms)
-    ✔ adding new users (122ms)
-    ✔ adding new users (118ms)
-    ✔ adding new users (117ms)
+    ✔ adding new users (75ms)
+    ✔ adding new users (74ms)
+    ✔ adding new users (71ms)
+    ✔ adding new users (71ms)
+    ✔ adding new users (70ms)
+    ✔ adding new users (71ms)
 
   test insert item api
     ✔ Deleting data
@@ -1093,7 +1215,8 @@ false
     ✔ edit items
     ✔ edit items
 
-  test delete item api
+  test delete skuitem api
+    ✔ Deleting data
 { id: 9 }
 {
   ID: 1,
@@ -1105,42 +1228,12 @@ false
   price: 2750,
   positionID: null
 }
-    8) delete item
+    ✔ adding new items
+{ id: 1 }
+    ✔ delete item
+{ message: 'Item not found' }
     ✔ delete item
     ✔ delete item
-{ id: 10 }
-{ id: 11 }
-{ id: 12 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
     ✔ Deleting data
 
   test create  test api
@@ -1169,7 +1262,7 @@ false
   }
 ]
 1
-    ✔ creating Test result (54ms)
+    ✔ creating Test result
 { id: 1 }
 {
   ID: 1,
@@ -1195,7 +1288,7 @@ false
   }
 ]
 1
-    ✔ creating Test result (64ms)
+    ✔ creating Test result (45ms)
 
   test get test api
 { id: 1 }
@@ -1223,7 +1316,7 @@ false
   }
 ]
 1
-    ✔ creating Test result (65ms)
+    ✔ creating Test result
     ✔ get items
     ✔ get items
 
@@ -1253,7 +1346,7 @@ false
   }
 ]
 1
-    ✔ creating Test result (69ms)
+    ✔ creating Test result (45ms)
     ✔ get test
     ✔ get test
     ✔ get test
@@ -1284,7 +1377,7 @@ false
   }
 ]
 1
-    ✔ creating Test result (76ms)
+    ✔ creating Test result
     ✔ modify items
 
   test delete item by id api
@@ -1313,61 +1406,10 @@ false
   }
 ]
 1
-    ✔ creating Test result (68ms)
+    ✔ creating Test result
 404
     ✔ delete items
 
 
-  160 passing (27s)
-  8 failing
-
-  1) test create Item api
-       creating Items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
-      at listOnTimeout (node:internal/timers:559:17)
-      at processTimers (node:internal/timers:502:7)
-
-  2) test get item api
-       creating Items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
-      at listOnTimeout (node:internal/timers:559:17)
-      at processTimers (node:internal/timers:502:7)
-
-  3) test get item by id api
-       creating Items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
-      at listOnTimeout (node:internal/timers:559:17)
-      at processTimers (node:internal/timers:502:7)
-
-  4) test get item by id api
-       get items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
-      at listOnTimeout (node:internal/timers:559:17)
-      at processTimers (node:internal/timers:502:7)
-
-  5) test modify item by id api
-       creating Items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
-      at listOnTimeout (node:internal/timers:559:17)
-      at processTimers (node:internal/timers:502:7)
-
-  6) test modify item by id api
-       get items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
-      at listOnTimeout (node:internal/timers:559:17)
-      at processTimers (node:internal/timers:502:7)
-
-  7) test delete item by id api
-       creating Items:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testItemRouter.js)
-      at listOnTimeout (node:internal/timers:559:17)
-      at processTimers (node:internal/timers:502:7)
-
-  8) test delete item api
-       delete item:
-     Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/gs/Desktop/CODE_REFACTORING/EzWh/EzWh/code/server/test/testSKUItemsRouter.js)
-      at listOnTimeout (node:internal/timers:559:17)
-      at processTimers (node:internal/timers:502:7)
-
-
+  170 passing (7s)
 
