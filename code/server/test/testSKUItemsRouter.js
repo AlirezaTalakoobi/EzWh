@@ -49,29 +49,31 @@ describe("test edit item api", () => {
   editItem(422, "123456789098765432123");
 });
 
-describe("test delete item api", () => {
-  beforeEach(async () => {
-    deleteAllData(204);
-    agent
-      .post("/api/sku/")
-      .send({
-        description: "a new sku",
-        weight: 100,
-        volume: 50,
-        notes: "first SKU",
-        price: 10.99,
-        availableQuantity: 50,
-      })
-      .then(function (res) {
-        res.should.have.status(200);
-        newSKUItem(
-          200,
-          "12345678909876543212345678909876",
-          res.body,
-          "2020/11/03"
-        );
-      });
-  });
+describe("test delete skuitem api", () => {
+  // beforeEach(async () => {
+  deleteAllData(204);
+  //     agent
+  //       .post("/api/sku/")
+  //       .send({
+  //         description: "a new sku",
+  //         weight: 100,
+  //         volume: 50,
+  //         notes: "first SKU",
+  //         price: 10.99,
+  //         availableQuantity: 50,
+  //       })
+  //       .then(function (res) {
+  //         console.log(res.body.id + "sono qua");
+  //         res.should.have.status(200);
+  //         newSKUItem(
+  //           200,
+  //           "12345678909876543212345678909876",
+  //           "2020/11/03",
+  //           res.body.id
+  //         );
+  //       });
+  // });
+  newSKUItem(201, "12345678909876543212345678909876", "2020/11/03", undefined);
   deleteItem(204, "12345678909876543212345678909876");
   deleteItem(404, "12345678909876543212345678909877");
   deleteItem(422, "29876543212345678909877");

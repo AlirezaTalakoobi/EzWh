@@ -55,10 +55,10 @@ function createALL(
                 name: "John",
                 surname: "Smith",
                 password: "testpassword",
-                type: "customer",
+                type: "supplier",
               })
               .then(function (res) {
-                res.should.have.status(200);
+                res.should.have.status(201);
                 agent
                   .post("/api/position")
                   .send({
@@ -82,12 +82,12 @@ function createALL(
                         availableQuantity: 50,
                       })
                       .then(function (res) {
-                        res.should.have.status(200);
+                        res.should.have.status(201);
                         agent
                           .get("/api/skus")
                           .send()
                           .then(function (res) {
-                            let sku = res.body[0].SKUId;
+                            let sku = res.body[0].id;
                             agent
                               .get("/api/users")
                               .send()
@@ -126,6 +126,7 @@ function createALL(
 
 describe("test get item api", () => {
   beforeEach(async () => {});
+  clearall();
   createALL(201, 12, "a new item", 10.99, 0, 0);
   get_normal(200);
   clearall();
@@ -145,34 +146,36 @@ function get_normal(expectedHTTPStatus) {
   });
 }
 
-describe("test get item by id api", () => {
+describe("test get item by id api and supplier id", () => {
   beforeEach(async () => {});
-  createALL(201, 12, "a new item", 10.99, 0, 0);
-  get_id(200, 12,0);
   clearall();
-  get_id(404, 1,0);
+  createALL(201, 12, "a new item", 10.99, 0, 0);
+  get_id(200, 12, 1);
+  clearall();
+  get_id(404, 1, 0);
 
   afterEach(async () => {});
 });
 
-function get_id(expectedHTTPStatus, id,sid) {
+function get_id(expectedHTTPStatus, id, sid) {
   it("get items", function (done) {
     agent
       .get("/api/items/" + id.toString() + "/" + sid.toString())
       .send()
       .then(function (res) {
+        //console.log(res.body[0]);
         res.should.have.status(expectedHTTPStatus);
         done();
       });
   });
 }
 
-describe("test modify item by id api", () => {
+describe("test modify item by id api and supplierid", () => {
   beforeEach(async () => {});
   createALL(201, 12, "a new item", 10.99, 0, 0);
-  modify_item(200, 12,0, "new", 8);
-  modify_item(422, 12,0, "new", -10);
-  modify_item(404, 20,0, "new", 8);
+  modify_item(200, 12, 1, "new", 8);
+  modify_item(422, 12, 0, "new", -10);
+  modify_item(404, 20, 0, "new", 8);
 
   afterEach(async () => {});
 });
@@ -193,17 +196,18 @@ function modify_item(expectedHTTPStatus, id, sid, desc, price) {
   });
 }
 
-describe("test delete item by id api", () => {
+describe("test delete item by id api and supplier", () => {
   beforeEach(async () => {});
-  createALL(201, 12, "a new item", 10.99, 0, 0);
-  delete_id(204, 12,0);
+  clearall();
+  createALL(201, 12, "a new item", 10.99, 1, 1);
+  delete_id(204, 12, 1);
   clearall();
 
   afterEach(async () => {});
 });
 
-function delete_id(expectedHTTPStatus, id,sid) {
-  it("get items", function (done) {
+function delete_id(expectedHTTPStatus, id, sid) {
+  it("delete items", function (done) {
     agent
       .delete("/api/items/" + id.toString() + "/" + sid.toString())
       .send()

@@ -136,7 +136,8 @@ class UserController {
   deleteAll = async () => {
     try {
       const res = await this.dao.run("Delete from USER", []);
-
+      const sql2 = "UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = ?";
+      await this.dao.run(sql2, [0, "USER"]);
       if (res) {
         return true;
       }
