@@ -4,7 +4,7 @@ Authors: Andriano Davide, Hakimifard Pouya, Sunder Giulio, Talakoobi Alireza
 
 Date: 27-04-2022
 
-Version: 1.0
+Version: 1.2
 
 # Contents
 
