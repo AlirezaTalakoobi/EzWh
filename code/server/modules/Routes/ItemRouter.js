@@ -132,7 +132,6 @@ router.delete(
       return res.status(422).send("422 Unprocessable Entity");
     }
     let ans = await uc.deleteItem(req.params.id, req.params.supplierId);
-    console.log("ciao");
     if (ans == 204) {
       return res.status(204).send("204 No Content");
     } else {

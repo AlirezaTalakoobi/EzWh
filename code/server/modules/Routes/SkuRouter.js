@@ -88,7 +88,6 @@ router.put(
   },
   async (req, res) => {
     const sku = await su.editsku(req.body, req.params.id);
-    console.log(sku.message);
     if (sku.message) {
       return res.status(404).json(sku.message);
     } else if (sku) {
@@ -122,7 +121,6 @@ router.put(
   },
   async (req, res) => {
     const sku = await su.editskuPosition(req.body.position, req.params.id);
-    console.log(sku);
     if (sku.message) {
       return res.status(404).json(sku.message);
     } else if (sku === 2) {

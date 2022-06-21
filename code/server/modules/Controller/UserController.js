@@ -55,7 +55,6 @@ class UserController {
     let result = await this.dao.get(sql, [username]);
     if (result != undefined) {
       const check = await bcrypt.compare(password, result.password);
-      console.log(check);
       if (check === true) {
         return {
           id: result.ID,

@@ -2,10 +2,10 @@ Server listening at http://localhost:3001
 
 
   test create pos api
-    ✔ creating pos (119ms)
+    ✔ creating pos (200ms)
 
   test get item api
-    ✔ creating pos (87ms)
+    ✔ creating pos
     ✔ get pos
     ✔ get pos
 
@@ -15,17 +15,6 @@ Server listening at http://localhost:3001
 
   test SKU apis
     ✔ Deleting data
-{ id: 1 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
     ✔ adding a new SKU
 undefined
     ✔ Updating SKU By ID
@@ -44,31 +33,7 @@ undefined
     testDescriptors: []
   }
 ]
-[
-  {
-    id: 1,
-    description: 'a new sku',
-    weight: 100,
-    volume: 50,
-    notes: 'first SKU',
-    availableQuantity: 50,
-    price: 10.99,
-    positionID: null,
-    testDescriptors: []
-  }
-]
     ✔ getting sku from the system
-{ id: 2 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
     ✔ getting sku from the system By ID
     ✔ Deleting item
     ✔ Deleting item
@@ -76,36 +41,9 @@ undefined
 
   test TD apis
     ✔ Deleting data
-{ id: 1 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
     ✔ adding a new TD
     ✔ getting TD from the system
     ✔ getting TD from the system By ID
-{ id: 2 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
-{
-  newName: 'test descriptor 1',
-  newProcedureDescription: 'This test is described by...',
-  newIdSKU: 2
-}
 {
   newName: 'test descriptor 1',
   newProcedureDescription: 'This test is described by...',
@@ -116,427 +54,50 @@ undefined
     ✔ Deleting TD
 
   test create Item api
-{ id: 1 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
-[
-  {
-    id: 1,
-    description: 'a new sku',
-    weight: 100,
-    volume: 50,
-    notes: 'first SKU',
-    availableQuantity: 50,
-    price: 10.99,
-    positionID: null,
-    testDescriptors: []
-  }
-]
-    ✔ creating Items (240ms)
+    ✔ creating Items (139ms)
 
   test get item api
-{ id: 1 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
-[
-  {
-    id: 1,
-    description: 'a new sku',
-    weight: 100,
-    volume: 50,
-    notes: 'first SKU',
-    availableQuantity: 50,
-    price: 10.99,
-    positionID: null,
-    testDescriptors: []
-  }
-]
-    ✔ creating Items (112ms)
+    ✔ creating Items (146ms)
     ✔ get items
     ✔ get items
 
   test get item by id api and supplier id
-{ id: 1 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
-[
-  {
-    id: 1,
-    description: 'a new sku',
-    weight: 100,
-    volume: 50,
-    notes: 'first SKU',
-    availableQuantity: 50,
-    price: 10.99,
-    positionID: null,
-    testDescriptors: []
-  }
-]
-    ✔ creating Items (97ms)
+    ✔ creating Items (147ms)
     ✔ get items
     ✔ get items
 
   test modify item by id api and supplierid
-{ id: 1 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
-[
-  {
-    id: 1,
-    description: 'a new sku',
-    weight: 100,
-    volume: 50,
-    notes: 'first SKU',
-    availableQuantity: 50,
-    price: 10.99,
-    positionID: null,
-    testDescriptors: []
-  }
-]
-    ✔ creating Items (95ms)
+    ✔ creating Items (132ms)
     ✔ get items
     ✔ get items
     ✔ get items
 
   test delete item by id api and supplier
-{ id: 1 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
-[
-  {
-    id: 1,
-    description: 'a new sku',
-    weight: 100,
-    volume: 50,
-    notes: 'first SKU',
-    availableQuantity: 50,
-    price: 10.99,
-    positionID: null,
-    testDescriptors: []
-  }
-]
-    ✔ creating Items (133ms)
-12 1
+    ✔ creating Items (192ms)
 ciao
     ✔ delete items
 
   test new internal order
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ creating a new internal order (87ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ creating a new internal order (94ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
+    ✔ creating a new internal order (126ms)
+    ✔ creating a new internal order (123ms)
 COULDN'T CREATE ORDER
-    ✔ creating a new internal order: quantity too high (81ms)
+    ✔ creating a new internal order: quantity too high (114ms)
 
   get internal orders
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ retrieving all internal orders (102ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ retrieving all internal orders issued (127ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ retrieving all internal orders accepted (98ms)
+    ✔ retrieving all internal orders (126ms)
+    ✔ retrieving all internal orders issued (147ms)
+    ✔ retrieving all internal orders accepted (189ms)
 
   change state of internal orders
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ change state of internal orders (90ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
+    ✔ change state of internal orders (126ms)
 9
-[
-  {
-    RFID: '01234567890123456789012345678901',
-    skuID: 1,
-    description: 'ordering a batch of nukeproof scout',
-    price: 2750
-  },
-  {
-    RFID: '98765432109876543210987654321098',
-    skuID: 2,
-    description: 'ordering a batch of canyon stoic',
-    price: 1700
-  }
-]
-    ✔ change state of internal order to completed and add sku items (103ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ change state of internal order to completed and add sku items (99ms)
+    ✔ change state of internal order to completed and add sku items (145ms)
+    ✔ change state of internal order to completed and add sku items (132ms)
 
   delete internal order by id
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ delete internal order by id (99ms)
+    ✔ delete internal order by id (130ms)
 
   test new restock order api
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
 {
   id: 1,
   issueDate: '2021/11/29 09:33',
@@ -583,614 +144,163 @@ COULDN'T CREATE ORDER
   skuItems: [],
   supplierId: 1
 }
-    ✔ creating new order (109ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ creating new order invalid format (93ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ creating new order with incorrect item-supplier correspondence (270ms)
+    ✔ creating new order (130ms)
+    ✔ creating new order invalid format (274ms)
+    ✔ creating new order with incorrect item-supplier correspondence (219ms)
 
   test get restock orders
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
 [{"id":2,"issueDate":"2022/09/05 06:53","state":"ISSUED","products":[{"SKUId":1,"itemId":51,"description":"ordering a batch of nukeproof scout","price":2500,"qty":3},{"SKUId":2,"itemId":61,"description":"ordering a batch of canyon stoic","price":1500,"qty":4}],"skuItems":[],"supplierId":1},{"id":3,"issueDate":"2020/05/05 19:27","state":"ISSUED","products":[{"SKUId":1,"itemId":51,"description":"ordering a batch of nukeproof scout","price":2500,"qty":10}],"skuItems":[],"supplierId":1}]
-    ✔ getting all restock orders (103ms)
+    ✔ getting all restock orders (132ms)
 
   modify state of restock order
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ changing state of restock order (95ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ changing state of restock order to an invalid state (98ms)
+    ✔ changing state of restock order (129ms)
+    ✔ changing state of restock order to an invalid state (211ms)
 
   add sku items to a restock order
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ adding sku items to a restock order in DELIVERED state (102ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ adding sku items to a restock order NOT in DELIVERED state (111ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ adding sku items to a restock order NOT in DELIVERED state (128ms)
+    ✔ adding sku items to a restock order in DELIVERED state (142ms)
+    ✔ adding sku items to a restock order NOT in DELIVERED state (137ms)
+    ✔ adding sku items to a restock order NOT in DELIVERED state (131ms)
 
   add transport note to restock order
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ adding transport note to restock order (108ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ adding transport note to restock order with incorrect format (109ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ adding transport note to restock order not delivery (105ms)
+    ✔ adding transport note to restock order (160ms)
+    ✔ adding transport note to restock order with incorrect format (314ms)
+    ✔ adding transport note to restock order not delivery (163ms)
 
   delete a restock order with given id
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ deleting a restock order (95ms)
+    ✔ deleting a restock order (155ms)
 
   test new return order
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ creating a new return order (118ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ creating a new return order with incorrect format (105ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ Trying to create a new return order with wrong data (120ms)
+    ✔ creating a new return order (173ms)
+    ✔ creating a new return order with incorrect format (156ms)
+    ✔ Trying to create a new return order with wrong data (178ms)
 
   get return orders
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ getting all return order (123ms)
+    ✔ getting all return order (153ms)
 
   delete a return order by id
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ deleting a return order (108ms)
-{ id: 1 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-{ id: 2 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
-    ✔ deleting a return order that is not found (122ms)
+    ✔ deleting a return order (154ms)
+    ✔ deleting a return order that is not found (154ms)
 
   test user api
     ✔ Deleting data
-    ✔ adding new users (77ms)
+    ✔ adding new users (98ms)
     ✔ adding new users
-    ✔ adding new users (77ms)
+    ✔ adding new users (98ms)
     ✔ adding new users
     ✔ adding new users
 
   test newuser api
     ✔ Deleting data
-    ✔ adding new users (70ms)
+    ✔ adding new users (110ms)
     ✔ getting users data from the system
 
   test getUsers api
     ✔ Deleting data
-    ✔ getting users data from the system (73ms)
+    ✔ getting users data from the system (160ms)
 
   test getSuppliers api
     ✔ Deleting data
-    ✔ adding new users (73ms)
+    ✔ adding new users (113ms)
     ✔ getting suppliers from the system
     ✔ Deleting data
-    ✔ adding new users (71ms)
+    ✔ adding new users (113ms)
     ✔ getting suppliers from the system
 
   test managerSession api
     ✔ Deleting data
-    ✔ adding new users (74ms)
+    ✔ adding new users (114ms)
     ✔ manager sessions
 true
-    ✔ manager sessions (75ms)
+    ✔ manager sessions (103ms)
     ✔ manager sessions
 false
-    ✔ manager sessions (67ms)
+    ✔ manager sessions (100ms)
 
   test customerSession api
     ✔ Deleting data
-    ✔ adding new users (70ms)
+    ✔ adding new users (98ms)
     ✔ customer sessions
 true
-    ✔ customer sessions (75ms)
+    ✔ customer sessions (108ms)
     ✔ customer sessions
 false
-    ✔ customer sessions (73ms)
+    ✔ customer sessions (93ms)
 
   test supplierSession api
     ✔ Deleting data
-    ✔ adding new users (72ms)
+    ✔ adding new users (97ms)
     ✔ supplier sessions
 true
-    ✔ supplier sessions (69ms)
+    ✔ supplier sessions (94ms)
     ✔ supplier sessions
 false
-    ✔ supplier sessions (71ms)
+    ✔ supplier sessions (98ms)
 
   test clerkSession api
     ✔ Deleting data
-    ✔ adding new users (69ms)
+    ✔ adding new users (133ms)
     ✔ clerk sessions
 true
-    ✔ clerk sessions (68ms)
+    ✔ clerk sessions (100ms)
     ✔ clerk sessions
 false
-    ✔ clerk sessions (68ms)
+    ✔ clerk sessions (98ms)
 
   test qualityEmployeeSession api
     ✔ Deleting data
-    ✔ adding new users (69ms)
+    ✔ adding new users (97ms)
     ✔ qualityEmployee sessions
 true
-    ✔ qualityEmployee sessions (68ms)
+    ✔ qualityEmployee sessions (94ms)
     ✔ qualityEmployee sessions
 false
-    ✔ qualityEmployee sessions (75ms)
+    ✔ qualityEmployee sessions (95ms)
 
   test deliveryEmployeeSession api
     ✔ Deleting data
-    ✔ adding new users (75ms)
+    ✔ adding new users (126ms)
     ✔ deliveryEmployee sessions
 true
-    ✔ deliveryEmployee sessions (68ms)
+    ✔ deliveryEmployee sessions (95ms)
 false
-    ✔ deliveryEmployee sessions (73ms)
+    ✔ deliveryEmployee sessions (95ms)
 
   test edit user api
     ✔ Deleting data
-    ✔ adding new users (70ms)
+    ✔ adding new users (105ms)
     ✔ edit users
     ✔ edit users
     ✔ edit users
 
   test delete user api
     ✔ Deleting data
-    ✔ adding new users (71ms)
+    ✔ adding new users (110ms)
     ✔ delete user sessions
     ✔ delete user sessions
     ✔ Deleting data
 
   create setup users
     ✔ Deleting data
-    ✔ adding new users (75ms)
-    ✔ adding new users (74ms)
-    ✔ adding new users (71ms)
-    ✔ adding new users (71ms)
-    ✔ adding new users (70ms)
-    ✔ adding new users (71ms)
+    ✔ adding new users (101ms)
+    ✔ adding new users (127ms)
+    ✔ adding new users (99ms)
+    ✔ adding new users (100ms)
+    ✔ adding new users (98ms)
+    ✔ adding new users (102ms)
 
   test insert item api
     ✔ Deleting data
-{ id: 3 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
     ✔ adding new items
-{ id: 4 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
     ✔ adding new items
-{ id: 5 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
     ✔ adding new items
 
   test get items api
     ✔ Deleting data
-{ id: 6 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
     ✔ adding new items
     ✔ getting items from the system
 
   test get item api
     ✔ Deleting data
-{ id: 7 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
     ✔ adding new items
     ✔ getting items by id from the system
     ✔ getting items by rfid from the system
@@ -1198,17 +308,6 @@ false
 
   test edit item api
     ✔ Deleting data
-{ id: 8 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
     ✔ adding new items
     ✔ edit items
     ✔ edit items
@@ -1217,17 +316,6 @@ false
 
   test delete skuitem api
     ✔ Deleting data
-{ id: 9 }
-{
-  ID: 1,
-  description: 'Nukeproof Scout',
-  weight: 13000,
-  volume: 15000,
-  notes: 'Good quality hardtail MTB',
-  availableQuantity: 10,
-  price: 2750,
-  positionID: null
-}
     ✔ adding new items
 { id: 1 }
     ✔ delete item
@@ -1237,179 +325,35 @@ false
     ✔ Deleting data
 
   test create  test api
-{ id: 1 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
-[
-  {
-    id: 1,
-    description: 'a new sku',
-    weight: 100,
-    volume: 50,
-    notes: 'first SKU',
-    availableQuantity: 50,
-    price: 10.99,
-    positionID: null,
-    testDescriptors: []
-  }
-]
 1
-    ✔ creating Test result
-{ id: 1 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
-[
-  {
-    id: 1,
-    description: 'a new sku',
-    weight: 100,
-    volume: 50,
-    notes: 'first SKU',
-    availableQuantity: 50,
-    price: 10.99,
-    positionID: null,
-    testDescriptors: []
-  }
-]
+    ✔ creating Test result (40ms)
 1
-    ✔ creating Test result (45ms)
+    ✔ creating Test result (61ms)
 
   test get test api
-{ id: 1 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
-[
-  {
-    id: 1,
-    description: 'a new sku',
-    weight: 100,
-    volume: 50,
-    notes: 'first SKU',
-    availableQuantity: 50,
-    price: 10.99,
-    positionID: null,
-    testDescriptors: []
-  }
-]
 1
-    ✔ creating Test result
+    ✔ creating Test result (38ms)
     ✔ get items
     ✔ get items
 
   test get test by id api
-{ id: 1 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
-[
-  {
-    id: 1,
-    description: 'a new sku',
-    weight: 100,
-    volume: 50,
-    notes: 'first SKU',
-    availableQuantity: 50,
-    price: 10.99,
-    positionID: null,
-    testDescriptors: []
-  }
-]
 1
-    ✔ creating Test result (45ms)
+    ✔ creating Test result (38ms)
     ✔ get test
     ✔ get test
     ✔ get test
 
   test modify test by id api
-{ id: 1 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
-[
-  {
-    id: 1,
-    description: 'a new sku',
-    weight: 100,
-    volume: 50,
-    notes: 'first SKU',
-    availableQuantity: 50,
-    price: 10.99,
-    positionID: null,
-    testDescriptors: []
-  }
-]
 1
-    ✔ creating Test result
+    ✔ creating Test result (43ms)
     ✔ modify items
 
   test delete item by id api
-{ id: 1 }
-{
-  ID: 1,
-  description: 'a new sku',
-  weight: 100,
-  volume: 50,
-  notes: 'first SKU',
-  availableQuantity: 50,
-  price: 10.99,
-  positionID: null
-}
-[
-  {
-    id: 1,
-    description: 'a new sku',
-    weight: 100,
-    volume: 50,
-    notes: 'first SKU',
-    availableQuantity: 50,
-    price: 10.99,
-    positionID: null,
-    testDescriptors: []
-  }
-]
 1
-    ✔ creating Test result
+    ✔ creating Test result (42ms)
 404
     ✔ delete items
 
 
-  170 passing (7s)
+  170 passing (10s)
 

@@ -157,7 +157,6 @@ router.delete(
   },
   async (req, res) => {
     const result = await sic.deleteItem(req.params.rfid);
-    console.log(result);
     if (result === false) {
       return res.status(503).json({ message: "generic error" });
     } else if (result.message) {

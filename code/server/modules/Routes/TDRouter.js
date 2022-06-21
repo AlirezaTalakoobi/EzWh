@@ -92,7 +92,6 @@ router.put(
     check("newIdSKU").isNumeric().optional(),
   ],
   (req, res, next) => {
-    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty() || Object.keys(req.body).length === 0) {
       return res.status(422).json({ errors: errors.array() });
