@@ -30,7 +30,6 @@ The pattern used for our project is a Three-Tier layered MVC pattern. The applic
 
 ![image](/src/Main.jpg)
 
-The class diagram implements a facade structural pattern, which is the EZWHSystem class, for interfacing with all the classes of the model.
 
 # Verification traceability matrix
 
