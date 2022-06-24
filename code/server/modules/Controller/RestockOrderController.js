@@ -16,13 +16,16 @@ class RestockOrderController {
   }
 
   validateProductsInRestockOrder = async (supplierId, products) => {
-    //console.log(supplierId)
-    //console.log(products)
     const itemSql =
-      "SELECT ID, price FROM ITEM WHERE supplierID = ? AND skuID = ?";
+      "SELECT ID FROM ITEM WHERE supplierID = ? AND skuID = ? AND ID = ?";
     for (let product of products) {
-      let item = await this.dao.get(itemSql, [supplierId, product.SKUId]);
-      if (item === undefined) { // || item.price !== product.price) {
+      let item = await this.dao.get(itemSql, [
+        supplierId,
+        product.SKUId,
+        product.itemId,
+      ]);
+      if (item === undefined) {
+        // || item.price !== product.price) {
         return false;
       }
     }
@@ -44,7 +47,8 @@ class RestockOrderController {
       // if (sku === undefined || rfid !== undefined || sku.current >= sku.max) {
       //   return false;
       // }
-      if (sku === undefined || sku.current >= sku.max) { //|| rfid === undefined) {
+      if (sku === undefined || sku.current >= sku.max) {
+        //|| rfid === undefined) {
         return false;
       }
       sku.current += 1;
@@ -56,11 +60,13 @@ class RestockOrderController {
     for (let product of products) {
       //let itemSql = "SELECT ID FROM ITEM WHERE supplierID = ? AND skuID = ?";
       //let item = await this.dao.get(itemSql, [supplierId, product.SKUId]);
-      let itemInRestockOrderSql = "INSERT INTO ITEM_IN_RESTOCK_ORDER (restockOrderID, itemID, description, price, quantity) VALUES (?, ?, ?, ?, ?)";
+      let itemInRestockOrderSql =
+        "INSERT INTO ITEM_IN_RESTOCK_ORDER (restockOrderID, itemID, description, price, quantity) VALUES (?, ?, ?, ?, ?)";
       await this.dao.run(itemInRestockOrderSql, [
         restockOrderId,
         //item.ID,
-        product.SKUId,
+        //product.SKUId,
+        product.itemId,
         product.description,
         product.price,
         product.qty,
@@ -69,12 +75,13 @@ class RestockOrderController {
   };
 
   getProductsForRestockOrder = async (id) => {
-    //const productsSql = "SELECT skuID, IRO.description, IRO.price, quantity FROM ITEM I, ITEM_IN_RESTOCK_ORDER IRO WHERE I.ID = IRO.itemID AND IRO.restockOrderID = ?";
-    const productsSql = "SELECT itemID, description, price, quantity FROM ITEM_IN_RESTOCK_ORDER WHERE restockOrderID = ?";
+    const productsSql =
+      "SELECT I.skuID, IRO.itemID, IRO.description, IRO.price, IRO.quantity FROM ITEM I, ITEM_IN_RESTOCK_ORDER IRO WHERE I.ID = IRO.itemID AND IRO.restockOrderID = ?";
+    //const productsSql = "SELECT itemID, description, price, quantity FROM ITEM_IN_RESTOCK_ORDER WHERE restockOrderID = ?";
     const products = await this.dao.all(productsSql, [id]);
     return products.map((product) => ({
-      //SKUId: product.skuID,
-      SKUId: product.itemID,
+      SKUId: product.skuID,
+      itemId: product.itemID,
       description: product.description,
       price: product.price,
       qty: product.quantity,
@@ -82,11 +89,13 @@ class RestockOrderController {
   };
 
   getSkuItemsForRestockOrder = async (id) => {
+    //const skuItemsSql = "SELECT skuID, RFID FROM SKU_ITEM WHERE restockOrderID = ?";
     const skuItemsSql =
-      "SELECT skuID, RFID FROM SKU_ITEM WHERE restockOrderID = ?";
+      "SELECT S.skuID, IRO.itemID, S.RFID FROM SKU_ITEM S, ITEM_IN_RESTOCK_ORDER IRO, ITEM I WHERE S.restockOrderID = IRO.restockOrderID AND IRO.itemID = I.ID AND I.skuID = S.skuID AND S.restockOrderID = ?";
     const skuItems = await this.dao.all(skuItemsSql, [id]);
     return skuItems.map((skuItem) => ({
       rfid: skuItem.RFID,
+      itemId: skuItem.itemID,
       SKUId: skuItem.skuID,
     }));
   };
@@ -126,6 +135,7 @@ class RestockOrderController {
       for (let restockOrder of restockOrders) {
         const products = await this.getProductsForRestockOrder(restockOrder.id);
         restockOrder.products = [...products];
+        //const skuItems = await this.getSkuItemsForRestockOrder(restockOrder.id);
         const skuItems = await this.getSkuItemsForRestockOrder(restockOrder.id);
         restockOrder.skuItems = [...skuItems];
       }
@@ -218,7 +228,7 @@ class RestockOrderController {
     try {
       const skuItemsSql =
         "SELECT SI.skuID, SI.RFID FROM SKU_ITEM SI WHERE restockOrderID = ? AND SI.RFID NOT IN (SELECT DISTINCT T.RFID FROM TEST_RESULT T WHERE T.result = 0)";
-      const skuItems = await this.dao.all(skuItemsSql, [req.params.id]);
+      const skuItems = await this.dao.all(skuItemsSql, [id]);
       if (skuItems === undefined) {
         // return res.status(404).json({message: "Not Found"});
         return -1;
@@ -234,9 +244,9 @@ class RestockOrderController {
 
   createRestockOrder = async (issueDate, supplierId, products) => {
     try {
-      // if (!(await this.validateProductsInRestockOrder(supplierId, products))) {
-      //   return -1;
-      // }
+      if (!(await this.validateProductsInRestockOrder(supplierId, products))) {
+        return -1;
+      }
       const sql =
         "INSERT INTO RESTOCK_ORDER (issueDate, state, supplierID) VALUES (?,?,?)";
 
@@ -299,17 +309,18 @@ class RestockOrderController {
       const products = await this.getProductsForRestockOrder(id);
       const oldSkuItems = await this.getSkuItemsForRestockOrder(id);
 
-      if (
-        !(await this.validateSkuItemsInRestockOrder(
-          [...oldSkuItems, ...skuItems],
-          products
-        ))
-      ) {
-        return -2;
-      }
+      // if (
+      //   !(await this.validateSkuItemsInRestockOrder(
+      //     [...oldSkuItems, ...skuItems],
+      //     products
+      //   ))
+      // ) {
+      //   return -2;
+      // }
 
       const sql = "UPDATE SKU_ITEM SET restockOrderID = ? WHERE RFID = ?";
-      const sql1 = "INSERT INTO SKU_ITEM (RFID, available, dateOfStock, skuID, restockOrderID) VALUES (?,?,?,?,?)";
+      const sql1 =
+        "INSERT INTO SKU_ITEM (RFID, available, dateOfStock, skuID, restockOrderID) VALUES (?,?,?,?,?)";
       const sql2 = "SELECT RFID FROM SKU_ITEM WHERE RFID = ?";
       let rfid;
 
@@ -322,8 +333,14 @@ class RestockOrderController {
         //   id,
         // ]);
         rfid = await this.dao.get(sql2, [skuItem.rfid]);
-        if(rfid === undefined){
-          await this.dao.run(sql1, [skuItem.rfid, 0, dayjs().format("YYYY/MM/DD"), skuItem.SKUId, id]);
+        if (rfid === undefined) {
+          await this.dao.run(sql1, [
+            skuItem.rfid,
+            0,
+            dayjs().format("YYYY/MM/DD"),
+            skuItem.SKUId,
+            id,
+          ]);
         } else {
           await this.dao.run(sql, [id, skuItem.rfid]);
         }

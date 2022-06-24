@@ -8,29 +8,23 @@ var agent = chai.request.agent(app);
 
 //insert
 describe("test insert item api", () => {
-  beforeEach(async () => {
-    //await agent.delete("/api/deleteAllUsers");
-  });
   deleteAllData(204);
 
-  newSKUItem(200, "12345678909876543212345678909876", "2020/11/03", undefined);
+  newSKUItem(201, "12345678909876543212345678909876", "2020/11/03", undefined);
   newSKUItem(404, "12345678909876543212345678909876", "2020/11/03", 888888);
   newSKUItem(409, "12345678909876543212345678909876", "2020/11/03", undefined);
 });
 
-//GETITEMS
+//GETITEMS;
 describe("test get items api", () => {
-  beforeEach(async () => {
-    //await agent.delete("/api/deleteAllUsers");
-  });
   deleteAllData(204);
-  newSKUItem(200, "12345678909876543212345678909876", "2020/11/03");
+  newSKUItem(201, "12345678909876543212345678909876", "2020/11/03");
   getSKUITEMS(200, "12345678909876543212345678909876", 0, "2020/11/03");
 });
 
 describe("test get item api", () => {
   deleteAllData(204);
-  newSKUItem(200, "12345678909876543212345678909876", "2020/11/03", undefined);
+  newSKUItem(201, "12345678909876543212345678909876", "2020/11/03", undefined);
   getSKUItemsById(404, "12345678909876543212345678909876", 4, "2020/11/03");
   getSKUItemByRFID(200, "12345678909876543212345678909876", 0, "2020/11/03");
   getSKUItemByRFID(404, "12345678909876543212345678909889");
@@ -38,7 +32,7 @@ describe("test get item api", () => {
 
 describe("test edit item api", () => {
   deleteAllData(204);
-  newSKUItem(200, "12345678909876543212345678909876", "2020/11/03", undefined);
+  newSKUItem(201, "12345678909876543212345678909876", "2020/11/03", undefined);
   editItem(
     200,
     "12345678909876543212345678909876",
@@ -55,30 +49,34 @@ describe("test edit item api", () => {
   editItem(422, "123456789098765432123");
 });
 
-describe("test delete item api", () => {
+describe("test delete skuitem api", () => {
+  // beforeEach(async () => {
   deleteAllData(204);
-  agent
-    .post("/api/sku/")
-    .send({
-      description: "a new sku",
-      weight: 100,
-      volume: 50,
-      notes: "first SKU",
-      price: 10.99,
-      availableQuantity: 50,
-    })
-    .then(function (res) {
-      res.should.have.status(200);
-      newSKUItem(
-        200,
-        "12345678909876543212345678909876",
-        res.body,
-        "2020/11/03"
-      );
-      deleteItem(204, "12345678909876543212345678909876");
-      deleteItem(404, "12345678909876543212345678909877");
-      deleteItem(422, "29876543212345678909877");
-    });
+  //     agent
+  //       .post("/api/sku/")
+  //       .send({
+  //         description: "a new sku",
+  //         weight: 100,
+  //         volume: 50,
+  //         notes: "first SKU",
+  //         price: 10.99,
+  //         availableQuantity: 50,
+  //       })
+  //       .then(function (res) {
+  //         console.log(res.body.id + "sono qua");
+  //         res.should.have.status(200);
+  //         newSKUItem(
+  //           200,
+  //           "12345678909876543212345678909876",
+  //           "2020/11/03",
+  //           res.body.id
+  //         );
+  //       });
+  // });
+  newSKUItem(201, "12345678909876543212345678909876", "2020/11/03", undefined);
+  deleteItem(204, "12345678909876543212345678909876");
+  deleteItem(404, "12345678909876543212345678909877");
+  deleteItem(422, "29876543212345678909877");
   deleteAllData(204);
 });
 function deleteAllData(expectedHTTPStatus) {
@@ -107,7 +105,6 @@ function newSKUItem(expectedHTTPStatus, RFID, DateOfStock, SKUId) {
           SKUId: SKUId === undefined ? res.body.id : SKUId,
           DateOfStock: DateOfStock,
         };
-        console.log(item);
         if (RFID !== undefined) {
           agent
             .post("/api/skuitem/")

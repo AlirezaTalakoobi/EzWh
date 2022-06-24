@@ -1,5 +1,4 @@
 "use strict";
-const { body, param, validationResult, check } = require("express-validator");
 const { db } = require("../DB/DAO");
 
 class PositionController {

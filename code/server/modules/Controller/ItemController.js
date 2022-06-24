@@ -31,10 +31,10 @@ class ItemController {
     }
   };
 
-  getItemByID = async (id) => {
+  getItemByID = async (id, sid) => {
     try {
-      const sql = "select * from ITEM where ID=? ";
-      const args = [id];
+      const sql = "select * from ITEM where ID=? AND supplierID=?";
+      const args = [id, sid];
       let result = await this.dao.all(sql, args);
       if (result.length === 0) {
         let ret = {
@@ -90,10 +90,10 @@ class ItemController {
     }
   };
 
-  modifyItem = async (id, newPrice, newDescription) => {
+  modifyItem = async (id, sid, newPrice, newDescription) => {
     try {
-      const sql_c_1 = "SELECT * FROM ITEM WHERE ID= ?";
-      const args_c_1 = [id];
+      const sql_c_1 = "SELECT * FROM ITEM WHERE ID= ? AND supplierID=?";
+      const args_c_1 = [id, sid];
       let check1 = await this.dao.all(sql_c_1, args_c_1);
       if (check1.length === 0) {
         return 404;
@@ -108,10 +108,10 @@ class ItemController {
     }
   };
 
-  deleteItem = async (id) => {
+  deleteItem = async (id, sid) => {
     try {
-      const sql = "DELETE FROM ITEM WHERE ID = ? ";
-      const args = [id];
+      const sql = "DELETE FROM ITEM WHERE ID = ? AND supplierID=?";
+      const args = [id, sid];
       let result = await this.dao.run(sql, args);
       return 204;
     } catch (err) {

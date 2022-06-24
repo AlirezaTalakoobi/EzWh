@@ -135,6 +135,10 @@ class SKUItemsController {
   deleteAll = async () => {
     try {
       const res = await this.dao.run("Delete from SKU_ITEM", []);
+      await this.dao.run("Update SQLITE_SEQUENCE SET SEQ=? WHERE NAME=?", [
+        0,
+        "SKU_ITEM",
+      ]);
       if (res) {
         return true;
       }

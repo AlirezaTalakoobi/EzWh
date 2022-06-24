@@ -65,11 +65,11 @@ router.post(
   async (req, res) => {
 
     const orderId = await sic.createReturnOrder(req.body.returnDate, req.body.restockOrderId, req.body.products);
-    if(!orderId){
+    if(orderId === false){
       return res.status(503).json({error: "Service Unavailable"});
     }
     if(orderId === -1){
-      return res.status(404).json({error: "Restock order or sku item not found not found"});
+      return res.status(422).json({error: "Restock order or sku item not found"});
     }
     return res.status(201).json({id: orderId});
   }

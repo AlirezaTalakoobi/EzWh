@@ -16,7 +16,7 @@ describe("test new restock order api", () => {
     });
     createRestockOrder();
     createRestockOrderInvalidFormat();
-    createRestockOrderWrongPrice();
+    createRestockOrderIncorrectItemSupplierCorrespondence();
     //getRestockOrder(200, {});
 });
 
@@ -70,7 +70,7 @@ describe("add transport note to restock order", () => {
     });
     addTransportNoteToRestockOrder();
     addTransportNoteToRestockOrderIncorrectFormat();
-    addTransportNoteToRestockOrderNotDelivered();
+    addTransportNoteToRestockOrderNotDelivery();
 });
 
 
@@ -125,7 +125,7 @@ function createRestockOrder() {
 
         const order = await agent.post("/api/restockOrder").send({
                 "issueDate": "2021/11/29 09:33",
-                "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+                "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
                 "supplierId" : supplier.body.id
         });
         order.should.have.status(201);
@@ -134,8 +134,8 @@ function createRestockOrder() {
             "id": order.body.id,
             "issueDate": "2021/11/29 09:33",
             "state": "ISSUED",
-            "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
-                        {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+            "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
+                        {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
             "skuItems": [],
             "supplierId" : supplier.body.id
         };
@@ -195,9 +195,10 @@ function createRestockOrderInvalidFormat() {
     });
 }
 
-function createRestockOrderWrongPrice() {
-    it("creating new order wrong price different",async function () {
+function createRestockOrderIncorrectItemSupplierCorrespondence() {
+    it("creating new order with incorrect item-supplier correspondence",async function () {
         const supplier = await agent.post("/api/newUser").send({name: "Giulio", surname: "Sunder", username: "gs@ezwh.com", password: "abcdefghi", type: "supplier"});
+        const supplier2 = await agent.post("/api/newUser").send({name: "Michael", surname: "Jordan", username: "mj@ezwh.com", password: "abcdefghi", type: "supplier"});
 
         const sku1 = await agent.post("/api/sku").send({
                 "description" : "Nukeproof Scout",
@@ -229,12 +230,12 @@ function createRestockOrderWrongPrice() {
             "description" : "Supply for canyon",
             "price" : 1500,
             "SKUId" : sku2.body.id,
-            "supplierId" : supplier.body.id
+            "supplierId" : supplier2.body.id
         });
 
         const order = await agent.post("/api/restockOrder").send({
                 "issueDate": "2022/09/05 06:53",
-                "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2600,"qty":3}, {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+                "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2600,"qty":3}, {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
                 "supplierId" : supplier.body.id
         });
         order.should.have.status(422);
@@ -283,13 +284,13 @@ function getRestockOrders() {
 
         const order1 = await agent.post("/api/restockOrder").send({
                 "issueDate": "2022/09/05 06:53",
-                "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+                "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
                 "supplierId" : supplier.body.id
         });
 
         const order2 = await agent.post("/api/restockOrder").send({
             "issueDate": "2020/05/05 19:27",
-            "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":10}],
+            "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":10}],
             "supplierId" : supplier.body.id
         });
 
@@ -300,15 +301,15 @@ function getRestockOrders() {
             "id": order1.body.id,
             "issueDate": "2022/09/05 06:53",
             "state": "ISSUED",
-            "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
-                        {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+            "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
+                        {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
             "skuItems": [],
             "supplierId" : supplier.body.id
         }, {
             "id": order2.body.id,
             "issueDate": "2020/05/05 19:27",
             "state": "ISSUED",
-            "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":10}],
+            "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":10}],
             "skuItems": [],
             "supplierId" : supplier.body.id
         }];
@@ -359,7 +360,7 @@ function changeStateOfRestockOrder() {
 
         const order1 = await agent.post("/api/restockOrder").send({
                 "issueDate": "2022/09/05 06:53",
-                "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+                "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
                 "supplierId" : supplier.body.id
         });
 
@@ -373,8 +374,8 @@ function changeStateOfRestockOrder() {
             "id": order1.body.id,
             "issueDate": "2022/09/05 06:53",
             "state": "DELIVERED",
-            "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
-                        {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+            "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
+                        {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
             "skuItems": [],
             "supplierId" : supplier.body.id
         };
@@ -424,7 +425,7 @@ function changeStateOfRestockOrderInvalidState() {
 
         const order1 = await agent.post("/api/restockOrder").send({
                 "issueDate": "2022/09/05 06:53",
-                "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+                "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
                 "supplierId" : supplier.body.id
         });
 
@@ -479,7 +480,7 @@ function addSkuItemsToRestockOrder() {
 
         const order1 = await agent.post("/api/restockOrder").send({
                 "issueDate": "2022/09/05 06:53",
-                "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+                "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
                 "supplierId" : supplier.body.id
         });
 
@@ -489,7 +490,7 @@ function addSkuItemsToRestockOrder() {
             "newState": "DELIVERED"
         });
 
-        const skuItems = [{"SKUId":sku1.body.id, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2.body.id,"rfid":"12345678901234567890123456789017"}];
+        const skuItems = [{"SKUId":sku1.body.id, "itemId": 51, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2.body.id, "itemId": 61, "rfid":"12345678901234567890123456789017"}];
         
         await agent.put("/api/restockOrder/" + order1.body.id + "/skuItems").send({
             "skuItems": skuItems
@@ -501,8 +502,8 @@ function addSkuItemsToRestockOrder() {
             "id": order1.body.id,
             "issueDate": "2022/09/05 06:53",
             "state": "DELIVERED",
-            "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
-                        {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+            "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
+                        {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
             "skuItems": skuItems,
             "supplierId" : supplier.body.id
         }
@@ -551,13 +552,13 @@ function addSkuItemsToRestockOrderNotDelivered() {
 
         const order1 = await agent.post("/api/restockOrder").send({
                 "issueDate": "2022/09/05 06:53",
-                "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+                "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
                 "supplierId" : supplier.body.id
         });
 
         order1.should.have.status(201);
 
-        const skuItems = [{"SKUId":sku1.body.id, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2.body.id,"rfid":"12345678901234567890123456789017"}];
+        const skuItems = [{"SKUId":sku1.body.id, "itemId": 51, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2.body.id, "itemId": 61, "rfid":"12345678901234567890123456789017"}];
         
         const result1 =  await agent.put("/api/restockOrder/" + order1.body.id + "/skuItems").send({
             "skuItems": skuItems
@@ -571,8 +572,8 @@ function addSkuItemsToRestockOrderNotDelivered() {
             "id": order1.body.id,
             "issueDate": "2022/09/05 06:53",
             "state": "ISSUED",
-            "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
-                        {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+            "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
+                        {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
             "skuItems": [],
             "supplierId" : supplier.body.id
         }
@@ -622,13 +623,13 @@ function addSkuItemsToRestockOrderNotFound() {
 
         const order1 = await agent.post("/api/restockOrder").send({
                 "issueDate": "2022/09/05 06:53",
-                "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+                "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
                 "supplierId" : supplier.body.id
         });
 
         order1.should.have.status(201);
 
-        const skuItems = [{"SKUId":sku1.body.id, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2.body.id,"rfid":"12345678901234567890123456789017"}];
+        const skuItems = [{"SKUId":sku1.body.id, "itemId": 51, "rfid":"12345678901234567890123456789016"},{"SKUId":sku2.body.id, "itemId": 61, "rfid":"12345678901234567890123456789017"}];
         
         const result1 =  await agent.put("/api/restockOrder/" + (order1.body.id + 5) + "/skuItems").send({
             "skuItems": skuItems
@@ -680,20 +681,18 @@ function addTransportNoteToRestockOrder() {
 
         const order1 = await agent.post("/api/restockOrder").send({
                 "issueDate": "2022/09/05 06:53",
-                "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+                "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
                 "supplierId" : supplier.body.id
         });
 
         order1.should.have.status(201);
 
         await agent.put("/api/restockOrder/" + order1.body.id).send({
-            "newState": "DELIVERED"
+            "newState": "DELIVERY"
         });
 
-        const transportNote = {deliveryDate: "2022/05/25"};
-
         const result1 = await agent.put("/api/restockOrder/" + order1.body.id + "/transportNote").send({
-            "transportNote": transportNote
+            "transportNote": {"deliveryDate": "2022/05/25"}
         });
 
         result1.should.have.status(200);
@@ -703,11 +702,11 @@ function addTransportNoteToRestockOrder() {
         const expectedOrder = {
             "id": order1.body.id,
             "issueDate": "2022/09/05 06:53",
-            "state": "DELIVERED",
-            "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
-                        {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+            "state": "DELIVERY",
+            "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
+                        {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
             "skuItems": [],
-            "transportNote": transportNote,
+            "transportNote": {"deliveryDate": "2022/05/25"},
             "supplierId" : supplier.body.id
         }
 
@@ -718,7 +717,7 @@ function addTransportNoteToRestockOrder() {
 
 
 function addTransportNoteToRestockOrderIncorrectFormat() {
-    it("adding transport note to restock order",async function () {
+    it("adding transport note to restock order with incorrect format", async function () {
         const supplier = await agent.post("/api/newUser").send({name: "Giulio", surname: "Sunder", username: "gs@ezwh.com", password: "abcdefghi", type: "supplier"});
 
         const sku1 = await agent.post("/api/sku").send({
@@ -756,17 +755,17 @@ function addTransportNoteToRestockOrderIncorrectFormat() {
 
         const order1 = await agent.post("/api/restockOrder").send({
                 "issueDate": "2022/09/05 06:53",
-                "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+                "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
                 "supplierId" : supplier.body.id
         });
 
         order1.should.have.status(201);
 
         await agent.put("/api/restockOrder/" + order1.body.id).send({
-            "newState": "DELIVERED"
+            "newState": "DELIVERY"
         });
 
-        const transportNote = {DateOfDelivery: "2022/05/25"};
+        const transportNote = {"DateOfDelivery": "2022/05/25"};
 
         const result1 = await agent.put("/api/restockOrder/" + order1.body.id + "/transportNote").send({
             "transportNote": transportNote
@@ -779,9 +778,9 @@ function addTransportNoteToRestockOrderIncorrectFormat() {
         const expectedOrder = {
             "id": order1.body.id,
             "issueDate": "2022/09/05 06:53",
-            "state": "DELIVERED",
-            "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
-                        {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+            "state": "DELIVERY",
+            "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
+                        {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
             "skuItems": [],
             "supplierId" : supplier.body.id
         }
@@ -792,8 +791,8 @@ function addTransportNoteToRestockOrderIncorrectFormat() {
 }
 
 
-function addTransportNoteToRestockOrderNotDelivered() {
-    it("adding transport note to restock order not delivered",async function () {
+function addTransportNoteToRestockOrderNotDelivery() {
+    it("adding transport note to restock order not delivery",async function () {
         const supplier = await agent.post("/api/newUser").send({name: "Giulio", surname: "Sunder", username: "gs@ezwh.com", password: "abcdefghi", type: "supplier"});
 
         const sku1 = await agent.post("/api/sku").send({
@@ -831,7 +830,7 @@ function addTransportNoteToRestockOrderNotDelivered() {
 
         const order1 = await agent.post("/api/restockOrder").send({
                 "issueDate": "2022/09/05 06:53",
-                "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+                "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
                 "supplierId" : supplier.body.id
         });
 
@@ -851,8 +850,8 @@ function addTransportNoteToRestockOrderNotDelivered() {
             "id": order1.body.id,
             "issueDate": "2022/09/05 06:53",
             "state": "ISSUED",
-            "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
-                        {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+            "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3},
+                        {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
             "skuItems": [],
             "supplierId" : supplier.body.id
         }
@@ -902,7 +901,7 @@ function deleteRestockOrder() {
 
         const order1 = await agent.post("/api/restockOrder").send({
                 "issueDate": "2022/09/05 06:53",
-                "products": [{"SKUId":sku1.body.id, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
+                "products": [{"SKUId":sku1.body.id, "itemId": 51, "description":"ordering a batch of nukeproof scout", "price": 2500,"qty":3}, {"SKUId":sku2.body.id, "itemId": 61, "description":"ordering a batch of canyon stoic","price":1500,"qty":4}],
                 "supplierId" : supplier.body.id
         });
 

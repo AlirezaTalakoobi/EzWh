@@ -1,0 +1,186 @@
+Date : 2022-06-21 12:35:37
+Directory : /Users/davideandriano/Documents/GitHub/EzWh
+Total : 139 files,  86081 codes, 658 comments, 3927 blanks, all 90666 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JSON       |          8 |     60,266 |          0 |          7 |     60,273 |
+| JavaScript |        105 |     19,837 |        634 |      2,293 |     22,764 |
+| Markdown   |         16 |      5,770 |          0 |      1,594 |      7,364 |
+| CSS        |          5 |        127 |          1 |         24 |        152 |
+| Database   |          1 |         38 |          0 |          3 |         41 |
+| HTML       |          2 |         22 |         23 |          1 |         46 |
+| YAML       |          1 |         20 |          0 |          5 |         25 |
+| XML        |          1 |          1 |          0 |          0 |          1 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                    | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                       |        139 |     86,081 |        658 |      3,927 |     90,666 |
+| change1                                                                                                 |          4 |      1,996 |          0 |        570 |      2,566 |
+| code                                                                                                    |        124 |     80,353 |        658 |      2,376 |     83,387 |
+| code/client                                                                                             |         44 |     33,100 |        151 |        640 |     33,891 |
+| code/client/public                                                                                      |          2 |         45 |         23 |          2 |         70 |
+| code/client/src                                                                                         |         39 |      7,437 |        128 |        603 |      8,168 |
+| code/server                                                                                             |         78 |     47,224 |        507 |      1,721 |     49,452 |
+| code/server/acceptanceTest                                                                              |         22 |      2,415 |        129 |        336 |      2,880 |
+| code/server/acceptanceTest/crud                                                                         |         10 |        545 |         18 |        109 |        672 |
+| code/server/mochawesome-report                                                                          |          4 |     20,775 |          2 |          1 |     20,778 |
+| code/server/mochawesome-report/assets                                                                   |          2 |         14 |          2 |          1 |         17 |
+| code/server/modules                                                                                     |         22 |      3,627 |        149 |        389 |      4,165 |
+| code/server/modules/Controller                                                                          |         10 |      1,765 |        112 |        258 |      2,135 |
+| code/server/modules/DB                                                                                  |          2 |         54 |          0 |          7 |         61 |
+| code/server/modules/Routes                                                                              |         10 |      1,808 |         37 |        124 |      1,969 |
+| code/server/test                                                                                        |         10 |      3,030 |        100 |        438 |      3,568 |
+| code/server/unit_test                                                                                   |         15 |      3,412 |         84 |        538 |      4,034 |
++---------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                | language   | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| /Users/davideandriano/Documents/GitHub/EzWh/.gitlab-ci.yml                                              | YAML       |         20 |          0 |          5 |         25 |
+| /Users/davideandriano/Documents/GitHub/EzWh/API.md                                                      | Markdown   |      1,051 |          0 |        304 |      1,355 |
+| /Users/davideandriano/Documents/GitHub/EzWh/ApiTestReport.md                                            | Markdown   |        129 |          0 |         30 |        159 |
+| /Users/davideandriano/Documents/GitHub/EzWh/DesignDocument.md                                           | Markdown   |         54 |          0 |         18 |         72 |
+| /Users/davideandriano/Documents/GitHub/EzWh/Estimation.md                                               | Markdown   |         53 |          0 |         15 |         68 |
+| /Users/davideandriano/Documents/GitHub/EzWh/GUIPrototype.md                                             | Markdown   |         50 |          0 |         47 |         97 |
+| /Users/davideandriano/Documents/GitHub/EzWh/OfficialRequirements.md                                     | Markdown   |        884 |          0 |        208 |      1,092 |
+| /Users/davideandriano/Documents/GitHub/EzWh/RequirementsDocument.md                                     | Markdown   |      1,085 |          0 |        201 |      1,286 |
+| /Users/davideandriano/Documents/GitHub/EzWh/TimeSheet.md                                                | Markdown   |         27 |          0 |          4 |         31 |
+| /Users/davideandriano/Documents/GitHub/EzWh/UnitTestReport.md                                           | Markdown   |        373 |          0 |        148 |        521 |
+| /Users/davideandriano/Documents/GitHub/EzWh/change1/20220609 CR1.md                                     | Markdown   |         33 |          0 |          8 |         41 |
+| /Users/davideandriano/Documents/GitHub/EzWh/change1/API.md                                              | Markdown   |      1,053 |          0 |        344 |      1,397 |
+| /Users/davideandriano/Documents/GitHub/EzWh/change1/Estimation2.md                                      | Markdown   |         38 |          0 |         12 |         50 |
+| /Users/davideandriano/Documents/GitHub/EzWh/change1/OfficialRequirements.md                             | Markdown   |        872 |          0 |        206 |      1,078 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/Readme.md                                              | Markdown   |         23 |          0 |         14 |         37 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/README.md                                       | Markdown   |         38 |          0 |         33 |         71 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/package-lock.json                               | JSON       |     25,534 |          0 |          1 |     25,535 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/package.json                                    | JSON       |         46 |          0 |          1 |         47 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/public/index.html                               | HTML       |         20 |         23 |          1 |         44 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/public/manifest.json                            | JSON       |         25 |          0 |          1 |         26 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/API.js                                      | JavaScript |      1,135 |         44 |         51 |      1,230 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/AcceptCancelRejectIO.js                     | JavaScript |        134 |          0 |         12 |        146 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/AcceptRO.js                                 | JavaScript |        113 |          0 |         10 |        123 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/App.css                                     | CSS        |         84 |          0 |         19 |        103 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/App.js                                      | JavaScript |      2,210 |         62 |        105 |      2,377 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/App.test.js                                 | JavaScript |          7 |          0 |          2 |          9 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/Clerk.js                                    | JavaScript |         27 |          0 |          8 |         35 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/Customer.js                                 | JavaScript |         27 |          0 |          8 |         35 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/DeleteItem.js                               | JavaScript |        104 |          0 |         11 |        115 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/DeleteTestDescriptor.js                     | JavaScript |        104 |          0 |         11 |        115 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/DeliverIO.js                                | JavaScript |        152 |          2 |         15 |        169 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/DeliverRO.js                                | JavaScript |        105 |          0 |         10 |        115 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/DeliveryEmployee.js                         | JavaScript |         22 |          0 |          8 |         30 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/EditDeleteBarcodePosition.js                | JavaScript |        136 |          0 |         11 |        147 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/EditDeleteUser.js                           | JavaScript |        174 |          0 |         14 |        188 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/EditPositionDeleteSKU.js                    | JavaScript |        233 |          4 |         20 |        257 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/Login.css                                   | CSS        |          9 |          0 |          1 |         10 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/Login.js                                    | JavaScript |         87 |          6 |          9 |        102 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/Manager.js                                  | JavaScript |        134 |          0 |          9 |        143 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/NavbarCustom.js                             | JavaScript |        110 |          0 |         17 |        127 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/NewClientForm.css                           | CSS        |          9 |          0 |          1 |         10 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/NewEditItem.js                              | JavaScript |        214 |          0 |         20 |        234 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/NewEditSKU.js                               | JavaScript |        253 |          0 |         16 |        269 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/NewEditTestDescriptor.js                    | JavaScript |        212 |          0 |         17 |        229 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/NewInternalOrder.js                         | JavaScript |        192 |          1 |         31 |        224 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/NewPosition.js                              | JavaScript |        318 |          0 |         15 |        333 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/NewRestockOrder.js                          | JavaScript |        282 |          2 |         37 |        321 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/NewReturnOrder.js                           | JavaScript |        189 |          0 |         32 |        221 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/NewUserForm.js                              | JavaScript |        164 |          0 |         13 |        177 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/QualityEmployee.js                          | JavaScript |         22 |          0 |          8 |         30 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/ShowItem.js                                 | JavaScript |         92 |          0 |         11 |        103 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/StockRO.js                                  | JavaScript |        117 |          0 |         12 |        129 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/Supplier.js                                 | JavaScript |         41 |          0 |          7 |         48 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/TestRO.js                                   | JavaScript |        187 |          0 |         24 |        211 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/index.css                                   | CSS        |         12 |          0 |          2 |         14 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/index.js                                    | JavaScript |         12 |          3 |          3 |         18 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/logo.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/reportWebVitals.js                          | JavaScript |         12 |          0 |          2 |         14 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/client/src/setupTests.js                               | JavaScript |          1 |          4 |          1 |          6 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/package-lock.json                                      | JSON       |          6 |          0 |          1 |          7 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/EZWH.db                                         | Database   |         38 |          0 |          3 |         41 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/README.md                                       | Markdown   |          7 |          0 |          2 |          9 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/crud/test-CRUD-InternalOrder.js  | JavaScript |         47 |          0 |         12 |         59 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/crud/test-CRUD-Item.js           | JavaScript |         52 |          0 |         12 |         64 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/crud/test-CRUD-Position.js       | JavaScript |         54 |          5 |         11 |         70 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/crud/test-CRUD-RestockOrder.js   | JavaScript |         75 |          0 |         17 |         92 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/crud/test-CRUD-ReturnOrder.js    | JavaScript |         77 |          0 |         16 |         93 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/crud/test-CRUD-SKUitems.js       | JavaScript |         53 |          4 |         10 |         67 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/crud/test-CRUD-SKUs.js           | JavaScript |         46 |          0 |          8 |         54 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/crud/test-CRUD-TestDescriptor.js | JavaScript |         56 |          5 |          8 |         69 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/crud/test-CRUD-TestResult.js     | JavaScript |         62 |          4 |         11 |         77 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/crud/test-CRUD-User.js           | JavaScript |         23 |          0 |          4 |         27 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/testEzWhAPI.js                   | JavaScript |        154 |          0 |         20 |        174 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/utils-id.js                      | JavaScript |         81 |          0 |         20 |        101 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/utils-internalorder.js           | JavaScript |        141 |          8 |         17 |        166 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/utils-items.js                   | JavaScript |        149 |          4 |         18 |        171 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/utils-positions.js               | JavaScript |         99 |          6 |         11 |        116 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/utils-restockorder.js            | JavaScript |        263 |          8 |         25 |        296 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/utils-returnorder.js             | JavaScript |        129 |         16 |         15 |        160 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/utils-sku.js                     | JavaScript |        189 |          6 |         21 |        216 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/utils-skuitems.js                | JavaScript |        167 |         29 |         20 |        216 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/utils-testdescriptor.js          | JavaScript |        187 |          7 |         16 |        210 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/utils-testresult.js              | JavaScript |        183 |          9 |         19 |        211 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/acceptanceTest/utils-users.js                   | JavaScript |        128 |         18 |         25 |        171 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/mochawesome-report/assets/app.css               | CSS        |         13 |          1 |          1 |         15 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/mochawesome-report/assets/app.js                | JavaScript |          1 |          1 |          0 |          2 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/mochawesome-report/mochawesome.html             | HTML       |          2 |          0 |          0 |          2 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/mochawesome-report/mochawesome.json             | JSON       |     20,759 |          0 |          0 |     20,759 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Controller/InternalOrderController.js   | JavaScript |        290 |         14 |         54 |        358 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Controller/ItemController.js            | JavaScript |        123 |          0 |         11 |        134 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Controller/PositionController.js        | JavaScript |        145 |          0 |         10 |        155 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Controller/RestockOrderController.js    | JavaScript |        307 |         53 |         56 |        416 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Controller/ReturnOrderController.js     | JavaScript |        115 |          5 |         46 |        166 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Controller/SKUController.js             | JavaScript |        229 |          1 |         19 |        249 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Controller/SKUItemsController.js        | JavaScript |        136 |          7 |         10 |        153 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Controller/TDController.js              | JavaScript |        126 |         22 |         20 |        168 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Controller/TestResultController.js      | JavaScript |        160 |          0 |         25 |        185 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Controller/UserController.js            | JavaScript |        134 |         10 |          7 |        151 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/DB/DAO.js                               | JavaScript |         51 |          0 |          6 |         57 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/DB/mockdao.js                           | JavaScript |          3 |          0 |          1 |          4 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Routes/InternalOrderRoute.js            | JavaScript |        156 |          0 |         15 |        171 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Routes/ItemRouter.js                    | JavaScript |        149 |          3 |         11 |        163 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Routes/PositionRouter.js                | JavaScript |        223 |          4 |          8 |        235 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Routes/RestockOrderRoute.js             | JavaScript |        224 |          0 |         19 |        243 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Routes/ReturnOrderRoute.js              | JavaScript |        101 |          0 |         12 |        113 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Routes/SKUItemsRouter.js                | JavaScript |        183 |          1 |          5 |        189 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Routes/SkuRouter.js                     | JavaScript |        169 |          1 |         10 |        180 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Routes/TDRouter.js                      | JavaScript |        137 |         10 |         10 |        157 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Routes/TestResultRouter.js              | JavaScript |        129 |          8 |         21 |        158 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/modules/Routes/UserRoute.js                     | JavaScript |        337 |         10 |         13 |        360 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/package-lock.json                               | JSON       |     13,846 |          0 |          1 |     13,847 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/package.json                                    | JSON       |         44 |          0 |          1 |         45 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/server.js                                       | JavaScript |         30 |         43 |         12 |         85 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/test/TestPositionRouter.js                      | JavaScript |         74 |         26 |         15 |        115 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/test/TestSKURouter.js                           | JavaScript |        201 |         23 |         14 |        238 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/test/TestTDRouter.js                            | JavaScript |        147 |         13 |         15 |        175 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testItemRouter.js                          | JavaScript |        198 |          6 |         16 |        220 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testRouterInternalOrder.js                 | JavaScript |        361 |          1 |         91 |        453 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testRouterRestockOrder.js                  | JavaScript |        764 |          3 |        151 |        918 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testRouterReturnOrder.js                   | JavaScript |        303 |          0 |         86 |        389 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testRouterUser.js                          | JavaScript |        592 |          4 |         21 |        617 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testSKUItemsRouter.js                      | JavaScript |        200 |         24 |         12 |        236 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/test/testTestResultRouter.js                    | JavaScript |        190 |          0 |         17 |        207 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/InternalOrder.test.js                 | JavaScript |        529 |          1 |         50 |        580 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/Item.test.js                          | JavaScript |        350 |          1 |         34 |        385 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/Item_mock.test.js                     | JavaScript |        119 |          1 |         16 |        136 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/Position.test.js                      | JavaScript |        188 |          0 |         13 |        201 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/Position_mock.test.js                 | JavaScript |        132 |          4 |         18 |        154 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/RestockOrders.test.js                 | JavaScript |        289 |          1 |        122 |        412 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/ReturnOrder.test.js                   | JavaScript |        198 |         20 |        112 |        330 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/SKU.test.js                           | JavaScript |         89 |          5 |         33 |        127 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/SKUItems.test.js                      | JavaScript |        401 |          7 |         19 |        427 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/TD.test.js                            | JavaScript |         62 |         41 |         31 |        134 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/TestResult.test.js                    | JavaScript |        359 |          0 |         36 |        395 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/TestResult_mock.test.js               | JavaScript |        119 |          2 |         15 |        136 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/Users.test.js                         | JavaScript |        279 |          1 |         15 |        295 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/skuitems_mock.test.js                 | JavaScript |        144 |          0 |         13 |        157 |
+| /Users/davideandriano/Documents/GitHub/EzWh/code/server/unit_test/users_mock.test.js                    | JavaScript |        154 |          0 |         11 |        165 |
+| /Users/davideandriano/Documents/GitHub/EzWh/package-lock.json                                           | JSON       |          6 |          0 |          1 |          7 |
+| Total                                                                                                   |            |     86,081 |        658 |      3,927 |     90,666 |
++---------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

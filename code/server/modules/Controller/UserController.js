@@ -55,7 +55,6 @@ class UserController {
     let result = await this.dao.get(sql, [username]);
     if (result != undefined) {
       const check = await bcrypt.compare(password, result.password);
-      console.log(check);
       if (check === true) {
         return {
           id: result.ID,
@@ -136,7 +135,8 @@ class UserController {
   deleteAll = async () => {
     try {
       const res = await this.dao.run("Delete from USER", []);
-
+      const sql2 = "UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = ?";
+      await this.dao.run(sql2, [0, "USER"]);
       if (res) {
         return true;
       }

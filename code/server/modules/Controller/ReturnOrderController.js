@@ -37,11 +37,14 @@ class ReturnOrderController {
 
 
   getSkuItemsForReturnOrder = async (id) => {
-    const skuItemsSql = "SELECT RFID, SI.skuID, IRO.description, IRO.price FROM SKU_ITEM SI, ITEM I, ITEM_IN_RESTOCK_ORDER IRO WHERE SI.skuID = I.skuID AND I.ID = IRO.itemID AND IRO.restockOrderID = SI.restockOrderID AND returnOrderID = ?";
+    //const skuItemsSql = "SELECT RFID, SI.skuID, IRO.description, IRO.price FROM SKU_ITEM SI, ITEM I, ITEM_IN_RESTOCK_ORDER IRO WHERE SI.skuID = I.skuID AND I.ID = IRO.itemID AND IRO.restockOrderID = SI.restockOrderID AND returnOrderID = ?";
+    const skuItemsSql = "SELECT RFID, IRO.itemID, SI.skuID, IRO.description, IRO.price FROM SKU_ITEM SI, ITEM_IN_RESTOCK_ORDER IRO, ITEM I WHERE SI.returnOrderID = ? AND SI.restockOrderID = IRO.restockOrderID AND IRO.itemID = I.ID AND I.skuID = SI.skuID";
+
     const skuItems = await this.dao.all(skuItemsSql, [id]);
 
     return skuItems.map(skuItem => ({
         SKUId: skuItem.skuID,
+        itemId: skuItem.itemID,
         description: skuItem.description,
         price: skuItem.price,
         RFID: skuItem.RFID
